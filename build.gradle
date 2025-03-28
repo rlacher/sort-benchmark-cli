@@ -1,0 +1,20 @@
+plugins
+{
+	id 'application'
+    id 'java'
+}
+
+repositories
+{
+    mavenCentral() 
+}
+
+application
+{
+    mainClass = 'com.github.rlacher.sortanalyser.SortAnalyser'
+}
+
+tasks.named('run')
+{
+    standardInput = System.in
+}
