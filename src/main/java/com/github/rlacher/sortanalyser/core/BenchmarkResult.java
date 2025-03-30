@@ -19,6 +19,15 @@ public class BenchmarkResult
      */
     public BenchmarkResult(final long executionTimeNs, final long memoryUsedKb)
     {
+        if (executionTimeNs < 0)
+        {
+            throw new IllegalArgumentException("Execution time must not be negative.");
+        }
+        if (memoryUsedKb < 0)
+        {
+            throw new IllegalArgumentException("Memory use must not be negative.");
+        }
+
         this.executionTimeNs = executionTimeNs;
         this.memoryUsedKb = memoryUsedKb;
     }
