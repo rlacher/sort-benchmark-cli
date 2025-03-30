@@ -1,9 +1,5 @@
 package com.github.rlacher.sortanalyser.core;
 
-import java.util.Objects;
-
-import com.github.rlacher.sortanalyser.core.Sortable;
-
 public abstract class AbstractSortAlgorithm implements Sortable, Benchmarkable
 {
     /**

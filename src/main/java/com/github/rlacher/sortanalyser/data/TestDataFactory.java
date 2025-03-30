@@ -3,8 +3,6 @@ package com.github.rlacher.sortanalyser.data;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import com.github.rlacher.sortanalyser.data.TestData;
-
 /**
  * Factory class for creating test data for sorting algorithm benchmark.
  */

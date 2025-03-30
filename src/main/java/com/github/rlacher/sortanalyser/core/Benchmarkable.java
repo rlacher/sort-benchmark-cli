@@ -1,7 +1,5 @@
 package com.github.rlacher.sortanalyser.core;
 
-import com.github.rlacher.sortanalyser.core.BenchmarkResult;
-
 /**
  * Interface for classes that can be benchmarked.  
  */
