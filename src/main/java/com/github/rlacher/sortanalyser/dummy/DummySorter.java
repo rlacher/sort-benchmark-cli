@@ -1,7 +1,9 @@
 package com.github.rlacher.sortanalyser.dummy;
 
 import java.util.Objects;
+import java.util.logging.Logger;
 
+import com.github.rlacher.sortanalyser.Main;
 import com.github.rlacher.sortanalyser.core.AbstractSortAlgorithm;
 
 /**
@@ -11,6 +13,11 @@ import com.github.rlacher.sortanalyser.core.AbstractSortAlgorithm;
  */
 public class DummySorter extends AbstractSortAlgorithm
 {
+    /** 
+     * Logger for logging messages.
+     */
+    private static final Logger logger = Logger.getLogger(DummySorter.class.getName());
+
 	/**
      * Does not sort the provided array. Prints a message to the console instead.
      *
@@ -22,6 +29,6 @@ public class DummySorter extends AbstractSortAlgorithm
 	{
 		Objects.requireNonNull(array, "Array must not be null");
 
-		System.out.println("I am a dummy sorter and do not actually sort.");
+		logger.info("I am a dummy sorter and do not actually sort.");
 	}
 }

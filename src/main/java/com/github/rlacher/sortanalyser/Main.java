@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 import com.github.rlacher.sortanalyser.core.BenchmarkResult;
 import com.github.rlacher.sortanalyser.core.Benchmarkable;
@@ -18,7 +19,14 @@ import com.github.rlacher.sortanalyser.data.TestDataFactory;
  */
 public class Main
 {
-	// Initial test data for benchmarking
+    /** 
+     * Logger for logging messages.
+     */
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
+
+	/**
+     * Initial test data for benchmarking
+     */
 	private static final TestData TEST_DATA = TestDataFactory.createRandomData(10);
 
 	/**
@@ -33,7 +41,7 @@ public class Main
         List<Benchmarkable> sortAlgorithms = new ArrayList<>();
         sortAlgorithms.add(new DummySorter());
         
-        System.out.println(String.format("Test data: %s", TEST_DATA));
+        logger.info(String.format("Test data: %s", TEST_DATA));
         runAlgorithms(sortAlgorithms, TEST_DATA);
     }
 
@@ -53,7 +61,7 @@ public class Main
         for (Benchmarkable algorithm : algorithms)
         {
             BenchmarkResult benchmarkResult = algorithm.benchmarkedOperation(testData.getDataCopy());
-            System.out.println(String.format("Sorting algorithm: %s, benchmark result: %s", algorithm.getClass().getSimpleName(), benchmarkResult.toString()));
+            logger.info(String.format("Sorting algorithm: %s, benchmark result: %s", algorithm.getClass().getSimpleName(), benchmarkResult.toString()));
         }
     }
 }

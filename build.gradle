@@ -17,4 +17,5 @@ application
 tasks.named('run')
 {
     standardInput = System.in
+    jvmArgs '-Djava.util.logging.config.file=logging.properties'
 }
