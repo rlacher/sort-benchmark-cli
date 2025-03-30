@@ -2,14 +2,14 @@ package com.github.rlacher.sortanalyser.dummy;
 
 import java.util.Objects;
 
-import com.github.rlacher.sortanalyser.core.SortAlgorithm;
+import com.github.rlacher.sortanalyser.core.Sortable;
 
 /**
- * A dummy implementation of the {@link SortAlgorithm} interface.
+ * A dummy implementation of the {@link Sortable} interface.
  * 
  * This class does not perform any sorting.
  */
-public class DummySorter implements SortAlgorithm
+public class DummySorter implements Sortable
 {
 	/**
      * Does not sort the provided array. Prints a message to the console instead.
@@ -21,7 +21,7 @@ public class DummySorter implements SortAlgorithm
 	public void sort(final int[] array) throws NullPointerException
 	{
 		Objects.requireNonNull(array, "Array must not be null");
-		
+
 		System.out.println("I am a dummy sorter and do not actually sort.");
 	}
 }

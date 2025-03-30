@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import com.github.rlacher.sortanalyser.core.SortAlgorithm;
+import com.github.rlacher.sortanalyser.core.Sortable;
 import com.github.rlacher.sortanalyser.dummy.DummySorter;
 
 /**
@@ -27,7 +27,7 @@ public class Main
      */
     public static void main(String[] args)
     {
-        List<SortAlgorithm> sortAlgorithms = new ArrayList<>();
+        List<Sortable> sortAlgorithms = new ArrayList<>();
         sortAlgorithms.add(new DummySorter());
         
         runAlgorithms(sortAlgorithms, TEST_DATA);
@@ -39,12 +39,12 @@ public class Main
      * @param algorithms The list of sorting algorithms to be executed.
      * @param testData The test data to be sorted. A copy of the data is created for each algorithm.
      */
-    private static void runAlgorithms(List<SortAlgorithm> algorithms, final int[] testData)
+    private static void runAlgorithms(List<Sortable> algorithms, final int[] testData)
     {
         Objects.requireNonNull(algorithms, "The list of algorithms must not be null.");
         Objects.requireNonNull(testData, "The test data must not be null.");
 
-        for (SortAlgorithm algorithm : algorithms)
+        for (Sortable algorithm : algorithms)
         {
             int[] dataCopy = Arrays.copyOf(testData, testData.length);
             algorithm.sort(dataCopy);

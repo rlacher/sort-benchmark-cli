@@ -3,7 +3,7 @@ package com.github.rlacher.sortanalyser.core;
 /**
  * Defines the contract for all sorting algorithms.
  */
-public interface SortAlgorithm
+public interface Sortable
 {
 	/**
 	 * Sorts an array of integers in place.
