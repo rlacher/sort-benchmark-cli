@@ -3,7 +3,6 @@ package com.github.rlacher.sortanalyser.dummy;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import com.github.rlacher.sortanalyser.Main;
 import com.github.rlacher.sortanalyser.core.AbstractSortAlgorithm;
 
 /**
