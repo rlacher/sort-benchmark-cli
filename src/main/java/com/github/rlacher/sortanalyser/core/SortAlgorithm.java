@@ -9,10 +9,10 @@ public interface SortAlgorithm
 	 * Sorts an array of integers in place.
 	 *
 	 * @param array The array to be sorted.
-	 * @throws IllegalArgumentException If 'array' is null.
+	 * @throws NullPointerException If 'array' is null.
 	 * 
 	 * An empty array is considered sorted and will not result in an exception.
 	 * Postcondition: The array is sorted in ascending order.
 	 */
-	void sort(final int[] array) throws IllegalArgumentException;
+	void sort(final int[] array) throws NullPointerException;
 }

@@ -1,5 +1,7 @@
 package com.github.rlacher.sortanalyser.dummy;
 
+import java.util.Objects;
+
 import com.github.rlacher.sortanalyser.core.SortAlgorithm;
 
 /**
@@ -13,15 +15,13 @@ public class DummySorter implements SortAlgorithm
      * Does not sort the provided array. Prints a message to the console instead.
      *
      * @param array The array to be sorted (ignored).
-     * @throws IllegalArgumentException If the input array is null.
+     * @throws NullPointerException If the input array is null.
      */
 	@Override
-	public void sort(final int[] array) throws IllegalArgumentException
+	public void sort(final int[] array) throws NullPointerException
 	{
-		if(array == null)
-		{
-			throw new IllegalArgumentException("Array must not be null");
-		}
+		Objects.requireNonNull(array, "Array must not be null");
+		
 		System.out.println("I am a dummy sorter and do not actually sort.");
 	}
 }

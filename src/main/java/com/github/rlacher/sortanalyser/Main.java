@@ -41,6 +41,9 @@ public class Main
      */
     private static void runAlgorithms(List<SortAlgorithm> algorithms, final int[] testData)
     {
+        Objects.requireNonNull(algorithms, "The list of algorithms must not be null.");
+        Objects.requireNonNull(testData, "The test data must not be null.");
+
         for (SortAlgorithm algorithm : algorithms)
         {
             int[] dataCopy = Arrays.copyOf(testData, testData.length);
