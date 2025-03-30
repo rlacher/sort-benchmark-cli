@@ -16,8 +16,9 @@ public class BenchmarkResult
      *
      * @param executionTimeNs The time taken to execute the operation in nanoseconds.
      * @param memoryUsedKb The amount of runtime memory used during the operation in kilobytes.
+     * @throws IllegalArgumentException If either executionTimeNs or memoryUsedKb is negative.
      */
-    public BenchmarkResult(final long executionTimeNs, final long memoryUsedKb)
+    public BenchmarkResult(final long executionTimeNs, final long memoryUsedKb) throws IllegalArgumentException
     {
         if (executionTimeNs < 0)
         {
