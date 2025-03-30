@@ -2,14 +2,14 @@ package com.github.rlacher.sortanalyser.dummy;
 
 import java.util.Objects;
 
-import com.github.rlacher.sortanalyser.core.Sortable;
+import com.github.rlacher.sortanalyser.core.AbstractSortAlgorithm;
 
 /**
- * A dummy implementation of the {@link Sortable} interface.
+ * A dummy implementation of the {@link AbstractSortAlgorithm} class.
  * 
  * This class does not perform any sorting.
  */
-public class DummySorter implements Sortable
+public class DummySorter extends AbstractSortAlgorithm
 {
 	/**
      * Does not sort the provided array. Prints a message to the console instead.

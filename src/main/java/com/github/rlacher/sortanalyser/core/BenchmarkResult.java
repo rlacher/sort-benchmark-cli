@@ -3,10 +3,10 @@ package com.github.rlacher.sortanalyser.core;
 /**
  * Stores the result of a benchmark operation.
  */
-public class BenchmarkResult
+public final class BenchmarkResult
 {
-    // The time taken to execute the operation in nanoseconds.
-    private final long executionTimeNs;
+    // The time taken to execute the operation in milliseconds.
+    private final long executionTimeMs;
 
     // The amount of runtime memory used during the operation in kilobytes.
     private final long memoryUsedKb;
@@ -14,13 +14,13 @@ public class BenchmarkResult
     /**
      * Constructs a new BenchmarkResult object.
      *
-     * @param executionTimeNs The time taken to execute the operation in nanoseconds.
+     * @param executionTimeMs The time taken to execute the operation in milliseconds.
      * @param memoryUsedKb The amount of runtime memory used during the operation in kilobytes.
      * @throws IllegalArgumentException If either executionTimeNs or memoryUsedKb is negative.
      */
-    public BenchmarkResult(final long executionTimeNs, final long memoryUsedKb) throws IllegalArgumentException
+    public BenchmarkResult(final long executionTimeMs, final long memoryUsedKb) throws IllegalArgumentException
     {
-        if (executionTimeNs < 0)
+        if (executionTimeMs < 0)
         {
             throw new IllegalArgumentException("Execution time must not be negative.");
         }
@@ -29,17 +29,17 @@ public class BenchmarkResult
             throw new IllegalArgumentException("Memory use must not be negative.");
         }
 
-        this.executionTimeNs = executionTimeNs;
+        this.executionTimeMs = executionTimeMs;
         this.memoryUsedKb = memoryUsedKb;
     }
     /**
-     * Returns the execution time in nanoseconds.
+     * Returns the execution time in milliseconds.
      *
-     * @return The execution time in nanoseconds.
+     * @return The execution time in milliseconds.
      */
-    public long getExecutionTimeNs()
+    public long getExecutionTimeMs()
     {
-        return executionTimeNs;
+        return executionTimeMs;
     }
     /**
      * Returns the memory used in kilobytes.
@@ -58,9 +58,8 @@ public class BenchmarkResult
     @Override
     public String toString()
     {
-        return "BenchmarkResult{" +
-                "executionTimeNs=" + executionTimeNs +
+        return  "{executionTimeMs=" + executionTimeMs +
                 ", memoryUsedKb=" + memoryUsedKb +
-                '}';
+                "}";
     }   
 }

@@ -5,7 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import com.github.rlacher.sortanalyser.core.Sortable;
+import com.github.rlacher.sortanalyser.core.BenchmarkResult;
+import com.github.rlacher.sortanalyser.core.Benchmarkable;
 import com.github.rlacher.sortanalyser.dummy.DummySorter;
 
 /**
@@ -27,7 +28,7 @@ public class Main
      */
     public static void main(String[] args)
     {
-        List<Sortable> sortAlgorithms = new ArrayList<>();
+        List<Benchmarkable> sortAlgorithms = new ArrayList<>();
         sortAlgorithms.add(new DummySorter());
         
         runAlgorithms(sortAlgorithms, TEST_DATA);
@@ -36,18 +37,21 @@ public class Main
     /**
      * Runs the provided sorting algorithms on the given test data.
      * 
+     * The benchmark ressult is printed to the console for each algorithm.
+     * 
      * @param algorithms The list of sorting algorithms to be executed.
      * @param testData The test data to be sorted. A copy of the data is created for each algorithm.
      */
-    private static void runAlgorithms(List<Sortable> algorithms, final int[] testData)
+    private static void runAlgorithms(List<Benchmarkable> algorithms, final int[] testData)
     {
         Objects.requireNonNull(algorithms, "The list of algorithms must not be null.");
         Objects.requireNonNull(testData, "The test data must not be null.");
 
-        for (Sortable algorithm : algorithms)
+        for (Benchmarkable algorithm : algorithms)
         {
             int[] dataCopy = Arrays.copyOf(testData, testData.length);
-            algorithm.sort(dataCopy);
+            BenchmarkResult benchmarkResult = algorithm.benchmarkedOperation(dataCopy);
+            System.out.println(String.format("Sorting algorithm: %s, benchmark result: %s", algorithm.getClass().getSimpleName(), benchmarkResult.toString()));
         }
     }
 }
