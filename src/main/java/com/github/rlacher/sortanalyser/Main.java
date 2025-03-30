@@ -8,6 +8,8 @@ import java.util.Objects;
 import com.github.rlacher.sortanalyser.core.BenchmarkResult;
 import com.github.rlacher.sortanalyser.core.Benchmarkable;
 import com.github.rlacher.sortanalyser.dummy.DummySorter;
+import com.github.rlacher.sortanalyser.data.TestData;
+import com.github.rlacher.sortanalyser.data.TestDataFactory;
 
 /**
  * The entry point for the sorting algorithm benchmarking application.
@@ -16,8 +18,8 @@ import com.github.rlacher.sortanalyser.dummy.DummySorter;
  */
 public class Main
 {
-	// Initial test data: An unsorted array of integers.
-	private static final int[] TEST_DATA = {3, 7, 0, 9, 2, 5, 8, 1, 6, 4};
+	// Initial test data for benchmarking
+	private static final TestData TEST_DATA = TestDataFactory.createRandomData(10);
 
 	/**
      * The main method, which starts the sorting algorithm benchmarking process.
@@ -31,6 +33,7 @@ public class Main
         List<Benchmarkable> sortAlgorithms = new ArrayList<>();
         sortAlgorithms.add(new DummySorter());
         
+        System.out.println(String.format("Test data: %s", TEST_DATA));
         runAlgorithms(sortAlgorithms, TEST_DATA);
     }
 
@@ -40,17 +43,16 @@ public class Main
      * The benchmark ressult is printed to the console for each algorithm.
      * 
      * @param algorithms The list of sorting algorithms to be executed.
-     * @param testData The test data to be sorted. A copy of the data is created for each algorithm.
+     * @param testData The test data to be sorted.
      */
-    private static void runAlgorithms(List<Benchmarkable> algorithms, final int[] testData)
+    private static void runAlgorithms(List<Benchmarkable> algorithms, final TestData testData)
     {
         Objects.requireNonNull(algorithms, "The list of algorithms must not be null.");
         Objects.requireNonNull(testData, "The test data must not be null.");
 
         for (Benchmarkable algorithm : algorithms)
         {
-            int[] dataCopy = Arrays.copyOf(testData, testData.length);
-            BenchmarkResult benchmarkResult = algorithm.benchmarkedOperation(dataCopy);
+            BenchmarkResult benchmarkResult = algorithm.benchmarkedOperation(testData.getDataCopy());
             System.out.println(String.format("Sorting algorithm: %s, benchmark result: %s", algorithm.getClass().getSimpleName(), benchmarkResult.toString()));
         }
     }
