@@ -9,6 +9,22 @@ repositories
     mavenCentral() 
 }
 
+dependencies
+{
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.+'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test
+{
+    testLogging
+    {
+        events "PASSED", "SKIPPED", "FAILED"
+    }
+
+    useJUnitPlatform()
+}
+
 application
 {
     mainClass = 'com.github.rlacher.sortbench.Main'

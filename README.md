@@ -33,6 +33,7 @@ This project was built and tested with the following environment:
 - *Operating System:* Ubuntu 24.04.1 LTS
 - *Java:* OpenJDK 21.0.6
 - *Gradle:* 8.13
+- *JUnit:* 5.10
 
 ## License
 
