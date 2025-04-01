@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.rlacher.sortanalyser.core;
+package com.github.rlacher.sortbench.core;
 
 /**
  * Stores the result of a benchmark operation.

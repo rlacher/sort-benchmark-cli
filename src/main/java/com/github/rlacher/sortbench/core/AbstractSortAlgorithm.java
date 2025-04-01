@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.rlacher.sortanalyser.core;
+package com.github.rlacher.sortbench.core;
 
 public abstract class AbstractSortAlgorithm implements Sortable, Benchmarkable
 {

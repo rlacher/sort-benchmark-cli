@@ -20,18 +20,18 @@
  * SOFTWARE.
  */
 
-package com.github.rlacher.sortanalyser;
+package com.github.rlacher.sortbench;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import com.github.rlacher.sortanalyser.core.BenchmarkResult;
-import com.github.rlacher.sortanalyser.core.Benchmarkable;
-import com.github.rlacher.sortanalyser.dummy.DummySorter;
-import com.github.rlacher.sortanalyser.data.TestData;
-import com.github.rlacher.sortanalyser.data.TestDataFactory;
+import com.github.rlacher.sortbench.core.BenchmarkResult;
+import com.github.rlacher.sortbench.core.Benchmarkable;
+import com.github.rlacher.sortbench.dummy.DummySorter;
+import com.github.rlacher.sortbench.data.TestData;
+import com.github.rlacher.sortbench.data.TestDataFactory;
 
 /**
  * The entry point for the sorting algorithm benchmarking application.

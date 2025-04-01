@@ -20,36 +20,19 @@
  * SOFTWARE.
  */
 
-package com.github.rlacher.sortanalyser.dummy;
-
-import java.util.Objects;
-import java.util.logging.Logger;
-
-import com.github.rlacher.sortanalyser.core.AbstractSortAlgorithm;
+package com.github.rlacher.sortbench.core;
 
 /**
- * A dummy implementation of the {@link AbstractSortAlgorithm} class.
- * 
- * This class does not perform any sorting.
+ * Interface for classes that can be benchmarked.  
  */
-public class DummySorter extends AbstractSortAlgorithm
+public interface Benchmarkable
 {
-    /** 
-     * Logger for logging messages.
+    /**
+     * Executes and benchmarks an operation on the provided array.
+     * 
+     * @param array. The array to be operated on and benchmarked.
+     * @return The result of the benchmarked operation in a {@link BenchmarkResult} object.
+     * @throws NullPointerException If the 'array' is null.
      */
-    private static final Logger logger = Logger.getLogger(DummySorter.class.getName());
-
-	/**
-     * Does not sort the provided array. Prints a message to the console instead.
-     *
-     * @param array The array to be sorted (ignored).
-     * @throws NullPointerException If the input array is null.
-     */
-	@Override
-	public void sort(final int[] array) throws NullPointerException
-	{
-		Objects.requireNonNull(array, "Array must not be null");
-
-		logger.info("I am a dummy sorter and do not actually sort.");
-	}
+    BenchmarkResult benchmarkedOperation(int[] array) throws NullPointerException;
 }

@@ -20,19 +20,21 @@
  * SOFTWARE.
  */
 
-package com.github.rlacher.sortanalyser.core;
+package com.github.rlacher.sortbench.core;
 
 /**
- * Interface for classes that can be benchmarked.  
+ * Defines the contract for all sorting algorithms.
  */
-public interface Benchmarkable
+public interface Sortable
 {
-    /**
-     * Executes and benchmarks an operation on the provided array.
-     * 
-     * @param array. The array to be operated on and benchmarked.
-     * @return The result of the benchmarked operation in a {@link BenchmarkResult} object.
-     * @throws NullPointerException If the 'array' is null.
-     */
-    BenchmarkResult benchmarkedOperation(int[] array) throws NullPointerException;
+	/**
+	 * Sorts an array of integers in place.
+	 *
+	 * @param array The array to be sorted.
+	 * @throws NullPointerException If 'array' is null.
+	 * 
+	 * An empty array is considered sorted and will not result in an exception.
+	 * Postcondition: The array is sorted in ascending order.
+	 */
+	void sort(final int[] array) throws NullPointerException;
 }
