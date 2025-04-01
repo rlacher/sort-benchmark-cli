@@ -30,8 +30,8 @@ import java.util.logging.Logger;
 import com.github.rlacher.sortbench.core.BenchmarkResult;
 import com.github.rlacher.sortbench.core.Benchmarkable;
 import com.github.rlacher.sortbench.dummy.DummySorter;
-import com.github.rlacher.sortbench.data.TestData;
-import com.github.rlacher.sortbench.data.TestDataFactory;
+import com.github.rlacher.sortbench.data.BenchmarkData;
+import com.github.rlacher.sortbench.data.BenchmarkDataFactory;
 
 /**
  * The entry point for the sorting algorithm benchmarking application.
@@ -46,14 +46,14 @@ public class Main
     private static final Logger logger = Logger.getLogger(Main.class.getName());
 
 	/**
-     * Initial test data for benchmarking
+     * Initial benchmark data for benchmarking
      */
-	private static final TestData TEST_DATA = TestDataFactory.createRandomData(10);
+	private static final BenchmarkData BENCHMARK_DATA = BenchmarkDataFactory.createRandomData(10);
 
 	/**
      * The main method, which starts the sorting algorithm benchmarking process.
      * 
-     * This class initializes and runs a list of sorting algorithms against a predefined test dataset.
+     * This class initializes and runs a list of sorting algorithms against a predefined benchmark dataset.
      *
      * @param args Command-line arguments (currently unused).
      */
@@ -62,26 +62,26 @@ public class Main
         List<Benchmarkable> sortAlgorithms = new ArrayList<>();
         sortAlgorithms.add(new DummySorter());
         
-        logger.info(String.format("Test data: %s", TEST_DATA));
-        runAlgorithms(sortAlgorithms, TEST_DATA);
+        logger.info(String.format("Benchmark data: %s", BENCHMARK_DATA));
+        runAlgorithms(sortAlgorithms, BENCHMARK_DATA);
     }
 
     /**
-     * Runs the provided sorting algorithms on the given test data.
+     * Runs the provided sorting algorithms on the given benchmark data.
      * 
      * The benchmark ressult is printed to the console for each algorithm.
      * 
      * @param algorithms The list of sorting algorithms to be executed.
-     * @param testData The test data to be sorted.
+     * @param benchmarkData The benchmark data to be sorted.
      */
-    private static void runAlgorithms(List<Benchmarkable> algorithms, final TestData testData)
+    private static void runAlgorithms(List<Benchmarkable> algorithms, final BenchmarkData benchmarkData)
     {
         Objects.requireNonNull(algorithms, "The list of algorithms must not be null.");
-        Objects.requireNonNull(testData, "The test data must not be null.");
+        Objects.requireNonNull(benchmarkData, "The benchmark data must not be null.");
 
         for (Benchmarkable algorithm : algorithms)
         {
-            BenchmarkResult benchmarkResult = algorithm.benchmarkedOperation(testData.getDataCopy());
+            BenchmarkResult benchmarkResult = algorithm.benchmarkedOperation(benchmarkData.getDataCopy());
             logger.info(String.format("Sorting algorithm: %s, benchmark result: %s", algorithm.getClass().getSimpleName(), benchmarkResult.toString()));
         }
     }

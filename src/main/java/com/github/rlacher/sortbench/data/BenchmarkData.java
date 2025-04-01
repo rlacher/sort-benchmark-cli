@@ -28,16 +28,16 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * Represents test data for sorting algorithms, encapsulating the data array and its type.
+ * Represents benchmark data for sorting algorithms, encapsulating the data array and its type.
  * This class ensures immutability by creating copies of the input data.
  */
-public final class TestData
+public final class BenchmarkData
 {
     private final int[] data;
     private final DataType type;
 
     /**
-     * Enumerates the types of test data used for sorting algorithm benchmarking.
+     * Enumerates the types of benchmark data used for sorting algorithm benchmarking.
      */
     public enum DataType
     {
@@ -48,7 +48,7 @@ public final class TestData
     }
 
     /**
-     * Constructor for creating a TestData object.
+     * Constructor for creating a BenchmarkData object.
      *
      * This constructor creates a copy of the data array to avoid external modification.
      *
@@ -56,7 +56,7 @@ public final class TestData
      * @param type The type of the data.
      * @throws NullPointerException If the data array is null.
      */
-    public TestData(final int[] data, final DataType type) throws NullPointerException
+    public BenchmarkData(final int[] data, final DataType type) throws NullPointerException
     {
         Objects.requireNonNull(data, "The data array must not be null.");
 
@@ -77,7 +77,7 @@ public final class TestData
     /**
      * Returns the length of the data array.
      *
-     * Test data of various lengths are required for performance assessment of the sorting algorithms.
+     * Benchmark data of various lengths are required for performance assessment of the sorting algorithms.
      *
      * @return  The length of the data array.
      */
@@ -89,7 +89,7 @@ public final class TestData
     /**
      * Returns the type of the data.
      * 
-     * Test data of various types help assess the performance of sorting algorithms.
+     * Benchmark data of various types help assess the performance of sorting algorithms.
      */
     public DataType getType()
     {
@@ -97,9 +97,9 @@ public final class TestData
     }
 
     /**
-     * Returns a string representation of the TestData object.
+     * Returns a string representation of the BenchmarkData object.
      * 
-     * @return A string representation of the TestData object.
+     * @return A string representation of the BenchmarkData object.
      */
     @Override
     public String toString()

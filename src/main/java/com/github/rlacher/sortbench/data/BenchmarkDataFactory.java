@@ -26,17 +26,17 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 /**
- * Factory class for creating test data for sorting algorithm benchmark.
+ * Factory class for creating benchmark data for sorting algorithm benchmark.
  */
-public class TestDataFactory
+public class BenchmarkDataFactory
 {
     /**
-     * Creates sorted test data of a specified length.
+     * Creates sorted benchmark data of a specified length.
      * @param length The length of the data array to be created.
-     * @return A TestData object containing sorted data.
+     * @return A BenchmarkData object containing sorted data.
      * @throws IllegalArgumentException If the length is not positive.
      */
-    public static TestData createSortedData(final int length) throws IllegalArgumentException
+    public static BenchmarkData createSortedData(final int length) throws IllegalArgumentException
     {
         if (length <= 0)
         {
@@ -44,17 +44,17 @@ public class TestDataFactory
         }
 
         int[] data = IntStream.range(0, length).toArray();
-        return new TestData(data, TestData.DataType.SORTED);
+        return new BenchmarkData(data, BenchmarkData.DataType.SORTED);
     }
 
     /**
-     * Creates reversed test data of a specified length.
+     * Creates reversed benchmark data of a specified length.
      * 
      * @param length The length of the data array to be created.
-     * @return A TestData object containing reversed data.
+     * @return A BenchmarkData object containing reversed data.
      * @throws IllegalArgumentException If the length is not positive.
      */
-    public static TestData createReversedData(final int length) throws IllegalArgumentException
+    public static BenchmarkData createReversedData(final int length) throws IllegalArgumentException
     {
         if (length <= 0)
         {
@@ -63,17 +63,17 @@ public class TestDataFactory
 
         int[] data = IntStream.range(0, length).map(i -> length - i - 1).toArray();
 
-        return new TestData(data, TestData.DataType.REVERSED);
+        return new BenchmarkData(data, BenchmarkData.DataType.REVERSED);
     }
 
     /**
-     * Creates random test data of a specified length.
+     * Creates random benchmark data of a specified length.
      * 
      * @param length The length of the data array to be created.
-     * @return A TestData object containing random data.
+     * @return A BenchmarkData object containing random data.
      * @throws IllegalArgumentException If the length is not positive.
      */
-    public static TestData createRandomData(final int length) throws IllegalArgumentException
+    public static BenchmarkData createRandomData(final int length) throws IllegalArgumentException
     {
         if (length <= 0)
         {
@@ -82,17 +82,17 @@ public class TestDataFactory
 
         Random random = new Random();
         int[] data = IntStream.generate(random::nextInt).limit(length).toArray();
-        return new TestData(data, TestData.DataType.RANDOM);
+        return new BenchmarkData(data, BenchmarkData.DataType.RANDOM);
     }
 
     /**
-     * Creates partially sorted test data of a specified length.
+     * Creates partially sorted benchmark data of a specified length.
      * 
      * @param length The length of the data array to be created.
-     * @return A TestData object containing partially sorted data.
+     * @return A BenchmarkData object containing partially sorted data.
      * @throws IllegalArgumentException If the length is not positive or less than 2.
      */
-    public static TestData createPartiallySortedData(final int length) throws IllegalArgumentException
+    public static BenchmarkData createPartiallySortedData(final int length) throws IllegalArgumentException
     {
         if (length < 2)
         {
@@ -110,6 +110,6 @@ public class TestDataFactory
             ? IntStream.concat(IntStream.of(sortedData), IntStream.of(randomData)).toArray()
             : IntStream.concat(IntStream.of(randomData), IntStream.of(sortedData)).toArray();
 
-        return new TestData(data, TestData.DataType.PARTIALLY_SORTED);
+        return new BenchmarkData(data, BenchmarkData.DataType.PARTIALLY_SORTED);
     } 
 }
