@@ -22,16 +22,17 @@
 
 package com.github.rlacher.sortbench;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Logger;
 
-import com.github.rlacher.sortbench.core.BenchmarkResult;
-import com.github.rlacher.sortbench.core.Benchmarkable;
-import com.github.rlacher.sortbench.dummy.DummySorter;
-import com.github.rlacher.sortbench.data.BenchmarkData;
-import com.github.rlacher.sortbench.data.BenchmarkDataFactory;
+import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
+import com.github.rlacher.sortbench.benchmark.BenchmarkRunner;
+import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
+import com.github.rlacher.sortbench.benchmark.data.BenchmarkDataFactory;
+import com.github.rlacher.sortbench.sorter.Sorter;
+import com.github.rlacher.sortbench.strategies.SortStrategy;
+import com.github.rlacher.sortbench.strategies.DummySortStrategy;
 
 /**
  * The entry point for the sorting algorithm benchmarking application.
@@ -45,12 +46,12 @@ public class Main
      */
     private static final Logger logger = Logger.getLogger(Main.class.getName());
 
-	/**
+    /**
      * Initial benchmark data for benchmarking
      */
-	private static final BenchmarkData BENCHMARK_DATA = BenchmarkDataFactory.createRandomData(10);
+    private static final BenchmarkData BENCHMARK_DATA = BenchmarkDataFactory.createRandomData(10);
 
-	/**
+    /**
      * The main method, which starts the sorting algorithm benchmarking process.
      * 
      * This class initializes and runs a list of sorting algorithms against a predefined benchmark dataset.
@@ -59,30 +60,38 @@ public class Main
      */
     public static void main(String[] args)
     {
-        List<Benchmarkable> sortAlgorithms = new ArrayList<>();
-        sortAlgorithms.add(new DummySorter());
+        logger.fine(String.format("Benchmark data: %s", BENCHMARK_DATA));
+
+        List<SortStrategy> sortStrategies = Arrays.asList
+        (
+            new DummySortStrategy()
+        );
         
-        logger.info(String.format("Benchmark data: %s", BENCHMARK_DATA));
-        runAlgorithms(sortAlgorithms, BENCHMARK_DATA);
+        sortBenchmark(sortStrategies, BENCHMARK_DATA);
     }
 
     /**
-     * Runs the provided sorting algorithms on the given benchmark data.
+     * Runs the provided sorting strategies on the given benchmark data through the sorter context.
      * 
-     * The benchmark ressult is printed to the console for each algorithm.
+     * The benchmark result is printed to the console for each algorithm.
      * 
-     * @param algorithms The list of sorting algorithms to be executed.
+     * @param sortStrategies The list of sorting strategies to be executed.
      * @param benchmarkData The benchmark data to be sorted.
      */
-    private static void runAlgorithms(List<Benchmarkable> algorithms, final BenchmarkData benchmarkData)
+    private static void sortBenchmark(List<SortStrategy> sortStrategies, final BenchmarkData benchmarkData)
     {
-        Objects.requireNonNull(algorithms, "The list of algorithms must not be null.");
-        Objects.requireNonNull(benchmarkData, "The benchmark data must not be null.");
-
-        for (Benchmarkable algorithm : algorithms)
+        if(sortStrategies == null)
         {
-            BenchmarkResult benchmarkResult = algorithm.benchmarkedOperation(benchmarkData.getDataCopy());
-            logger.info(String.format("Sorting algorithm: %s, benchmark result: %s", algorithm.getClass().getSimpleName(), benchmarkResult.toString()));
+            throw new IllegalArgumentException("The list of sort strategies must not be null.");
+        }
+
+        BenchmarkRunner benchmarkRunner = new BenchmarkRunner();
+        for (SortStrategy sortStrategy : sortStrategies)
+        {
+            Sorter sorter = new Sorter(sortStrategy);
+            BenchmarkResult benchmarkResult = benchmarkRunner.benchmark(sortContext -> sortContext.sort(benchmarkData.getDataCopy()), sorter);
+            
+            logger.info(String.format("Sorting strategy: %s, benchmark result: %s", sortStrategy.getClass().getSimpleName(), benchmarkResult.toString()));
         }
     }
 }

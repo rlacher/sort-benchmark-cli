@@ -20,16 +20,18 @@
  * SOFTWARE.
  */
 
-package com.github.rlacher.sortbench.data;
+package com.github.rlacher.sortbench.strategies;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
-public class BenchmarkDataTest
+/**
+ * Interface for sorting strategies.
+ */
+public interface SortStrategy
 {
-    @Test
-    void testConstructor_whenDataIsNull_thenThrowsNullPointerException()
-    {
-        assertThrows(NullPointerException.class, () -> new BenchmarkData(null, BenchmarkData.DataType.RANDOM));
-    }
+    /**
+     * Contract for sorting algorithms.
+     * @param array The array to be sorted.
+     * @throws NullPointerException If the input array is null.
+     * returns The number of swaps performed during the sorting process.
+     */ 
+    long sort(final int[] array);
 }

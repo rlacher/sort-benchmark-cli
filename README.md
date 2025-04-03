@@ -10,15 +10,15 @@ The goal is to analyse and visualise the efficiency of different common sorting 
 
 1. Clone the respository
 
-	```bash
-	git clone https://github.com/rlacher/sort-algorithms.git
-	```
+    ```bash
+    git clone https://github.com/rlacher/sort-algorithms.git
+    ```
 
 2. Execute the application
 
-	```bash
-	gradle clean && gradle run
-	```
+    ```bash
+    gradle clean && gradle run
+    ```
 
 3. Instructions on how to configure the analysis will follow
 

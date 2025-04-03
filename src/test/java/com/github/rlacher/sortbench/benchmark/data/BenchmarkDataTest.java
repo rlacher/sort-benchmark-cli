@@ -20,21 +20,22 @@
  * SOFTWARE.
  */
 
-package com.github.rlacher.sortbench.core;
+package com.github.rlacher.sortbench.benchmark.data;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Defines the contract for all sorting algorithms.
+ * Unit tests for the {@link BenchmarkData} class.
  */
-public interface Sortable
+public class BenchmarkDataTest
 {
-	/**
-	 * Sorts an array of integers in place.
-	 *
-	 * @param array The array to be sorted.
-	 * @throws NullPointerException If 'array' is null.
-	 * 
-	 * An empty array is considered sorted and will not result in an exception.
-	 * Postcondition: The array is sorted in ascending order.
-	 */
-	void sort(final int[] array) throws NullPointerException;
+    /**
+     * Tests the constructor of the {@link BenchmarkData} class when the input data is null.
+     */
+    @Test
+    void testConstructor_whenDataIsNull_thenThrowsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> new BenchmarkData(null, BenchmarkData.DataType.RANDOM));
+    }
 }

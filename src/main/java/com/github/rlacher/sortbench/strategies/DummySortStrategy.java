@@ -20,36 +20,32 @@
  * SOFTWARE.
  */
 
-package com.github.rlacher.sortbench.dummy;
+package com.github.rlacher.sortbench.strategies;
 
-import java.util.Objects;
 import java.util.logging.Logger;
 
-import com.github.rlacher.sortbench.core.AbstractSortAlgorithm;
-
 /**
- * A dummy implementation of the {@link AbstractSortAlgorithm} class.
+ * A dummy implementation of the {@link SortStrategy} interface.
  * 
  * This class does not perform any sorting.
  */
-public class DummySorter extends AbstractSortAlgorithm
+public class DummySortStrategy implements SortStrategy
 {
     /** 
      * Logger for logging messages.
      */
-    private static final Logger logger = Logger.getLogger(DummySorter.class.getName());
+    private static final Logger logger = Logger.getLogger(DummySortStrategy.class.getName());
 
-	/**
+    /**
      * Does not sort the provided array. Prints a message to the console instead.
      *
      * @param array The array to be sorted (ignored).
-     * @throws NullPointerException If the input array is null.
+     * returns The number of swaps performed during the sorting process (always 0).
      */
-	@Override
-	public void sort(final int[] array) throws NullPointerException
-	{
-		Objects.requireNonNull(array, "Array must not be null");
-
-		logger.info("I am a dummy sorter and do not actually sort.");
-	}
+    @Override
+    public long sort(final int[] array)
+    {
+        logger.info("I am a dummy sorter and do not actually sort.");
+        return 0;
+    }
 }

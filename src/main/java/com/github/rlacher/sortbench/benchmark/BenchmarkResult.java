@@ -20,39 +20,54 @@
  * SOFTWARE.
  */
 
-package com.github.rlacher.sortbench.core;
+package com.github.rlacher.sortbench.benchmark;
 
 /**
  * Stores the result of a benchmark operation.
  */
 public final class BenchmarkResult
 {
-    // The time taken to execute the operation in milliseconds.
+    /**
+     * The time taken to execute the operation in milliseconds.
+     */
     private final long executionTimeMs;
 
-    // The amount of runtime memory used during the operation in kilobytes.
+    /**
+     * The amount of runtime memory used during the operation in kilobytes.
+     */
     private final long memoryUsedKb;
+
+    /**
+     * The number of swaps performed during the operation.
+     */
+    private final long swapCount;
 
     /**
      * Constructs a new BenchmarkResult object.
      *
      * @param executionTimeMs The time taken to execute the operation in milliseconds.
      * @param memoryUsedKb The amount of runtime memory used during the operation in kilobytes.
-     * @throws IllegalArgumentException If either executionTimeNs or memoryUsedKb is negative.
+     * @param swapCount The number of swaps performed during the operation.
+     * @throws IllegalArgumentException If either executionTimeMs, memoryUsedKb, or swapCount is negative.
      */
-    public BenchmarkResult(final long executionTimeMs, final long memoryUsedKb) throws IllegalArgumentException
+    public BenchmarkResult(final long executionTimeMs, final long memoryUsedKb, final long swapCount)
     {
-        if (executionTimeMs < 0)
+        if(executionTimeMs < 0)
         {
             throw new IllegalArgumentException("Execution time must not be negative.");
         }
-        if (memoryUsedKb < 0)
+        if(memoryUsedKb < 0)
         {
             throw new IllegalArgumentException("Memory use must not be negative.");
         }
+        if(swapCount < 0)
+        {
+            throw new IllegalArgumentException("Swap count must not be negative.");
+        }   
 
         this.executionTimeMs = executionTimeMs;
         this.memoryUsedKb = memoryUsedKb;
+        this.swapCount = swapCount;
     }
     /**
      * Returns the execution time in milliseconds.
@@ -72,6 +87,17 @@ public final class BenchmarkResult
     {
         return memoryUsedKb;
     }
+
+    /**
+     * Returns the number of swaps performed.
+     *
+     * @return The number of swaps performed.
+     */
+    public long getSwapCount()
+    {
+        return swapCount;
+    }
+
     /**
      * Turns the BenchmarkResult into a string representation.
      *
@@ -82,6 +108,7 @@ public final class BenchmarkResult
     {
         return  "{executionTimeMs=" + executionTimeMs +
                 ", memoryUsedKb=" + memoryUsedKb +
+                ", swapCount=" + swapCount +
                 "}";
     }   
 }

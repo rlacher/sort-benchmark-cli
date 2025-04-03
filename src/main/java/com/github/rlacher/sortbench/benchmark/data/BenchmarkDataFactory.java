@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.rlacher.sortbench.data;
+package com.github.rlacher.sortbench.benchmark.data;
 
 import java.util.Random;
 import java.util.stream.IntStream;

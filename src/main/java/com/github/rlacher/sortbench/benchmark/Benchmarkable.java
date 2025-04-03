@@ -20,19 +20,26 @@
  * SOFTWARE.
  */
 
-package com.github.rlacher.sortbench.core;
+package com.github.rlacher.sortbench.benchmark;
+
+import java.util.function.Function;
+
+import com.github.rlacher.sortbench.sorter.SortContext;
 
 /**
- * Interface for classes that can be benchmarked.  
+ * Interface for components that benchmark the performance of operations.
+ * 
+ * Implementations of this interface measure and accrue performance metrics for a given operation,
+ * represented by a {@link java.util.function.Function}.
  */
 public interface Benchmarkable
 {
     /**
-     * Executes and benchmarks an operation on the provided array.
-     * 
-     * @param array. The array to be operated on and benchmarked.
-     * @return The result of the benchmarked operation in a {@link BenchmarkResult} object.
-     * @throws NullPointerException If the 'array' is null.
+     * Measures and returns performance metrics for the provided operation.
+     *
+     * @param func The operation to benchmark, represented as a {@link java.util.function.Function}.
+     * @param context The context in which the operation is executed, encapsulating strategy.
+     * @return An {@link BenchmarkResult} object containing benchmark performance metrics.
      */
-    BenchmarkResult benchmarkedOperation(int[] array) throws NullPointerException;
+    BenchmarkResult benchmark(Function<SortContext, Long> func, SortContext context);
 }

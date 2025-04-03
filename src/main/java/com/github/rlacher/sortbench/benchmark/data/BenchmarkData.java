@@ -20,10 +20,9 @@
  * SOFTWARE.
  */
 
-package com.github.rlacher.sortbench.data;
+package com.github.rlacher.sortbench.benchmark.data;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -54,11 +53,14 @@ public final class BenchmarkData
      *
      * @param data The data array to be stored (a copy is created).
      * @param type The type of the data.
-     * @throws NullPointerException If the data array is null.
+     * @throws IllegalArgumentException If the data array is null.
      */
-    public BenchmarkData(final int[] data, final DataType type) throws NullPointerException
+    public BenchmarkData(final int[] data, final DataType type)
     {
-        Objects.requireNonNull(data, "The data array must not be null.");
+        if(data == null)
+        {
+            throw new IllegalArgumentException("The data array must not be null.");
+        }
 
         this.data = Arrays.copyOf(data, data.length);
         this.type = type;
