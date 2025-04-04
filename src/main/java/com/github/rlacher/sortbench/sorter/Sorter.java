@@ -29,14 +29,16 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
 
 /**
- * Context class for sorting algorithms, implementing the {@link SortContext} interface and utilising the Strategy design pattern.
+ * Context class for sorting algorithms, utilising the Strategy design pattern.
  * 
  * This class encapsulates the sorting logic, delegating the actual sorting operation to a {@link SortStrategy}.
  * This allows for dynamic switching of sorting algorithms at runtime.
  * 
+ * For simplicity at this project scale, the Sorter class directly acts as the Strategy pattern's context, rather than using a separate interface.
+ * 
  * The sorter centralises argument validation to ensure data integrity.
  */
-public class Sorter implements SortContext
+public class Sorter
 {
     /** 
      * Logger for logging messages.
@@ -85,13 +87,10 @@ public class Sorter implements SortContext
     /**
      * Validates the input array and delegates the sorting task to the currently set {@link SortStrategy}.
      * 
-     * It implements the {@link SortContext} interface.
-     * 
      * @param array The array to be sorted.
      * @return Returns a {@link BenchmarkResult} with the metric value for the {@link ProfilingMode}.
      * @throws IllegalArgumentException If the array is null or empty.
      */
-    @Override
     public BenchmarkResult sort(final int[] array)
     {
         if(array == null)
