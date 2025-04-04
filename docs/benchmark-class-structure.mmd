@@ -1,0 +1,26 @@
+%%{init: {'theme':'neutral'}}%%
+classDiagram
+
+    class Sorter {
+        -sortStrategy SortStrategy
+        +Sorter(SortStrategy)
+        +setStrategy(SortStrategy)
+        +sort(int[]) BenchmarkResult
+    }
+
+    class SortStrategy {
+        <<interface>>
+        +sort(int[])* BenchmarkResult
+    }
+
+    class ConcreteSortStrategy {
+        -Benchmarker benchmarker
+        +ConcreteSortStrategy(Benchmarker)
+        +sort(int[]) BenchmarkResult
+    }
+
+    Sorter "1" *-- "1" SortStrategy
+    SortStrategy <|.. ConcreteSortStrategy
+
+
+

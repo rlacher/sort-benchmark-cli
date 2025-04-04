@@ -22,6 +22,19 @@ The goal is to analyse and visualise the efficiency of different common sorting 
 
 3. Instructions on how to configure the analysis will follow
 
+## Design
+
+This benchmark project leverages the Strategy pattern to establish a modular and extensible architecture. Consequently, new sorting algorithms can be integrated without requiring modifications to the core benchmarking logic. Performance profiling is conducted by a dedicated `Benchmarker` class, which is injected into individual `SortStrategy` implementations, promoting loose coupling and enhanced code maintainability.
+
+![Benchmark Class Structure](./docs/benchmark-class-structure.svg)
+
+
+Pre-generated `BenchmarkData`, created upfront by the `BenchmarkDataFactory`, is repeatedly sorted by a chosen `SortStrategy` through the `Sorter`, and the resulting benchmark metrics are robustly aggregated.
+
+![Benchmark Sequence Diagram](./docs/benchmark-sequence-diagram.svg)
+
+
+
 ## Results
 
 More information to come.

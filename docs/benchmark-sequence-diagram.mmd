@@ -1,0 +1,29 @@
+%%{init: {'theme':'neutral'}}%%
+sequenceDiagram
+    participant Main
+    participant Sorter
+    participant ConcreteSortingStrategy
+    participant ResultAggregator
+    participant BenchmarkData
+
+    Note over Main: Data generation (via BenchmarkDataFactory)<br> and warm-up phase occur before the loop.
+
+    loop Repeat for multiple runs
+        Main->>BenchmarkData: getDataCopy()
+        BenchmarkData-->>Main: int[] data
+        Main->>Sorter: sort(int[] data)
+        activate Sorter
+        Sorter->>ConcreteSortingStrategy: sort(int[] data)
+        activate ConcreteSortingStrategy
+        ConcreteSortingStrategy-->>Sorter: BenchmarkResult (single run)
+        deactivate ConcreteSortingStrategy
+        Sorter-->>Main: BenchmarkResult (single run)
+        deactivate Sorter
+    end
+
+    Main->>ResultAggregator: process(listOfBenchmarkResults)
+    activate ResultAggregator
+    ResultAggregator-->>Main: robustBenchmarkResult
+    deactivate ResultAggregator
+
+    Main->>Main: Output robustBenchmarkResult
