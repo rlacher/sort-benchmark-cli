@@ -22,80 +22,95 @@
 
 package com.github.rlacher.sortbench.benchmark;
 
+import java.util.Objects;
+
+import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
+
 /**
- * Stores the result of a benchmark operation.
+ * A POJO class representing the result of a benchmark corresponding to the {@link ProfilingMode}.
  */
 public final class BenchmarkResult
 {
     /**
-     * The time taken to execute the operation in milliseconds.
+     * The profiling mode used during the benchmark.
      */
-    private final long executionTimeMs;
+    private final ProfilingMode profilingMode;
 
     /**
-     * The amount of runtime memory used during the operation in kilobytes.
+     * The benchmark metric value in correspondence to the {@link ProfilingMode}.
      */
-    private final long memoryUsedKb;
+    private final long value;
 
-    /**
-     * The number of swaps performed during the operation.
-     */
-    private final long swapCount;
 
     /**
      * Constructs a new BenchmarkResult object.
      *
-     * @param executionTimeMs The time taken to execute the operation in milliseconds.
-     * @param memoryUsedKb The amount of runtime memory used during the operation in kilobytes.
-     * @param swapCount The number of swaps performed during the operation.
-     * @throws IllegalArgumentException If either executionTimeMs, memoryUsedKb, or swapCount is negative.
+     * @param mode The profiling mode used during the benchmark.
+     * @param value The value of the benchmark metric.
+     * @throws IllegalArgumentException If either mode or value are negative.
      */
-    public BenchmarkResult(final long executionTimeMs, final long memoryUsedKb, final long swapCount)
+    public BenchmarkResult(final ProfilingMode mode, final long value)
     {
-        if(executionTimeMs < 0)
+        if(mode == null)
         {
-            throw new IllegalArgumentException("Execution time must not be negative.");
+            throw new IllegalArgumentException("Profiling mode must not be null.");
         }
-        if(memoryUsedKb < 0)
-        {
-            throw new IllegalArgumentException("Memory use must not be negative.");
-        }
-        if(swapCount < 0)
-        {
-            throw new IllegalArgumentException("Swap count must not be negative.");
-        }   
 
-        this.executionTimeMs = executionTimeMs;
-        this.memoryUsedKb = memoryUsedKb;
-        this.swapCount = swapCount;
+        if(value < 0)
+        {
+            throw new IllegalArgumentException("Value must not be negative.");
+        }
+
+        this.profilingMode = mode;
+        this.value = value;
     }
+    
     /**
-     * Returns the execution time in milliseconds.
-     *
-     * @return The execution time in milliseconds.
+     * Returns the profiling mode used during the benchmark.
+     * 
+     * @return The profiling mode used in the benchmark.
      */
-    public long getExecutionTimeMs()
+    public ProfilingMode getProfilingMode()
     {
-        return executionTimeMs;
-    }
-    /**
-     * Returns the memory used in kilobytes.
-     *
-     * @return The memory used in kilobytes.
-     */
-    public long getMemoryUsedKb()
-    {
-        return memoryUsedKb;
+        return profilingMode;
     }
 
     /**
-     * Returns the number of swaps performed.
+     * Returns the metric value representing the benchmark result.
      *
-     * @return The number of swaps performed.
+     * @return The benchmark metric value.
      */
-    public long getSwapCount()
+    public long getValue()
     {
-        return swapCount;
+        return value;
+    }
+
+    /**
+     * Checks if two BenchmarkResult objects are equal based on their profiling mode and value.
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass())
+        {
+            return false;
+        }
+
+        BenchmarkResult that = (BenchmarkResult) obj;
+        return (value == that.value) && (profilingMode == that.profilingMode);
+    }
+
+    /**
+     * Generates a hash code for the BenchmarkResult object based on its profiling mode and value.
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(value, profilingMode);
     }
 
     /**
@@ -106,9 +121,8 @@ public final class BenchmarkResult
     @Override
     public String toString()
     {
-        return  "{executionTimeMs=" + executionTimeMs +
-                ", memoryUsedKb=" + memoryUsedKb +
-                ", swapCount=" + swapCount +
+        return  "{mode=" + profilingMode +
+                ", value=" + value +
                 "}";
     }   
 }

@@ -27,7 +27,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
-import com.github.rlacher.sortbench.benchmark.BenchmarkRunner;
+import com.github.rlacher.sortbench.benchmark.Benchmarker;
+import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkDataFactory;
 import com.github.rlacher.sortbench.sorter.Sorter;
@@ -64,7 +65,7 @@ public class Main
 
         List<SortStrategy> sortStrategies = Arrays.asList
         (
-            new DummySortStrategy()
+            new DummySortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME))
         );
         
         sortBenchmark(sortStrategies, BENCHMARK_DATA);
@@ -85,11 +86,10 @@ public class Main
             throw new IllegalArgumentException("The list of sort strategies must not be null.");
         }
 
-        BenchmarkRunner benchmarkRunner = new BenchmarkRunner();
         for (SortStrategy sortStrategy : sortStrategies)
         {
             Sorter sorter = new Sorter(sortStrategy);
-            BenchmarkResult benchmarkResult = benchmarkRunner.benchmark(sortContext -> sortContext.sort(benchmarkData.getDataCopy()), sorter);
+            BenchmarkResult benchmarkResult = sorter.sort(benchmarkData.getDataCopy());
             
             logger.info(String.format("Sorting strategy: %s, benchmark result: %s", sortStrategy.getClass().getSimpleName(), benchmarkResult.toString()));
         }

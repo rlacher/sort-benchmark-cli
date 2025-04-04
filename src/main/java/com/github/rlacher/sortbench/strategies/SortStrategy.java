@@ -22,6 +22,8 @@
 
 package com.github.rlacher.sortbench.strategies;
 
+import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
+
 /**
  * Interface for sorting strategies.
  */
@@ -31,7 +33,7 @@ public interface SortStrategy
      * Contract for sorting algorithms.
      * @param array The array to be sorted.
      * @throws NullPointerException If the input array is null.
-     * returns The number of swaps performed during the sorting process.
+     * returns A {@link BenchmarkResult} object containing profiling metrics.
      */ 
-    long sort(final int[] array);
+    BenchmarkResult sort(final int[] array);
 }

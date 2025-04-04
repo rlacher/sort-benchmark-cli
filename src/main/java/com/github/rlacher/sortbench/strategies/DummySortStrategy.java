@@ -24,6 +24,9 @@ package com.github.rlacher.sortbench.strategies;
 
 import java.util.logging.Logger;
 
+import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
+import com.github.rlacher.sortbench.benchmark.Benchmarker;
+
 /**
  * A dummy implementation of the {@link SortStrategy} interface.
  * 
@@ -37,15 +40,38 @@ public class DummySortStrategy implements SortStrategy
     private static final Logger logger = Logger.getLogger(DummySortStrategy.class.getName());
 
     /**
+     * The benchmarker used for profiling.
+     */
+    private Benchmarker benchmarker;
+
+    /**
+     * Constructor for the DummySortStrategy class.
+     * 
+     * @param benchmarker The benchmarker to be used for profiling.
+     * @throws IllegalArgumentException If the benchmarker is null.
+     */
+    public DummySortStrategy(Benchmarker benchmarker)
+    {
+        if (benchmarker == null)
+        {
+            throw new IllegalArgumentException("Benchmarker must not be null.");
+        }
+
+        this.benchmarker = benchmarker;
+    }
+
+    /**
      * Does not sort the provided array. Prints a message to the console instead.
      *
      * @param array The array to be sorted (ignored).
-     * returns The number of swaps performed during the sorting process (always 0).
+     * returns A {@link BenchmarkResult} object containing profiling metrics.
      */
     @Override
-    public long sort(final int[] array)
+    public BenchmarkResult sort(final int[] array)
     {
+        benchmarker.startProfiling();
         logger.info("I am a dummy sorter and do not actually sort.");
-        return 0;
+        benchmarker.stopProfiling();
+        return benchmarker.getResult();
     }
 }

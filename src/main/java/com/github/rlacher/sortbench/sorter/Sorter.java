@@ -24,6 +24,8 @@ package com.github.rlacher.sortbench.sorter;
 
 import java.util.logging.Logger;
 
+import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
+import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
 
 /**
@@ -86,11 +88,11 @@ public class Sorter implements SortContext
      * It implements the {@link SortContext} interface.
      * 
      * @param array The array to be sorted.
-     * returns The number of swaps performed during the sorting operation.
+     * @return Returns a {@link BenchmarkResult} with the metric value for the {@link ProfilingMode}.
      * @throws IllegalArgumentException If the array is null or empty.
      */
     @Override
-    public long sort(final int[] array)
+    public BenchmarkResult sort(final int[] array)
     {
         if(array == null)
         {
@@ -100,7 +102,7 @@ public class Sorter implements SortContext
         if(array.length == 0)
         {
             logger.info("Array is empty, no sorting performed.");
-            return 0;
+            return new BenchmarkResult(ProfilingMode.NONE, 0);
         }
 
         logger.finer(String.format("Performing sort using sort strategy %s", sortStrategy.getClass().getSimpleName()));

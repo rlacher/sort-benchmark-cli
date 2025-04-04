@@ -22,6 +22,9 @@
 
 package com.github.rlacher.sortbench.sorter;
 
+import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
+import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
+
 /**
  * Defines a context for sorting operations, decoupling the sorting algorithms from the caller.
  * 
@@ -34,8 +37,8 @@ public interface SortContext
      * Sorts the provided integer array using the encapsulated sorting strategy.
      * 
      * @param array The array to be sorted.
-     * @return The number of swaps performed during the sorting process.
+     * @return Returns a {@link BenchmarkResult} with the metric value for the {@link ProfilingMode}.
      * @throws IllegalArgumentException If the input array is null.
      */
-    long sort(final int[] array);
+    BenchmarkResult sort(final int[] array);
 }
