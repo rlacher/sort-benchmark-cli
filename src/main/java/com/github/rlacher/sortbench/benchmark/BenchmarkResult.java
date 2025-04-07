@@ -39,7 +39,7 @@ public final class BenchmarkResult
     /**
      * The benchmark metric value in correspondence to the {@link ProfilingMode}.
      */
-    private final long value;
+    private final double value;
 
 
     /**
@@ -49,7 +49,7 @@ public final class BenchmarkResult
      * @param value The value of the benchmark metric.
      * @throws IllegalArgumentException If either mode or value are negative.
      */
-    public BenchmarkResult(final ProfilingMode mode, final long value)
+    public BenchmarkResult(final ProfilingMode mode, final double value)
     {
         if(mode == null)
         {
@@ -80,7 +80,7 @@ public final class BenchmarkResult
      *
      * @return The benchmark metric value.
      */
-    public long getValue()
+    public double getValue()
     {
         return value;
     }
@@ -101,7 +101,7 @@ public final class BenchmarkResult
         }
 
         BenchmarkResult that = (BenchmarkResult) obj;
-        return (value == that.value) && (profilingMode == that.profilingMode);
+        return (Double.compare(this.value, that.value) == 0) && (profilingMode == that.profilingMode);
     }
 
     /**
@@ -121,8 +121,6 @@ public final class BenchmarkResult
     @Override
     public String toString()
     {
-        return  "{mode=" + profilingMode +
-                ", value=" + value +
-                "}";
+        return String.format("{mode=%s, value=%.2f}", profilingMode, value);
     }   
 }

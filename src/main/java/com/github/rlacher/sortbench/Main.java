@@ -24,13 +24,18 @@ package com.github.rlacher.sortbench;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
 import com.github.rlacher.sortbench.benchmark.Benchmarker;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkDataFactory;
+import com.github.rlacher.sortbench.reporting.ResultAggregator;
 import com.github.rlacher.sortbench.sorter.Sorter;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
 import com.github.rlacher.sortbench.strategies.DummySortStrategy;
@@ -48,9 +53,34 @@ public class Main
     private static final Logger logger = Logger.getLogger(Main.class.getName());
 
     /**
-     * Initial benchmark data for benchmarking
+     * Default benchmark data sizes for the sorting algorithms.
+     * 
+     * The data points are chose to hightlight constant factors in smaller arrays sizes and demonstrate scaling characteristics in larger arrays.
      */
-    private static final BenchmarkData BENCHMARK_DATA = BenchmarkDataFactory.createRandomData(10);
+    private static final int[] BENCHMARK_DATA_SIZES = new int[]
+    {
+        100,
+        1000,
+        10000
+    };
+
+    /**
+     * Default benchmark data types for the sorting algorithms (all data types are used).
+     */
+    private static final List<BenchmarkData.DataType> BENCHMARK_DATA_TYPES = Arrays.asList
+    (
+        BenchmarkData.DataType.SORTED,
+        BenchmarkData.DataType.REVERSED,
+        BenchmarkData.DataType.RANDOM,
+        BenchmarkData.DataType.PARTIALLY_SORTED
+    );
+
+    /**
+     *  Default number of runs for the benchmark.
+     * 
+     *  This is used to determine how many times each sorting algorithm should run on input data with the same characteristics (length and type).
+     */
+    private static final int DEFAULT_NUMBER_OF_RUNS = 5;
 
     /**
      * The main method, which starts the sorting algorithm benchmarking process.
@@ -61,14 +91,12 @@ public class Main
      */
     public static void main(String[] args)
     {
-        logger.fine(String.format("Benchmark data: %s", BENCHMARK_DATA));
-
         List<SortStrategy> sortStrategies = Arrays.asList
         (
             new DummySortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME))
         );
         
-        sortBenchmark(sortStrategies, BENCHMARK_DATA);
+        sortBenchmark(sortStrategies);
     }
 
     /**
@@ -77,21 +105,35 @@ public class Main
      * The benchmark result is printed to the console for each algorithm.
      * 
      * @param sortStrategies The list of sorting strategies to be executed.
-     * @param benchmarkData The benchmark data to be sorted.
      */
-    private static void sortBenchmark(List<SortStrategy> sortStrategies, final BenchmarkData benchmarkData)
+    private static void sortBenchmark(List<SortStrategy> sortStrategies)
     {
         if(sortStrategies == null)
         {
             throw new IllegalArgumentException("The list of sort strategies must not be null.");
         }
 
+        // Initialise benchmarkDataSet with data arrangements that all sort strategies will run on.
+        Set<BenchmarkData> benchmarkDataSet = Stream.generate(() -> BenchmarkDataFactory.createRandomData(BENCHMARK_DATA_SIZES[0]))
+            .limit(DEFAULT_NUMBER_OF_RUNS)
+            .collect(Collectors.toSet());
+
+        ResultAggregator resultAggregator = new ResultAggregator(ResultAggregator.DEFAULT_FILTER, ResultAggregator.DEFAULT_AGGREGATOR);
+
         for (SortStrategy sortStrategy : sortStrategies)
         {
             Sorter sorter = new Sorter(sortStrategy);
-            BenchmarkResult benchmarkResult = sorter.sort(benchmarkData.getDataCopy());
-            
-            logger.info(String.format("Sorting strategy: %s, benchmark result: %s", sortStrategy.getClass().getSimpleName(), benchmarkResult.toString()));
+
+            List<BenchmarkResult> benchmarkResults = new ArrayList<>();
+            for(BenchmarkData benchmarkData : benchmarkDataSet)
+            {
+                BenchmarkResult benchmarkResult = sorter.sort(benchmarkData.getDataCopy());
+                benchmarkResults.add(benchmarkResult);
+                logger.fine(String.format("Sorting strategy: %s, benchmark result: %s", sortStrategy.getClass().getSimpleName(), benchmarkResult.toString()));
+            }
+
+            BenchmarkResult aggregatedBenchmarkResult = resultAggregator.process(benchmarkResults);
+            logger.info(String.format("Sorting strategy: %s, aggregated benchmark result: %s", sortStrategy.getClass().getSimpleName(), aggregatedBenchmarkResult));
         }
     }
 }
