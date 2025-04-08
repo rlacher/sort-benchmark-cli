@@ -32,7 +32,7 @@ public class BenchmarkDataFactory
 {
     /**
      * Creates sorted benchmark data of a specified length.
-     * @param length The length of the data array to be created.
+     * @param length The length of the data array to be created. Must be a greater than 0.
      * @return A BenchmarkData object containing sorted data.
      * @throws IllegalArgumentException If the length is not positive.
      */
@@ -50,7 +50,7 @@ public class BenchmarkDataFactory
     /**
      * Creates reversed benchmark data of a specified length.
      * 
-     * @param length The length of the data array to be created.
+     * @param length The length of the data array to be created. Must be a greater than 0.
      * @return A BenchmarkData object containing reversed data.
      * @throws IllegalArgumentException If the length is not positive.
      */
@@ -69,7 +69,7 @@ public class BenchmarkDataFactory
     /**
      * Creates random benchmark data of a specified length.
      * 
-     * @param length The length of the data array to be created.
+     * @param length The length of the data array to be created. Must be a greater than 0.
      * @return A BenchmarkData object containing random data.
      * @throws IllegalArgumentException If the length is not positive.
      */
@@ -88,9 +88,9 @@ public class BenchmarkDataFactory
     /**
      * Creates partially sorted benchmark data of a specified length.
      * 
-     * @param length The length of the data array to be created.
+     * @param length The length of the data array to be created. Must be greater than or equal to 2.
      * @return A BenchmarkData object containing partially sorted data.
-     * @throws IllegalArgumentException If the length is not positive or less than 2.
+     * @throws IllegalArgumentException If the length is less than 2.
      */
     public static BenchmarkData createPartiallySortedData(final int length) throws IllegalArgumentException
     {
