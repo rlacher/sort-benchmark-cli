@@ -108,5 +108,4 @@ class ResultAggregatorTest
         assertNotNull(aggregatedResult);
         assertEquals(expectedMode, aggregatedResult.getProfilingMode(), "Profiling mode does not match expected value");
     }
-
 }
