@@ -68,7 +68,7 @@ class BenchmarkDataFactoryTest
     private void createData_givenNonPositiveLength_shouldThrowIllegalArgumentException(IntFunction<BenchmarkData> factoryMethod)
     {
         assertAll(() -> assertThrows(IllegalArgumentException.class, () -> factoryMethod.apply(0), "Creating data with zero length should throw IllegalArgumentException"),
-                  () -> assertThrows(IllegalArgumentException.class, () -> factoryMethod.apply(-3), "Creating data with negative length should throw IllegalArgumentException"));;
+                  () -> assertThrows(IllegalArgumentException.class, () -> factoryMethod.apply(-3), "Creating data with negative length should throw IllegalArgumentException"));
     }
 
     /**
