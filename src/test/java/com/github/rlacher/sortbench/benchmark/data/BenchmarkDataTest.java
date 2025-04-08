@@ -25,12 +25,10 @@ package com.github.rlacher.sortbench.benchmark.data;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
-
 /**
  * Unit tests for the {@link BenchmarkData} class.
  */
-public class BenchmarkDataTest
+class BenchmarkDataTest
 {
     /**
      * Tests the constructor of the {@link BenchmarkData} class when the input data is null.

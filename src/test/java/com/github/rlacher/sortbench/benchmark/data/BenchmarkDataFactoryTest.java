@@ -1,0 +1,278 @@
+/*
+ * Copyright (c) 2025 Rene Lacher
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package com.github.rlacher.sortbench.benchmark.data;
+
+import java.util.Arrays;
+import java.util.function.IntFunction;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Unit tests for the {@link BenchmarkDataFactoryTest} class.
+ */
+class BenchmarkDataFactoryTest
+{
+    /**
+     * Helper method to test if the generated data is of the expected type.
+     * 
+     * @param factoryMethod The factory method to create the data.
+     * @param expectedType The expected data type.
+     */
+    private void createData_givenPositiveLength_shouldReturnDataOfExpectedType(IntFunction<BenchmarkData> factoryMethod, BenchmarkData.DataType expectedType)
+    {
+        final int length = 10;
+        BenchmarkData generatedData = factoryMethod.apply(length);
+        assertNotNull(generatedData, "Benchmark data object should not be null");
+        assertEquals(expectedType, generatedData.getType(), "Data type should be " + expectedType);
+    }
+
+    /**
+     * Helper method to test if the generated data is of the correct length.
+     * 
+     * @param factoryMethod The factory method to create the data.
+     * @param length The length of the data.
+     */
+    private void createData_givenPositiveLength_shouldReturnDataOfExpectedLength(IntFunction<BenchmarkData> factoryMethod, final int length)
+    {
+        BenchmarkData generatedData = factoryMethod.apply(length);
+        assertNotNull(generatedData, "Benchmark data object should not be null");
+        assertEquals(length, generatedData.getLength(), "Length should be " + length);
+    }
+
+    /**
+     * Helper method to test if an {@link IllegalArgumentException} is thrown for non-positive lengths.
+     * 
+     * @param factoryMethod The factory method to create the data.
+     */
+    private void createData_givenNonPositiveLength_shouldThrowIllegalArgumentException(IntFunction<BenchmarkData> factoryMethod)
+    {
+        assertAll(() -> assertThrows(IllegalArgumentException.class, () -> factoryMethod.apply(0), "Creating data with zero length should throw IllegalArgumentException"),
+                  () -> assertThrows(IllegalArgumentException.class, () -> factoryMethod.apply(-3), "Creating data with negative length should throw IllegalArgumentException"));;
+    }
+
+    /**
+     * Helper method to test if differente instances are created when the factory method is called twice.
+     * 
+     * @param factoryMethod The factory method to create the data.
+     */
+    private void createData_whenCalledTwice_thenReturnsDifferentInstances(IntFunction<BenchmarkData> factoryMethod)
+    {
+        final int length = 10;
+        BenchmarkData generatedData1 = factoryMethod.apply(length);
+        BenchmarkData generatedData2 = factoryMethod.apply(length);
+ 
+        assertNotNull(generatedData1, "First generated data should not be null");
+        assertNotNull(generatedData2, "Second generated data should not be null");  
+        assertNotSame(generatedData1, generatedData2, "Each call should return a different instance");
+    }
+
+   /**
+    * Tests if a {@link BenchmarkData} object is created with the expected length given a positive length.
+    */
+   @Test
+   void createSortedData_givenPositiveLength_shouldReturnDataOfExpectedLength()
+   {
+       createData_givenPositiveLength_shouldReturnDataOfExpectedLength(BenchmarkDataFactory::createSortedData, 10);
+   }
+
+   /**
+    * Tests if a {@link BenchmarkData} object is created with the expected length given a positive length.
+    */
+    @Test
+    void createRandomData_givenPositiveLength_shouldReturnDataOfExpectedLength()
+    {
+        createData_givenPositiveLength_shouldReturnDataOfExpectedLength(BenchmarkDataFactory::createRandomData, 10);
+    }
+
+   /**
+    * Tests if a {@link BenchmarkData} object is created with the expected length given a positive length.
+    */
+    @Test
+    void createReversedData_givenPositiveLength_shouldReturnDataOfExpectedLength()
+    {
+        createData_givenPositiveLength_shouldReturnDataOfExpectedLength(BenchmarkDataFactory::createReversedData, 10);
+    }
+
+   /**
+    * Tests if a {@link BenchmarkData} object is created with the expected length given a length greater or equal to 2.
+    */
+    @Test
+    void createPartiallySortedData_givenPositiveLength_shouldReturnDataOfExpectedLength()
+    {
+        createData_givenPositiveLength_shouldReturnDataOfExpectedLength(BenchmarkDataFactory::createPartiallySortedData, 10);
+    }
+
+   /**
+    * Tests if a {@link BenchmarkData} object is created with the expected type if the length is positive.
+    */
+   @Test
+   void createSortedData_givenPositiveLength_shouldReturnDataOfExpectedType()
+   {
+       createData_givenPositiveLength_shouldReturnDataOfExpectedType(BenchmarkDataFactory::createSortedData, BenchmarkData.DataType.SORTED);
+   }
+
+   /**
+    * Tests if a {@link BenchmarkData} object is created with the expected type if the length is positive.
+    */
+    @Test
+    void createRandomData_givenPositiveLength_shouldReturnDataOfExpectedType()
+    {
+        createData_givenPositiveLength_shouldReturnDataOfExpectedType(BenchmarkDataFactory::createRandomData, BenchmarkData.DataType.RANDOM);
+    }
+
+   /**
+    * Tests if a {@link BenchmarkData} object is created with the expected type if the length is positive.
+    */
+    @Test
+    void createReversedData_givenPositiveLength_shouldReturnDataOfExpectedType()
+    {
+        createData_givenPositiveLength_shouldReturnDataOfExpectedType(BenchmarkDataFactory::createReversedData, BenchmarkData.DataType.REVERSED);
+    }
+
+   /**
+    * Tests if a {@link BenchmarkData} object is created with the expected type if the length is positive.
+    */
+    @Test
+    void createPartiallySortedData_givenPositiveLength_shouldReturnDataOfExpectedType()
+    {
+        createData_givenPositiveLength_shouldReturnDataOfExpectedType(BenchmarkDataFactory::createPartiallySortedData, BenchmarkData.DataType.PARTIALLY_SORTED);
+    }
+
+   /**
+    * Tests if an {@link IllegalArgumentException} is thrown for non-positive lengths.
+    */
+   @Test
+   void createSortedData_givenNonPositiveLength_shouldThrowIllegalArgumentException()
+   {
+        createData_givenNonPositiveLength_shouldThrowIllegalArgumentException(BenchmarkDataFactory::createSortedData);
+   }
+
+   /**
+    * Tests if an {@link IllegalArgumentException} is thrown for non-positive lengths.
+    */
+    @Test
+    void createRandomData_givenNonPositiveLength_shouldThrowIllegalArgumentException()
+    {
+         createData_givenNonPositiveLength_shouldThrowIllegalArgumentException(BenchmarkDataFactory::createRandomData);
+    }
+
+   /**
+    * Tests if an {@link IllegalArgumentException} is thrown for non-positive lengths.
+    */
+    @Test
+    void createReversedData_givenNonPositiveLength_shouldThrowIllegalArgumentException()
+    {
+         createData_givenNonPositiveLength_shouldThrowIllegalArgumentException(BenchmarkDataFactory::createReversedData);
+    }
+
+   /**
+    * Tests if an {@link IllegalArgumentException} is thrown for non-positive lengths.
+    */
+    @Test
+    void createPartiallySortedData_givenNonPositiveLength_shouldThrowIllegalArgumentException()
+    {
+         createData_givenNonPositiveLength_shouldThrowIllegalArgumentException(BenchmarkDataFactory::createPartiallySortedData);
+    }
+
+   /**
+    * Tests if different instances are created when the factory method is called twice.
+    */
+   @Test
+   void createSortedData_whenCalledTwice_thenReturnsDifferentInstances()
+   {
+       createData_whenCalledTwice_thenReturnsDifferentInstances(BenchmarkDataFactory::createSortedData);
+   }
+
+   @Test
+   void createRandomData_whenCalledTwice_thenReturnsDifferentData()
+   {
+       final int length = 10;
+       BenchmarkData generatedData1 = BenchmarkDataFactory.createRandomData(length);
+       BenchmarkData generatedData2 = BenchmarkDataFactory.createRandomData(length);
+
+       int[] data1 = generatedData1.getDataCopy();
+       int[] data2 = generatedData2.getDataCopy();
+
+       for(int i = 0; i < length; i++)
+       {
+           assertNotEquals(data1[i], data2[i], "Each call should return different data");
+       }
+   }
+
+   /**
+    * Tests if the generated data is sorted when the length is positive.
+    */
+    @Test
+    void createSortedData_givenPositiveLength_shouldReturnSortedData()
+    {
+        final int length = 10;
+        BenchmarkData generatedData = BenchmarkDataFactory.createSortedData(length);
+ 
+        assertNotNull(generatedData, "Returned benchmark data object should not be null");
+ 
+        int[] data = generatedData.getDataCopy();
+ 
+        assertNotNull(data, "Data array should not be null");
+ 
+        int[] sortedData = generatedData.getDataCopy(); 
+        Arrays.sort(sortedData);
+ 
+        assertArrayEquals(sortedData, data, "Generated data should be sorted");
+    }
+
+    /**
+    * Tests if a {@link BenchmarkData} object is created in the edge case of length 1.
+    */
+    @Test
+    void createSortedData_whenLengthIsOne_shouldReturnDataOfLengthOne()
+    {
+        final int length = 1;
+        BenchmarkData generatedData = BenchmarkDataFactory.createSortedData(length);
+ 
+        assertNotNull(generatedData, "Returned benchmark data object should not be null");
+        assertEquals(length, generatedData.getLength(), "Length should be 1");
+    }
+
+    /**
+    * Tests if a {@link IllegalArgumentException} is thrown in the edge case of length 1.
+    */
+    @Test
+    void createPartiallySortedData_whenLengthIsOne_shouldThrowIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> BenchmarkDataFactory.createPartiallySortedData(1), "Creating partially sorted data with length 1 should throw IllegalArgumentException");
+    }
+
+    /**
+    * Tests if a {@link BenchmarkData} object is created in the edge case of length 2.
+    */
+    @Test
+    void createPartiallySortedData_whenLengthIsTwo_shouldReturnDataOfLengthTwo()
+    {
+        final int length = 2;
+        BenchmarkData generatedData = BenchmarkDataFactory.createPartiallySortedData(length);
+ 
+        assertNotNull(generatedData, "Returned benchmark data object should not be null");
+        assertEquals(length, generatedData.getLength(), "Length should be 2");
+    }
+}
