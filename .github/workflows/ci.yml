@@ -29,30 +29,30 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
 
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-output
-          path: build/libs
-
   test:
     needs: build
     runs-on: ubuntu-24.04
 
     steps:
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-output
-          path: build/libs
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Grant execute permission for gradlew (if needed for running tests)
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
 
       - name: Run Unit Tests with Gradle
         run: ./gradlew test --no-daemon
 
-      - name: Upload Test Results (Optional)
+      - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: always()
         with:
