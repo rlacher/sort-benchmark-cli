@@ -28,7 +28,7 @@ The goal is to analyse and visualise the efficiency of different common sorting 
 2. Execute the application
 
     ```bash
-    gradle clean && gradle run
+    ./gradlew clean && ./gradlew run
     ```
 
 3. *Instructions on how to configure the analysis will follow*
@@ -49,11 +49,11 @@ The current test suite achieves significant coverage, reaching **97% statement c
 2.  Navigate to the project directory in your terminal or command prompt.
 3.  Build the project (to ensure dependency resolution):
     ```bash
-    ./gradle build
+    ./gradlew build
     ```
 4.  Run the Gradle test task:
     ```bash
-    ./gradle test
+    ./gradlew test
     ```
 
 ### Viewing Test Coverage Report
