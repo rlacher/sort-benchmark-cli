@@ -73,13 +73,18 @@ public class ResultAggregator
      * 
      * @param results The list of benchmark results to process
      * @return A new {@link BenchmarkResult} containing the aggregated result
-     * @throws IllegalArgumentException If the results list is null or empty
+     * @throws IllegalArgumentException If the results list is null or empty. If the results have inconsistent profiling modes.
      */
     public BenchmarkResult process(List<BenchmarkResult> results)
     {
         if(results == null)
         {
             throw new IllegalArgumentException("Results list must not be null");
+        }
+
+        if(!results.isEmpty() && results.stream().anyMatch(result -> result.getProfilingMode() != results.get(0).getProfilingMode()))
+        {
+            throw new IllegalArgumentException("All results must have the same profiling mode");
         }
 
         List<BenchmarkResult> filteredResults = results.stream().filter(filter).toList();
