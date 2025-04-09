@@ -88,8 +88,8 @@ public class Sorter
      * Validates the input array and delegates the sorting task to the currently set {@link SortStrategy}.
      * 
      * @param array The array to be sorted.
-     * @return Returns a {@link BenchmarkResult} with the metric value for the {@link ProfilingMode}.
-     * @throws IllegalArgumentException If the array is null or empty.
+     * @return Returns a {@link BenchmarkResult} with the metric value for the {@link ProfilingMode}. Returns 0 if the array is empty.
+     * @throws IllegalArgumentException If the array is null.
      */
     public BenchmarkResult sort(final int[] array)
     {
