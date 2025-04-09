@@ -22,22 +22,19 @@
 
 package com.github.rlacher.sortbench.reporting;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 
-/**
- * Unit tests for the {@link ResultAggregator} class.
- */
+// Unit tests for the ResultAggregator class.
 class ResultAggregatorTest
 {
-    /**
-     * Tests the constructor of the {@link ResultAggregator} class when null arguments are passed.
-     */
+    // Tests the constructor of the ResultAggregator class when null arguments are passed.
     @Test
     void constructor_givenNullArguments_shouldThrowIllegalArgumentException()
     {
@@ -46,9 +43,7 @@ class ResultAggregatorTest
                   () -> assertThrows(IllegalArgumentException.class, () -> new ResultAggregator(null, null), "Filter and aggregator must not be null"));
     }
 
-    /**
-     * Tests the process method of the {@link ResultAggregator} class when null results are passed.
-     */
+    // Tests the process method of the ResultAggregator class when null results are passed.
     @Test
     void process_givenNullResults_shouldThrowIllegalArgumentException()
     {
@@ -56,9 +51,7 @@ class ResultAggregatorTest
         assertThrows(IllegalArgumentException.class, () -> aggregator.process(null), "Results must not be null");
     }
 
-    /**
-     * Tests the process method of the {@link ResultAggregator} class when empty results are passed.
-     */
+    // Tests the process method of the ResultAggregator class when empty results are passed.
     @Test
     void process_givenEmptyResults_shouldThrowIllegalArgumentException()
     {
@@ -66,6 +59,7 @@ class ResultAggregatorTest
         assertThrows(IllegalArgumentException.class, () -> aggregator.process(List.of()), "Results must not be empty");
     }
 
+    // Tests the process() method using the DEFAULT_FILTER and DEFAULT_AGGREGATOR when valid results are passed.
     @Test
     void process_givenValidResults_shouldReturnAggregatedResult()
     {
@@ -81,6 +75,7 @@ class ResultAggregatorTest
         assertEquals(expected, aggregatedResult.getValue(), 1e-9, "Aggregated result does not match expected value");
     }
 
+    // Tests the process() method given a single result in the list.
     @Test
     void process_givenSingleResultList_shouldReturnSameValue()
     {
@@ -94,6 +89,7 @@ class ResultAggregatorTest
         assertEquals(expected, aggregatedResult.getValue(), 1e-9, "Aggregated result does not match expected value");
     }
 
+    // Tests the process() method returns the correct ProfilingMode in the aggregated result.
     @Test
     void process_givenValidResults_shouldReturnMatchingProfilingMode()
     {

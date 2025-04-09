@@ -32,23 +32,18 @@ import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
 
-/**
- * Unit tests for the Sorter class.
- */
+
+// Unit tests for the Sorter class.
 class SorterTest
 {
-    /**
-     * Tests the constructor of the Sorter class when argument is null.
-     */
+    // Tests the constructor of the Sorter class when argument is null.
     @Test
     void constructor_givenNullArgument_throwsIllegalArgumentException()
     {
         assertThrows(IllegalArgumentException.class, () -> new Sorter(null), "Constructor should throw IllegalArgumentException when strategy is null");
     }
 
-    /**
-     * Tests the constructor of the Sorter class when argument is valid.
-     */
+    // Tests the constructor of the Sorter class when argument is valid.
     @Test
     void constructor_givenValidArgument_doesNotThrow()
     {
@@ -57,9 +52,7 @@ class SorterTest
         assertDoesNotThrow(() -> new Sorter(strategy), "Constructor should not throw with valid non-null argument");
     }
 
-    /**
-     * Tests the setStrategy() method when argument is null.
-     */
+    // Tests the setStrategy() method when argument is null.
     @Test
     void setSortStrategy_givenNullArgument_throwsIllegalArgumentException()
     {
@@ -69,9 +62,7 @@ class SorterTest
         assertThrows(IllegalArgumentException.class, () -> sorter.setStrategy(null), "setStrategy() should throw IllegalArgumentException when strategy is null");
     }
 
-    /**
-     * Tests the setStrategy() method when argument is valid.
-     */
+    // Tests the setStrategy() method when argument is valid.
     @Test
     void setSortStrategy_givenValidArgument_callsNewStrategy()
     {
@@ -90,9 +81,7 @@ class SorterTest
         verifyNoMoreInteractions(strategy);
     }
 
-    /**
-     * Tests the sort() method given a null array.
-     */
+    // Tests the sort() method given a null array.
     @Test
     void sort_givenNullArray_throwsIllegalArgumentException()
     {
@@ -102,9 +91,7 @@ class SorterTest
         assertThrows(IllegalArgumentException.class, () -> sorter.sort(null), "sort() should throw IllegalArgumentException when array is null");
     }
 
-    /**
-     * Tests the sort() method given an empty array.
-     */
+    // Tests the sort() method given an empty array.
     @Test
     void sort_givenEmptyArray_returnsResultZero()
     {
@@ -118,9 +105,7 @@ class SorterTest
         assertEquals(ProfilingMode.NONE, result.getProfilingMode(), "sort() should return NONE for empty array");
     }
 
-    /**
-     * Tests the sort() method given a non-empty array expecting the sort strategy to be called.
-     */
+    // Tests the sort() method given a non-empty array expecting the sort strategy to be called.
     @Test
     void sort_givenNonEmptyArray_callsSortStrategy()
     {

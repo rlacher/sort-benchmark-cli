@@ -22,37 +22,30 @@
 
 package com.github.rlacher.sortbench.benchmark;
 
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
 
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 
-/**
- * Unit tests for the {@link BenchmarkResult} class.
- */
+// Unit tests for the BenchmarkResult class.
 class BenchmarkResultTest
 {
-    /**
-     * Tests the constructor of the {@link BenchmarkResult} class when the mode is null.
-     */
+    // Tests the constructor of the BenchmarkResult class when the mode is null.
     @Test
     void constructor_whenModeIsNull_thenThrowsIllegalArgumentException()
     {
         assertThrows(IllegalArgumentException.class, () -> new BenchmarkResult(null, 0));
     }
 
-    /**
-     * Tests the constructor of the {@link BenchmarkResult} class when the value is negative.
-     */
+    // Tests the constructor of the BenchmarkResult class when the value is negative.
     @Test
     void constructor_whenValueIsNegative_thenThrowsIllegalArgumentException()
     {
         assertThrows(IllegalArgumentException.class, () -> new BenchmarkResult(ProfilingMode.EXECUTION_TIME, -1));
     }
 
-    /**
-     * Tests the constructor of the {@link BenchmarkResult} class with valid parameters.
-     */
+    // Tests the constructor of the BenchmarkResult class with valid parameters.
     @Test
     void constructor_whenParamsAreValid_thenInitFields()
     {
@@ -63,9 +56,7 @@ class BenchmarkResultTest
         assertEquals(value, benchmarkResult.getValue());
     }
 
-    /**
-     * Tests if the {@link BenchmarkResult} class is equal to itself.
-     */
+    // Tests if the BenchmarkResult class is equal to itself.
     @Test
     void equals_givenSameObject_shouldReturnTrue()
     {
@@ -75,9 +66,7 @@ class BenchmarkResultTest
         assertEquals(result1, result2, "Objects with same values should be equal");
     }
 
-    /**
-     * Tests if the {@link BenchmarkResult} class is equal to another object of the same type.
-     */
+    // Tests if the BenchmarkResult class is equal to another object of the same type.
     @Test
     void equals_givenDifferentObjects_shouldReturnFalse()
     {
@@ -87,9 +76,7 @@ class BenchmarkResultTest
         assertNotEquals(result1, result2, "Objects with different profiling modes should not be equal");
     }
 
-    /**
-     * Tests if the {@link BenchmarkResult} class is equal null.
-     */
+    // Tests if the BenchmarkResult class is equal null.
     @Test
     void equals_whenCalledWithNull_shouldReturnFalse()
     {
@@ -98,9 +85,7 @@ class BenchmarkResultTest
         assertNotEquals(result, null, "Object should not be equal to null");
     }
 
-    /**
-     * Tests if the {@link BenchmarkResult} class is equal to an object of a different type.
-     */
+    // Tests if the BenchmarkResult class is equal to an object of a different type.
     @Test
     void equals_whenCalledWithObjectOfDifferentType_shouldReturnFalse()
     {
@@ -110,9 +95,7 @@ class BenchmarkResultTest
         assertNotEquals(result, otherObject, "Object should not be equal to an object of a different type");
     }
 
-    /**
-     * Tests if calling {@link com.github.rlacher.sortbench.benchmark.BenchmarkResult#hashCode()} twice on the same object returns the same value.
-     */
+    // Tests if calling {@link com.github.rlacher.sortbench.benchmark.BenchmarkResult#hashCode()} twice on the same object returns the same value.
     @Test
     void hashcode_givenSameObject_shouldReturnSameHashcode()
     {
@@ -122,9 +105,7 @@ class BenchmarkResultTest
         assertEquals(result1.hashCode(), result2.hashCode(), "Hash codes should be equal for same objects");
     }
 
-    /**
-     * Tests if the hash codes for two {@link BenchmarkResult} objects with the same values are identical.
-     */
+    // Tests if the hash codes for two BenchmarkResult objects with the same values are identical.
     @Test
     void hashcode_givenObjectsWithSameValues_shouldReturnSameHashcode()
     {
@@ -134,9 +115,7 @@ class BenchmarkResultTest
         assertEquals(result1.hashCode(), result2.hashCode(), "Hash codes should be equal for same values");
     }
 
-    /**
-     * Tests if the hash codes for two {@link BenchmarkResult} objects with different values are different.
-     */
+    // Tests if the hash codes for two BenchmarkResult objects with different values are different.
     @Test
     void hashcode_givenDifferentObjects_shouldReturnDifferentHashcode()
     {
@@ -148,6 +127,7 @@ class BenchmarkResultTest
         assertNotEquals(result1.hashCode(), result3.hashCode(), "Hash codes should be different for different values");
     }
 
+    // Tests the toString() method for returning a string representation of the BenchmarkResult object.
     @Test
     void toString_whenCalled_shouldReturnsStringWithRelevantInfo()
     {

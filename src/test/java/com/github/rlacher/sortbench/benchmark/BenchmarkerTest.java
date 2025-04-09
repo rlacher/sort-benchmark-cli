@@ -22,35 +22,28 @@
 
 package com.github.rlacher.sortbench.benchmark;
 
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Unit tests for the {@link Benchmarker} class.
- */
+import org.junit.jupiter.api.Test;
+
+// Unit tests for the Benchmarker class.
 class BenchmarkerTest
 {
-    /**
-     * Tests the constructor of the {@link Benchmarker} class when valid parameters are passed.
-     */
+    // Tests the constructor of the Benchmarker class when valid parameters are passed.
     @Test
     void constructor_givenValidParams_shouldNotThrow()
     {
         assertDoesNotThrow(() -> new Benchmarker(Benchmarker.ProfilingMode.EXECUTION_TIME), "Constructor should not throw with valid parameters");
     }
 
-    /**
-     * Tests the constructor of the {@link Benchmarker} class when null parameter is passed.
-     */
+    // Tests the constructor of the Benchmarker class when null parameter is passed.
     @Test
     void constructor_givenNullArgument_throwsIllegalArgumentException()
     {
         assertThrows(IllegalArgumentException.class, () -> new Benchmarker(null), "Constructor should throw IllegalArgumentException when mode is null");
     }
 
-    /**
-     * Tests incrementation of swaps in the {@link Benchmarker} class.
-     */
+    // Tests incrementation of swaps in the Benchmarker class.
     @Test 
     void incrementSwaps_whenCalled_incrementsSwaps()
     {
@@ -64,9 +57,7 @@ class BenchmarkerTest
         assertEquals(1, Double.valueOf(result.getValue()).intValue(), "Swaps should be incremented");
     }
 
-    /**
-     * Tests that the {@link Benchmarker} class does not increment swaps when a different profiling mode is used.
-     */
+    // Tests that the Benchmarker class does not increment swaps when a different profiling mode is used.
     @Test
     void incrementSwaps_givenDifferentProfilingMode_shouldNotIncrementSwaps()
     {
@@ -80,9 +71,7 @@ class BenchmarkerTest
         assertEquals(0, Double.valueOf(result.getValue()).intValue(), "Swaps should not be incremented");
     }
 
-    /**
-     * Tests the reset method of the {@link Benchmarker} class when called with the profiling mode set to {@link Benchmarker.ProfilingMode#SWAP_COUNT}.
-     */
+    // Tests the reset method of the Benchmarker class when called with the profiling mode set to {@link Benchmarker.ProfilingMode#SWAP_COUNT}.
     @Test
     void reset_whenProfilingSwapCount_resetsSwapCount()
     {
@@ -97,12 +86,10 @@ class BenchmarkerTest
         assertEquals(0, Double.valueOf(result.getValue()).intValue(), "Swaps should be reset to 0");
     }
 
-    /**
+    /*
      * Tests execution time profiling.
      * 
-     * This test calls {@link com.github.rlacher.sortbench.benchmark.Benchmarker#startProfiling()} and
-     * {@link com.github.rlacher.sortbench.benchmark.Benchmarker#stopProfiling()} to profile runtime.
-     * 
+     * This test calls startProfiling() and stopProfiling()} to profile runtime.
      * The test simulates some processing time by sleeping for a specified duration.
      */
     @Test
@@ -131,11 +118,10 @@ class BenchmarkerTest
         assertTrue(result.getValue() >= sleepTimeMs, "Execution time should be greater than or equal to sleep time");
     }
 
-    /**
+    /*
      * Tests memory usage profiling.
      * 
-     * This test calls {@link com.github.rlacher.sortbench.benchmark.Benchmarker#startProfiling()} and
-     * {@link com.github.rlacher.sortbench.benchmark.Benchmarker#stopProfiling()} to profile memory usage.
+     * This test calls startProfiling() and stopProfiling() to profile memory usage.
      */
     @Test
     void startStopProfiling_whenCalledInMemoryMode_profilesMemoryConsumption()
@@ -155,9 +141,7 @@ class BenchmarkerTest
         assertEquals(50*1024, result.getValue(), 10*1024, "Memory consumption should be approximately 50MB");
     }
 
-    /**
-     * Tests the {@link Benchmarker} class when profiling mode is set to {@link Benchmarker.ProfilingMode#NONE}.
-     */
+    // Tests the Benchmarker class when profiling mode is set to NONE.
     @Test
     void getResult_whenProfilingModeNone_returnsZero()
     {
@@ -172,9 +156,7 @@ class BenchmarkerTest
         assertEquals(0, Double.valueOf(result.getValue()).intValue(), "Result value should be 0");
     }
 
-    /**
-     * Tests the {@link Benchmarker} class when memory is freed up before stopping profiling.
-     */
+    // Tests the Benchmarker class when memory is freed up before stopping profiling.
     @Test
     void measureMemory_whenMemoryIsFreedUpBeforeStopProfiling_returnsCorrectMemoryUsage()
     {
