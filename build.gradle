@@ -17,18 +17,6 @@ dependencies
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-test
-{
-    testLogging
-    {
-        events "PASSED", "SKIPPED", "FAILED"
-    }
-
-    useJUnitPlatform()
-
-    finalizedBy jacocoTestReport
-}
-
 application
 {
     mainClass = 'com.github.rlacher.sortbench.Main'
@@ -38,4 +26,20 @@ tasks.named('run')
 {
     standardInput = System.in
     jvmArgs '-Djava.util.logging.config.file=logging.properties'
+}
+
+tasks.named('test')
+{
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+
+    testLogging
+    {
+        afterSuite { desc, result ->
+            if (!desc.parent)
+            {
+                println "${result.testCount} tests completed, ${result.successfulTestCount} passed, ${result.failedTestCount} failed, ${result.skippedTestCount} skipped"
+            }
+        }
+    }
 }
