@@ -95,7 +95,7 @@ class BenchmarkResultTest
         assertNotEquals(result, otherObject, "Object should not be equal to an object of a different type");
     }
 
-    // Tests if calling {@link com.github.rlacher.sortbench.benchmark.BenchmarkResult#hashCode()} twice on the same object returns the same value.
+    // Tests if calling hashCode() twice on the same object returns the same value.
     @Test
     void hashcode_givenSameObject_shouldReturnSameHashcode()
     {
