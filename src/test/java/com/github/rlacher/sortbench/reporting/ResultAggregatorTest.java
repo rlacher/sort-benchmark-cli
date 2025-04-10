@@ -111,7 +111,7 @@ class ResultAggregatorTest
     {
         ResultAggregator aggregator = new ResultAggregator(ResultAggregator.DEFAULT_FILTER, ResultAggregator.DEFAULT_AGGREGATOR);
         List<BenchmarkResult> results = List.of(new BenchmarkResult(ProfilingMode.EXECUTION_TIME, 1.0),
-            new BenchmarkResult(ProfilingMode.MEMORY, 2.0));
+            new BenchmarkResult(ProfilingMode.MEMORY_USAGE, 2.0));
 
         assertThrows(IllegalArgumentException.class, () -> aggregator.process(results), "Results must have the same profiling mode");
     }

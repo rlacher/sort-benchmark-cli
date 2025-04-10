@@ -71,7 +71,7 @@ class BenchmarkResultTest
     void equals_givenDifferentObjects_shouldReturnFalse()
     {
         BenchmarkResult result1 = new BenchmarkResult(ProfilingMode.EXECUTION_TIME, 42.0);
-        BenchmarkResult result2 = new BenchmarkResult(ProfilingMode.MEMORY, 42.0);
+        BenchmarkResult result2 = new BenchmarkResult(ProfilingMode.MEMORY_USAGE, 42.0);
 
         assertNotEquals(result1, result2, "Objects with different profiling modes should not be equal");
     }
@@ -120,7 +120,7 @@ class BenchmarkResultTest
     void hashcode_givenDifferentObjects_shouldReturnDifferentHashcode()
     {
         BenchmarkResult result1 = new BenchmarkResult(ProfilingMode.EXECUTION_TIME, 42.0);
-        BenchmarkResult result2 = new BenchmarkResult(ProfilingMode.MEMORY, 42.0);
+        BenchmarkResult result2 = new BenchmarkResult(ProfilingMode.MEMORY_USAGE, 42.0);
         BenchmarkResult result3 = new BenchmarkResult(ProfilingMode.EXECUTION_TIME, 43.0);
 
         assertNotEquals(result1.hashCode(), result2.hashCode(), "Hash codes should be different for different profiling modes");

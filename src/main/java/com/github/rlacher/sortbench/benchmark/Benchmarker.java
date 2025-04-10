@@ -35,20 +35,23 @@ public class Benchmarker
      * Enum representing the profiling modes.
      * 
      * NONE: No profiling.
-     * MEMORY: Memory usage profiling.
+     * MEMORY_USAGE: Memory usage profiling.
      * SWAP_COUNT: Swap count profiling.
      * EXECUTION_TIME: Execution time profiling.
      */
     public enum ProfilingMode
     {
         NONE,
-        MEMORY,
+        MEMORY_USAGE,
         SWAP_COUNT,
         EXECUTION_TIME
     }
 
     /// Logger for logging messages.
     private static final Logger logger = Logger.getLogger(Benchmarker.class.getName());
+
+    /// Flag indicating profiling status.
+    private boolean isProfiling = false;
 
     /// Start time in milliseconds for execution time profiling.
     private long startTimeMs;
@@ -105,15 +108,25 @@ public class Benchmarker
 
     /**
      * Starts the profiling process based on the selected profiling mode.
+     * 
+     * @throws IllegalStateException If profiling is already in progress.
      */
     public void startProfiling()
     {
+        if(isProfiling)
+        {
+            throw new IllegalStateException("Profiling is already in progress.");
+        }
+
+        isProfiling = true;
         logger.finer("Start profiling...");
+
         if (profilingMode == ProfilingMode.EXECUTION_TIME)
         {
             startTimeMs = System.currentTimeMillis();
+
         }
-        else if (profilingMode == ProfilingMode.MEMORY)
+        else if (profilingMode == ProfilingMode.MEMORY_USAGE)
         {
             initialMemoryKb = memoryBean.getHeapMemoryUsage().getUsed() / 1024;
             maxMemoryKb = initialMemoryKb;
@@ -122,18 +135,27 @@ public class Benchmarker
 
     /**
      * Stops the profiling process based on the selected profiling mode.
+     * 
+     * @throws IllegalStateException If profiling is not in progress.
      */
     public void stopProfiling()
     {
+        if(!isProfiling)
+        {
+            throw new IllegalStateException("Profiling is not in progress.");
+        }
+
         if (profilingMode == ProfilingMode.EXECUTION_TIME)
         {
             endTimeMs = System.currentTimeMillis();
         }
-        else if (profilingMode == ProfilingMode.MEMORY)
+        else if (profilingMode == ProfilingMode.MEMORY_USAGE)
         {
             final long finalMemoryKb = memoryBean.getHeapMemoryUsage().getUsed() / 1024;
             maxMemoryKb = Math.max(maxMemoryKb, finalMemoryKb);
         }
+
+        isProfiling = false;
         logger.finer("Stop profiling...");
     }
 
@@ -144,7 +166,7 @@ public class Benchmarker
      */
     public void measureMemory()
     {
-        if (profilingMode == ProfilingMode.MEMORY)
+        if (profilingMode == ProfilingMode.MEMORY_USAGE)
         {
             final long currentMemoryKb = memoryBean.getHeapMemoryUsage().getUsed() / 1024;;
             maxMemoryKb = Math.max(maxMemoryKb, currentMemoryKb);
@@ -182,15 +204,20 @@ public class Benchmarker
      * Returns the benchmark result based on the profiling mode.
      * 
      * @return The benchmark result containing the profiling mode and the corresponding metric value.
-     * @throws IllegalStateException If the profiling mode is not set (should not happen).
+     * @throws IllegalStateException If the profiling is still in progress or the profiling mode is not set (should not happen).
      */
     public BenchmarkResult getResult()
     {
+        if(isProfiling)
+        {
+            throw new IllegalStateException("Cannot get result while profiling is still in progress.");
+        }
+
         switch(profilingMode)
         {
             case NONE:
                 return new BenchmarkResult(profilingMode, 0);
-            case MEMORY:
+            case MEMORY_USAGE:
                 return new BenchmarkResult(profilingMode, maxMemoryKb - initialMemoryKb);
             case SWAP_COUNT:
                 return new BenchmarkResult(profilingMode, swapCount);

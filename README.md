@@ -41,7 +41,7 @@ More information to come.
 
 This project features a robust suite of unit tests, built with JUnit and Mockito, to ensure the reliability and correctness of the benchmarking framework. The testing strategy rigorously applies principles such as boundary condition analysis, equivalence class partitioning, exception handling verification, and thorough data flow validation across components.
 
-The current test suite achieves significant coverage, reaching **97% statement coverage** and **89% branch coverage**, demonstrating a strong commitment to code quality and comprehensive testing throughout the project.
+The current test suite achieves significant coverage, reaching **97% statement coverage** and **90% branch coverage**, demonstrating a strong commitment to code quality and comprehensive testing throughout the project.
 
 ### Running Tests
 

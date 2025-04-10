@@ -126,7 +126,7 @@ class BenchmarkerTest
     @Test
     void startStopProfiling_whenCalledInMemoryMode_profilesMemoryConsumption()
     {
-        Benchmarker benchmarker = new Benchmarker(Benchmarker.ProfilingMode.MEMORY);
+        Benchmarker benchmarker = new Benchmarker(Benchmarker.ProfilingMode.MEMORY_USAGE);
         benchmarker.startProfiling();
 
         // Allocate 50MB of memory
@@ -137,8 +137,27 @@ class BenchmarkerTest
         BenchmarkResult result = benchmarker.getResult();
 
         assertNotNull(result, "Result should not be null");
-        assertEquals(Benchmarker.ProfilingMode.MEMORY, result.getProfilingMode(), "Profiling mode should be " + Benchmarker.ProfilingMode.MEMORY.toString());
+        assertEquals(Benchmarker.ProfilingMode.MEMORY_USAGE, result.getProfilingMode(), "Profiling mode should be " + Benchmarker.ProfilingMode.MEMORY_USAGE.toString());
         assertEquals(50*1024, result.getValue(), 10*1024, "Memory consumption should be approximately 50MB");
+    }
+
+    // Tests the startProfiling() method when called twice.
+    @Test
+    void startProfiling_whenCalledTwice_throwsIllegalStateException()
+    {
+        Benchmarker benchmarker = new Benchmarker(Benchmarker.ProfilingMode.EXECUTION_TIME);
+        benchmarker.startProfiling();
+
+        assertThrows(IllegalStateException.class, () -> benchmarker.startProfiling(), "startProfiling() should throw IllegalStateException when called twice");
+    }
+
+    // Tests the stopProfiling() method when called without starting profiling.
+    @Test
+    void stopProfiling_whenProfilingNotStarted_throwsIllegalStateException()
+    {
+        Benchmarker benchmarker = new Benchmarker(Benchmarker.ProfilingMode.EXECUTION_TIME);
+
+        assertThrows(IllegalStateException.class, () -> benchmarker.stopProfiling(), "stopProfiling() should throw IllegalStateException when profiling has not started");
     }
 
     // Tests the Benchmarker class when profiling mode is set to NONE.
@@ -156,11 +175,21 @@ class BenchmarkerTest
         assertEquals(0, Double.valueOf(result.getValue()).intValue(), "Result value should be 0");
     }
 
+    // Tests the getResult() method when profiling is still active.
+    @Test
+    void getResult_whenProfilingIsActive_throwsIllegalStateException()
+    {
+        Benchmarker benchmarker = new Benchmarker(Benchmarker.ProfilingMode.EXECUTION_TIME);
+        benchmarker.startProfiling();
+
+        assertThrows(IllegalStateException.class, () -> benchmarker.getResult(), "getResult() should throw IllegalStateException when profiling is active");
+    }
+
     // Tests the Benchmarker class when memory is freed up before stopping profiling.
     @Test
     void measureMemory_whenMemoryIsFreedUpBeforeStopProfiling_returnsCorrectMemoryUsage()
     {
-        Benchmarker benchmarker = new Benchmarker(Benchmarker.ProfilingMode.MEMORY);
+        Benchmarker benchmarker = new Benchmarker(Benchmarker.ProfilingMode.MEMORY_USAGE);
         
         benchmarker.startProfiling();
 
@@ -181,7 +210,7 @@ class BenchmarkerTest
         BenchmarkResult result = benchmarker.getResult();
 
         assertNotNull(result, "Result should not be null");
-        assertEquals(Benchmarker.ProfilingMode.MEMORY, result.getProfilingMode(), "Profiling mode should be " + Benchmarker.ProfilingMode.MEMORY.toString());
+        assertEquals(Benchmarker.ProfilingMode.MEMORY_USAGE, result.getProfilingMode(), "Profiling mode should be " + Benchmarker.ProfilingMode.MEMORY_USAGE.toString());
         assertEquals(50 * 1024, result.getValue(), 10*1024, "Memory usage should be approximately 50MB");
     }
 }
