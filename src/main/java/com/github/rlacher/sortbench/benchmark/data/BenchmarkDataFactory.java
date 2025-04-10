@@ -31,6 +31,26 @@ import java.util.stream.IntStream;
 public class BenchmarkDataFactory
 {
     /**
+     * Random instance for use in generating benchmark data.
+     */
+    private static Random random = new Random();
+
+    /**
+     * Sets the random instance for benchmark data generation or testing purposes.
+     * @param random The random instance to be set.
+     * @throws IllegalArgumentException If the provided random instance is null.
+     */
+    public static void setRandom(final Random random)
+    {
+        if (random == null)
+        {
+            throw new IllegalArgumentException("Random instance must not be null.");
+        }
+
+        BenchmarkDataFactory.random = random;
+    }
+
+    /**
      * Creates sorted benchmark data of a specified length.
      * @param length The length of the data array to be created. Must be a greater than 0.
      * @return A BenchmarkData object containing sorted data.
@@ -80,7 +100,6 @@ public class BenchmarkDataFactory
             throw new IllegalArgumentException("Length must be positive.");
         }
 
-        Random random = new Random();
         int[] data = IntStream.generate(random::nextInt).limit(length).toArray();
         return new BenchmarkData(data, BenchmarkData.DataType.RANDOM);
     }
@@ -103,7 +122,6 @@ public class BenchmarkDataFactory
         final int half2Length = length - half1Length;
 
         final int[] sortedData = IntStream.range(0, half1Length).toArray();
-        final Random random = new Random();
         final int[] randomData = random.ints(half2Length).toArray();
 
         int[] data = random.nextBoolean()
@@ -111,5 +129,5 @@ public class BenchmarkDataFactory
             : IntStream.concat(IntStream.of(randomData), IntStream.of(sortedData)).toArray();
 
         return new BenchmarkData(data, BenchmarkData.DataType.PARTIALLY_SORTED);
-    } 
+    }
 }

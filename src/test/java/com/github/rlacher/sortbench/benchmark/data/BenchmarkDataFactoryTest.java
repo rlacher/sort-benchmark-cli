@@ -23,15 +23,22 @@
 package com.github.rlacher.sortbench.benchmark.data;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.function.IntFunction;
+import java.util.Random;
+import java.util.stream.IntStream;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 // Unit tests for the BenchmarkDataFactoryTest class.
 class BenchmarkDataFactoryTest
 {
+    private Random defaultRandom;
+
     // Helper method to test if the generated data is of the expected type.
     private void createData_givenPositiveLength_shouldReturnDataOfExpectedType(IntFunction<BenchmarkData> factoryMethod, BenchmarkData.DataType expectedType)
     {
@@ -66,6 +73,14 @@ class BenchmarkDataFactoryTest
         assertNotNull(generatedData1, "First generated data should not be null");
         assertNotNull(generatedData2, "Second generated data should not be null");  
         assertNotSame(generatedData1, generatedData2, "Each call should return a different instance");
+    }
+
+    // Sets up the default random instance before each test.
+    @BeforeEach
+    void setUp()
+    {
+        defaultRandom = new Random();
+        BenchmarkDataFactory.setRandom(defaultRandom);
     }
 
     // Tests if a BenchmarkData object is created with the expected length given a positive length.
@@ -152,27 +167,25 @@ class BenchmarkDataFactoryTest
         createData_givenNonPositiveLength_shouldThrowIllegalArgumentException(BenchmarkDataFactory::createPartiallySortedData);
     }
 
-    // Tests if different instances are created when the factory method is called twice.
+    // Tests if different instances are created when createSortedData() is called twice.
     @Test
     void createSortedData_whenCalledTwice_thenReturnsDifferentInstances()
     {
     createData_whenCalledTwice_thenReturnsDifferentInstances(BenchmarkDataFactory::createSortedData);
     }
 
+    // Tests if different data is generated when createRandomData() is called twice.
     @Test
     void createRandomData_whenCalledTwice_thenReturnsDifferentData()
     {
-    final int length = 10;
-    BenchmarkData generatedData1 = BenchmarkDataFactory.createRandomData(length);
-    BenchmarkData generatedData2 = BenchmarkDataFactory.createRandomData(length);
+        final int length = 10;
+        BenchmarkData generatedData1 = BenchmarkDataFactory.createRandomData(length);
+        BenchmarkData generatedData2 = BenchmarkDataFactory.createRandomData(length);
 
-    int[] data1 = generatedData1.getDataCopy();
-    int[] data2 = generatedData2.getDataCopy();
+        int[] data1 = generatedData1.getDataCopy();
+        int[] data2 = generatedData2.getDataCopy();
 
-    for(int i = 0; i < length; i++)
-    {
-        assertNotEquals(data1[i], data2[i], "Each call should return different data");
-    }
+        assertNotEquals(data1, data2, "Each call should return different data");
     }
 
     // Tests if the generated data is sorted when the length is positive.
@@ -221,5 +234,64 @@ class BenchmarkDataFactoryTest
  
         assertNotNull(generatedData, "Returned benchmark data object should not be null");
         assertEquals(length, generatedData.getLength(), "Length should be 2");
+    }
+
+    // Tests if the generated data is half sorted half random for a given positive length.
+    @Test
+    void createPartiallySortedData_randomTrue_returnsHalfSortedRandom()
+    {
+        Random randomMock = Mockito.mock(Random.class);
+        when(randomMock.nextBoolean()).thenReturn(true);
+        final int length = 10;
+        final int[] randomInts = {7, -5, 20, 2, -15};
+        when(randomMock.ints(length / 2)).thenReturn(IntStream.of(randomInts));
+        BenchmarkDataFactory.setRandom(randomMock);
+
+        BenchmarkData generatedData = BenchmarkDataFactory.createPartiallySortedData(length);
+        assertNotNull(generatedData, "Returned benchmark data object must not be null");
+
+        int[] data = generatedData.getDataCopy();
+        assertNotNull(data, "Data array must not be null");
+
+        final boolean firstHalfSorted = IntStream.range(0, length / 2 - 1)
+            .allMatch(i -> data[i] <= data[i + 1]);
+
+        assertTrue(firstHalfSorted, "First half should be sorted");
+
+        int [] dataSecondHalf = Arrays.copyOfRange(data, length / 2, length);
+        assertArrayEquals(randomInts, dataSecondHalf, "Second half must match the specified random integers");
+    }
+
+    // Tests if the generated data is half sorted half random for a given positive length.
+    @Test
+    void createPartiallySortedData_randomFalse_returnsHalfRandomSorted()
+    {
+        Random randomMock = Mockito.mock(Random.class);
+        when(randomMock.nextBoolean()).thenReturn(false);
+        final int length = 10;
+        final int[] randomInts = {7, -5, 20, 2, -15};
+        when(randomMock.ints(length / 2)).thenReturn(IntStream.of(randomInts));
+        BenchmarkDataFactory.setRandom(randomMock);
+
+        BenchmarkData generatedData = BenchmarkDataFactory.createPartiallySortedData(length);
+        assertNotNull(generatedData, "Returned benchmark data object must not be null");
+
+        int[] data = generatedData.getDataCopy();
+        assertNotNull(data, "Data array must not be null");
+
+        final boolean secondHalfSorted = IntStream.range(length / 2, length - 1)
+            .allMatch(i -> data[i] <= data[i + 1]);
+
+        int [] dataFirstHalf = Arrays.copyOfRange(data, 0, length / 2);
+        assertArrayEquals(randomInts, dataFirstHalf, "First half must match the specified random integers");
+
+        assertTrue(secondHalfSorted, "Second half should be sorted");
+    }
+
+    // Tests if setRandom() throws an IllegalArgumentException when a null random instance is passed.
+    @Test
+    void setRandom_givenNull_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> BenchmarkDataFactory.setRandom(null), "setRandom() should throw IllegalArgumentException when random is null");
     }
 }
