@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,8 +38,7 @@ import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkDataFactory;
 import com.github.rlacher.sortbench.reporting.ResultAggregator;
 import com.github.rlacher.sortbench.sorter.Sorter;
-import com.github.rlacher.sortbench.strategies.SortStrategy;
-import com.github.rlacher.sortbench.strategies.DummySortStrategy;
+import com.github.rlacher.sortbench.strategies.*;
 
 /**
  * The entry point for the sorting algorithm benchmarking application.
@@ -93,7 +93,7 @@ public class Main
     {
         List<SortStrategy> sortStrategies = Arrays.asList
         (
-            new DummySortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME))
+            new BubbleSortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME))
         );
         
         sortBenchmark(sortStrategies);
@@ -114,7 +114,7 @@ public class Main
         }
 
         // Initialise benchmarkDataSet with data arrangements that all sort strategies will run on.
-        Set<BenchmarkData> benchmarkDataSet = Stream.generate(() -> BenchmarkDataFactory.createRandomData(BENCHMARK_DATA_SIZES[0]))
+        Set<BenchmarkData> benchmarkDataSet = Stream.generate(() -> BenchmarkDataFactory.createRandomData(BENCHMARK_DATA_SIZES[2]))
             .limit(DEFAULT_NUMBER_OF_RUNS)
             .collect(Collectors.toSet());
 
