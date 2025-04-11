@@ -100,7 +100,7 @@ public class BenchmarkDataFactory
             throw new IllegalArgumentException("Length must be positive.");
         }
 
-        int[] data = IntStream.generate(random::nextInt).limit(length).toArray();
+        int[] data = IntStream.generate(() -> random.nextInt(length)).limit(length).toArray();
         return new BenchmarkData(data, BenchmarkData.DataType.RANDOM);
     }
 
@@ -122,7 +122,7 @@ public class BenchmarkDataFactory
         final int half2Length = length - half1Length;
 
         final int[] sortedData = IntStream.range(0, half1Length).toArray();
-        final int[] randomData = random.ints(half2Length).toArray();
+        final int[] randomData = random.ints(half2Length, 0, length).toArray();
 
         int[] data = random.nextBoolean()
             ? IntStream.concat(IntStream.of(sortedData), IntStream.of(randomData)).toArray()
