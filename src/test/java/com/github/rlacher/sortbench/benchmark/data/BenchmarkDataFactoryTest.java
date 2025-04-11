@@ -244,7 +244,7 @@ class BenchmarkDataFactoryTest
         when(randomMock.nextBoolean()).thenReturn(true);
         final int length = 10;
         final int[] randomInts = {7, -5, 20, 2, -15};
-        when(randomMock.ints(length / 2)).thenReturn(IntStream.of(randomInts));
+        when(randomMock.ints(length / 2, 0, length)).thenReturn(IntStream.of(randomInts));
         BenchmarkDataFactory.setRandom(randomMock);
 
         BenchmarkData generatedData = BenchmarkDataFactory.createPartiallySortedData(length);
@@ -270,7 +270,7 @@ class BenchmarkDataFactoryTest
         when(randomMock.nextBoolean()).thenReturn(false);
         final int length = 10;
         final int[] randomInts = {7, -5, 20, 2, -15};
-        when(randomMock.ints(length / 2)).thenReturn(IntStream.of(randomInts));
+        when(randomMock.ints(length / 2, 0, length)).thenReturn(IntStream.of(randomInts));
         BenchmarkDataFactory.setRandom(randomMock);
 
         BenchmarkData generatedData = BenchmarkDataFactory.createPartiallySortedData(length);
