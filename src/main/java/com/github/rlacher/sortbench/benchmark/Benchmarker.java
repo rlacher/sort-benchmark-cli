@@ -119,7 +119,7 @@ public class Benchmarker
         }
 
         isProfiling = true;
-        logger.finer("Start profiling...");
+        logger.finest("Start profiling...");
 
         if (profilingMode == ProfilingMode.EXECUTION_TIME)
         {
@@ -156,7 +156,7 @@ public class Benchmarker
         }
 
         isProfiling = false;
-        logger.finer("Stop profiling...");
+        logger.finest("Stop profiling...");
     }
 
     /**
