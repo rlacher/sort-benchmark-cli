@@ -22,12 +22,16 @@
 
 package com.github.rlacher.sortbench.benchmark;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.util.logging.Logger;
 
 /**
  * Benchmarker class for profiling sorting algorithms.
+ * 
+ * TODO: The current design of the Benchmarker needs refactoring as it is becoming too monolithic and difficult to maintain. See issue #2.
  */
 public class Benchmarker
 {
@@ -53,11 +57,11 @@ public class Benchmarker
     /// Flag indicating profiling status.
     private boolean isProfiling = false;
 
-    /// Start time in milliseconds for execution time profiling.
-    private long startTimeMs;
+    /// Start time for execution time profiling.
+    private Instant startTime;
 
-    /// End time in milliseconds for execution time profiling.
-    private long endTimeMs;
+    /// End time for execution time profiling.
+    private Instant endTime;
 
     /// Initial memory usage in kilobytes for memory profiling.
     private long initialMemoryKb;
@@ -123,8 +127,8 @@ public class Benchmarker
 
         if (profilingMode == ProfilingMode.EXECUTION_TIME)
         {
-            startTimeMs = System.currentTimeMillis();
-
+            startTime = Instant.now();
+            endTime = null;
         }
         else if (profilingMode == ProfilingMode.MEMORY_USAGE)
         {
@@ -147,7 +151,7 @@ public class Benchmarker
 
         if (profilingMode == ProfilingMode.EXECUTION_TIME)
         {
-            endTimeMs = System.currentTimeMillis();
+            endTime = Instant.now();
         }
         else if (profilingMode == ProfilingMode.MEMORY_USAGE)
         {
@@ -187,14 +191,13 @@ public class Benchmarker
         }
     }
 
-
     /**
      * Resets the benchmarker to its initial state.
      */
     public void reset()
     {
-        startTimeMs = 0;
-        endTimeMs = 0;
+        startTime = null;
+        endTime = null;
         initialMemoryKb = 0;
         maxMemoryKb = 0;
         swapCount = 0;
@@ -222,7 +225,7 @@ public class Benchmarker
             case SWAP_COUNT:
                 return new BenchmarkResult(profilingMode, swapCount);
             case EXECUTION_TIME:
-                return new BenchmarkResult(profilingMode, endTimeMs - startTimeMs);
+                return new BenchmarkResult(profilingMode, (startTime == null) ? 0 : Duration.between(startTime, endTime).toNanos() / 1e6);
             default:
                 throw new IllegalStateException("Unexpected profiling mode: " + profilingMode);
         }
