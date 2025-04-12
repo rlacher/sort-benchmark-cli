@@ -46,7 +46,11 @@ public class SortStrategyProfilingTest
     // Factory method to create instances of SortStrategy implementations for parameterised testing.
     static Stream<SortStrategy> createSortStrategies()
     {
-        return Stream.of(new BubbleSortStrategy(mockBenchmarker));
+        return Stream.of
+        (
+            new BubbleSortStrategy(mockBenchmarker),
+            new MergeSortStrategy(mockBenchmarker)
+        );
     }
 
     // Reset the profiling call counters before each test.

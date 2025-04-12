@@ -45,8 +45,10 @@ public class SortStrategyContractTest
     {
         Benchmarker mockBenchmarker = Mockito.mock(Benchmarker.class);
 
-        return Stream.of(
-            new BubbleSortStrategy(mockBenchmarker)
+        return Stream.of
+        (
+            new BubbleSortStrategy(mockBenchmarker),
+            new MergeSortStrategy(mockBenchmarker)
         );
     }
 
@@ -55,6 +57,13 @@ public class SortStrategyContractTest
     void bubbleSortConstructor_givenNullArgument_throwsIllegalArgumentException()
     {
         assertThrows(IllegalArgumentException.class, () -> new BubbleSortStrategy(null), "Constructor should throw IllegalArgumentException when benchmarker is null");
+    }
+
+    // Tests the constructor of the MergeSortStrategy class when the benchmarker is null.
+    @Test
+    void mergeSortConstructor_givenNullArgument_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> new MergeSortStrategy(null), "Constructor should throw IllegalArgumentException when benchmarker is null");
     }
 
     /*

@@ -93,7 +93,12 @@ public class Main
     {
         List<SortStrategy> sortStrategies = Arrays.asList
         (
-            new BubbleSortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME))
+            new BubbleSortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME)),
+            new MergeSortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME)),
+            new BubbleSortStrategy(new Benchmarker(ProfilingMode.MEMORY_USAGE)),
+            new MergeSortStrategy(new Benchmarker(ProfilingMode.MEMORY_USAGE)),
+            new BubbleSortStrategy(new Benchmarker(ProfilingMode.SWAP_COUNT)),
+            new MergeSortStrategy(new Benchmarker(ProfilingMode.SWAP_COUNT))
         );
         
         sortBenchmark(sortStrategies);
@@ -114,7 +119,7 @@ public class Main
         }
 
         // Initialise benchmarkDataSet with data arrangements that all sort strategies will run on.
-        Set<BenchmarkData> benchmarkDataSet = Stream.generate(() -> BenchmarkDataFactory.createRandomData(BENCHMARK_DATA_SIZES[0]))
+        Set<BenchmarkData> benchmarkDataSet = Stream.generate(() -> BenchmarkDataFactory.createRandomData(BENCHMARK_DATA_SIZES[2]))
             .limit(DEFAULT_NUMBER_OF_RUNS)
             .collect(Collectors.toSet());
 
