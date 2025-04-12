@@ -182,8 +182,8 @@ class BenchmarkDataFactoryTest
         BenchmarkData generatedData1 = BenchmarkDataFactory.createRandomData(length);
         BenchmarkData generatedData2 = BenchmarkDataFactory.createRandomData(length);
 
-        int[] data1 = generatedData1.getDataCopy();
-        int[] data2 = generatedData2.getDataCopy();
+        int[] data1 = generatedData1.getData();
+        int[] data2 = generatedData2.getData();
 
         assertNotEquals(data1, data2, "Each call should return different data");
     }
@@ -197,11 +197,11 @@ class BenchmarkDataFactoryTest
 
         assertNotNull(generatedData, "Returned benchmark data object should not be null");
 
-        int[] data = generatedData.getDataCopy();
+        int[] data = generatedData.getData();
 
         assertNotNull(data, "Data array should not be null");
 
-        int[] sortedData = generatedData.getDataCopy();
+        int[] sortedData = generatedData.getData();
         Arrays.sort(sortedData);
 
         assertArrayEquals(sortedData, data, "Generated data should be sorted");
@@ -250,7 +250,7 @@ class BenchmarkDataFactoryTest
         BenchmarkData generatedData = BenchmarkDataFactory.createPartiallySortedData(length);
         assertNotNull(generatedData, "Returned benchmark data object must not be null");
 
-        int[] data = generatedData.getDataCopy();
+        int[] data = generatedData.getData();
         assertNotNull(data, "Data array must not be null");
 
         final boolean firstHalfSorted = IntStream.range(0, length / 2 - 1)
@@ -276,7 +276,7 @@ class BenchmarkDataFactoryTest
         BenchmarkData generatedData = BenchmarkDataFactory.createPartiallySortedData(length);
         assertNotNull(generatedData, "Returned benchmark data object must not be null");
 
-        int[] data = generatedData.getDataCopy();
+        int[] data = generatedData.getData();
         assertNotNull(data, "Data array must not be null");
 
         final boolean secondHalfSorted = IntStream.range(length / 2, length - 1)

@@ -114,7 +114,7 @@ public class Main
         }
 
         // Initialise benchmarkDataSet with data arrangements that all sort strategies will run on.
-        Set<BenchmarkData> benchmarkDataSet = Stream.generate(() -> BenchmarkDataFactory.createRandomData(BENCHMARK_DATA_SIZES[2]))
+        Set<BenchmarkData> benchmarkDataSet = Stream.generate(() -> BenchmarkDataFactory.createRandomData(BENCHMARK_DATA_SIZES[0]))
             .limit(DEFAULT_NUMBER_OF_RUNS)
             .collect(Collectors.toSet());
 
@@ -127,7 +127,10 @@ public class Main
             List<BenchmarkResult> benchmarkResults = new ArrayList<>();
             for(BenchmarkData benchmarkData : benchmarkDataSet)
             {
-                BenchmarkResult benchmarkResult = sorter.sort(benchmarkData.getDataCopy());
+                BenchmarkData benchmarkDataCopy = new BenchmarkData(benchmarkData);
+                logger.finer(String.format("Data before sorting: %s", benchmarkDataCopy.toString()));
+                BenchmarkResult benchmarkResult = sorter.sort(benchmarkDataCopy.getData());
+                logger.finer(String.format("Data after sorting: %s", benchmarkDataCopy.toString()));
                 benchmarkResults.add(benchmarkResult);
                 logger.fine(String.format("Sorting strategy: %s, benchmark result: %s", sortStrategy.getClass().getSimpleName(), benchmarkResult.toString()));
             }

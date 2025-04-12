@@ -23,8 +23,11 @@
 package com.github.rlacher.sortbench.benchmark.data;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
+
+import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 
 // Unit tests for the BenchmarkData class.
 class BenchmarkDataTest
@@ -43,7 +46,7 @@ class BenchmarkDataTest
         int[] data = { 1, 2, 3 };
         BenchmarkData benchmarkData = new BenchmarkData(data, BenchmarkData.DataType.SORTED);
 
-        assertArrayEquals(data, benchmarkData.getDataCopy());
+        assertArrayEquals(data, benchmarkData.getData());
         assertEquals(BenchmarkData.DataType.SORTED, benchmarkData.getType());
     }
 
@@ -55,7 +58,7 @@ class BenchmarkDataTest
         BenchmarkData benchmarkData = new BenchmarkData(data, BenchmarkData.DataType.SORTED);
 
         data[0] = 42; // Modify original data
-        assertNotEquals(data[0], benchmarkData.getDataCopy()[0]);
+        assertNotEquals(data[0], benchmarkData.getData()[0]);
     }
 
     // Tests the constructor of the BenchmarkData class when the input data is an empty array.
@@ -65,22 +68,47 @@ class BenchmarkDataTest
         int[] data = {};
         BenchmarkData benchmarkData = new BenchmarkData(data, BenchmarkData.DataType.RANDOM);
 
-        assertArrayEquals(data, benchmarkData.getDataCopy());
+        assertArrayEquals(data, benchmarkData.getData());
         assertEquals(0, benchmarkData.getLength());
         assertEquals(BenchmarkData.DataType.RANDOM, benchmarkData.getType());
     }
 
-    // Tests the getDataCopy() method to ensure it returns a deep copy of the data.
+    // Tests the copy constructor of the BenchmarkData class when the other object is null.
     @Test
-    void getDataCopy_whenCalled_thenReturnedObjectIsDeepCopy()
+    void copyConstructor_whenOtherIsNull_thenThrowsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> new BenchmarkData(null));
+    }
+
+    // Tests the copy constructor of the BenchmarkData class when the other object has null data
+    @Test
+    void copyConstructor_whenOtherHasNullData_thenThrowsIllegalArgumentException()
+    {
+        BenchmarkData other = mock(BenchmarkData.class);
+        assertThrows(IllegalArgumentException.class, () -> new BenchmarkData(other));
+    }
+
+    // Tests the copy constructor of the BenchmarkData class with valid input.
+    @Test
+    void copyConstructor_givenValidOther_thenInitFields()
+    {
+        int[] data = { 1, 2, 3 };
+        BenchmarkData original = new BenchmarkData(data, BenchmarkData.DataType.SORTED);
+        BenchmarkData copy = new BenchmarkData(original);
+
+        assertArrayEquals(original.getData(), copy.getData());
+        assertEquals(original.getLength(), copy.getLength());
+        assertEquals(original.getType(), copy.getType());
+    }
+
+    // Tests if the getData() method returns the same instance of the data array.
+    @Test
+    void getData_whenCalled_returnsSame()
     {
         int[] data = { 1, 2, 3 };
         BenchmarkData benchmarkData = new BenchmarkData(data, BenchmarkData.DataType.SORTED);
 
-        int[] dataCopy = benchmarkData.getDataCopy();
-
-        assertArrayEquals(dataCopy, data);
-        assertNotSame(dataCopy, data);
+        assertSame(benchmarkData.getData(), benchmarkData.getData());
     }
 
     // Tests the getLength() method to ensure it returns the correct length of the data array.

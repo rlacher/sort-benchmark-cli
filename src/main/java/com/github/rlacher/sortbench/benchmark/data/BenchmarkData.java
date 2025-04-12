@@ -67,13 +67,34 @@ public final class BenchmarkData
     }
 
     /**
-     * Retrieves a copy of the data array.
-     *
-     * @return A copy of the data array to void modification.
+     * Copy constructor for creating a BenchmarkData object from another BenchmarkData object.
+     * 
+     * @param other The other BenchmarkData object to copy from.
+     * @throws IllegalArgumentException If the other BenchmarkData object or its data array is null.
      */
-    public int[] getDataCopy()
+    public BenchmarkData(final BenchmarkData other)
     {
-        return Arrays.copyOf(data, data.length);
+        if (other == null)
+        {
+            throw new IllegalArgumentException("The other BenchmarkData object must not be null.");
+        }
+        if (other.data == null)
+        {
+            throw new IllegalArgumentException("The data array in the other BenchmarkData object must not be null.");
+        }
+
+        this.data = Arrays.copyOf(other.data, other.data.length);
+        this.type = other.type;
+    }
+
+    /**
+     * Getter for the data array.
+     *
+     * @return Returns the same instance of the data array (no copying).
+     */
+    public int[] getData()
+    {
+        return data;
     }
 
     /**

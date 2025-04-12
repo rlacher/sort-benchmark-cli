@@ -60,7 +60,7 @@ public class BubbleSortStrategy implements SortStrategy
         }
 
         this.benchmarker = benchmarker;
-        logger.fine(BubbleSortStrategy.class.getSimpleName() + " initialised with benchmarker.");
+        logger.finest(BubbleSortStrategy.class.getSimpleName() + " initialised with benchmarker.");
     }
 
     /**
@@ -103,7 +103,7 @@ public class BubbleSortStrategy implements SortStrategy
         }
 
         benchmarker.stopProfiling();
-        logger.fine(BubbleSortStrategy.class.getSimpleName() + " completed sorting.");
+        logger.finest(BubbleSortStrategy.class.getSimpleName() + " completed sorting.");
 
         return benchmarker.getResult();
     }
