@@ -47,7 +47,7 @@ public class BubbleSortStrategy implements SortStrategy
     private Benchmarker benchmarker;
 
     /**
-     * Constructor for the DummySortStrategy class.
+     * Constructor for the BubbleSortStrategy class.
      * 
      * @param benchmarker The benchmarker to be used for profiling.
      * @throws IllegalArgumentException If the benchmarker is null.
@@ -68,13 +68,11 @@ public class BubbleSortStrategy implements SortStrategy
      * 
      * Summary of bubble sort algorithm:
      * 
-     * 1. Compare adjacent elements in the array.
-     * 2. If the first element is greater than the second, swap them.
-     * 3. Repeat the process for all elements in the array.
-     * 4. The array is sorted when no swaps are needed in a complete pass.
+     * Bubble sort repeatedly compares adjacent elements, swapping them if they are
+     * out of order. The process continues until no swaps are needed in a complete pass,
+     * indicating a sorted array.
      * 
-     * No argument validation is performed on the input array as the delegating
-     * {@link Sorter} class is responsible for it.
+     * Input array validation is assumed to be performed by the calling {@link Sorter} class.
      * 
      * @param array The array to be sorted.
      * @return The sorted array.
@@ -85,21 +83,22 @@ public class BubbleSortStrategy implements SortStrategy
         benchmarker.startProfiling();
 
         int r = array.length - 1;
-        int j;
 
         while(r > 0)
         {
-            j = 0;
+            int lastSwap = 0;
             for (int i = 0; i < r; ++i)
             {
                 if (array[i] > array[i + 1])
                 {
                     swap(array, i, i + 1);
                     benchmarker.incrementSwaps();
-                    j = i;
+                    lastSwap = i;
                 }
             }
-            r = j;
+
+            // Update r with last swap index
+            r = lastSwap;
         }
 
         benchmarker.stopProfiling();
