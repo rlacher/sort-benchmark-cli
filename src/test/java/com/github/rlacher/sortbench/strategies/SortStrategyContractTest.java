@@ -32,6 +32,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
 import com.github.rlacher.sortbench.benchmark.Benchmarker;
+import com.github.rlacher.sortbench.strategies.implementations.*;
 
 /*
  * Test class for all concrete implementations of the SortStrategy interface.

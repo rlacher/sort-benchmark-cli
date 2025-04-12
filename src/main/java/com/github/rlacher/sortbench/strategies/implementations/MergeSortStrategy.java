@@ -20,13 +20,14 @@
  * SOFTWARE.
  */
 
- package com.github.rlacher.sortbench.strategies;
+ package com.github.rlacher.sortbench.strategies.implementations;
 
  import java.util.logging.Logger;
   
  import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
  import com.github.rlacher.sortbench.benchmark.Benchmarker;
  import com.github.rlacher.sortbench.sorter.Sorter;
+ import com.github.rlacher.sortbench.strategies.SortStrategy;
  
  /**
   * Implements the merge sort algorithm as a sorting strategy.

@@ -38,7 +38,8 @@ import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkDataFactory;
 import com.github.rlacher.sortbench.reporting.ResultAggregator;
 import com.github.rlacher.sortbench.sorter.Sorter;
-import com.github.rlacher.sortbench.strategies.*;
+import com.github.rlacher.sortbench.strategies.SortStrategy;
+import com.github.rlacher.sortbench.strategies.implementations.*;
 
 /**
  * The entry point for the sorting algorithm benchmarking application.

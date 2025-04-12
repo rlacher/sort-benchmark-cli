@@ -32,6 +32,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.github.rlacher.sortbench.benchmark.Benchmarker;
+import com.github.rlacher.sortbench.strategies.implementations.*;
 
 // Tests that ensure the profiling methods are called correctly in the SortStrategy implementations.
 public class SortStrategyProfilingTest
