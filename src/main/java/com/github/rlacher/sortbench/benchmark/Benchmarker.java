@@ -111,9 +111,10 @@ public class Benchmarker
     }
 
     /**
-     * Starts the profiling process based on the selected profiling mode.
-     * 
-     * @throws IllegalStateException If profiling is already in progress.
+     * Initiates profiling, resetting any prior metric data, based on the selected profiling mode.
+     * Must be followed by stopProfiling() to complete metric collection.
+     *
+     * @throws IllegalStateException If profiling is already active.
      */
     public void startProfiling()
     {
@@ -135,10 +136,15 @@ public class Benchmarker
             initialMemoryKb = memoryBean.getHeapMemoryUsage().getUsed() / 1024;
             maxMemoryKb = initialMemoryKb;
         }
+        else if (profilingMode == ProfilingMode.SWAP_COUNT)
+        {
+            swapCount = 0;
+        }
     }
 
     /**
      * Stops the profiling process based on the selected profiling mode.
+     * Must follow a startProfiling() call to collect metrics.
      * 
      * @throws IllegalStateException If profiling is not in progress.
      */

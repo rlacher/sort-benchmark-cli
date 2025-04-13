@@ -26,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
+
 // Unit tests for the Benchmarker class.
 class BenchmarkerTest
 {
@@ -149,6 +151,27 @@ class BenchmarkerTest
         benchmarker.startProfiling();
 
         assertThrows(IllegalStateException.class, () -> benchmarker.startProfiling(), "startProfiling() should throw IllegalStateException when called twice");
+    }
+
+    // Tests that startProfiling() resets the swap count after multiple profiling cycles.
+    @Test
+    void startProfiling_afterMultipleCycles_resetsSwapCount()
+    {
+        Benchmarker benchmarker = new Benchmarker(Benchmarker.ProfilingMode.SWAP_COUNT);
+
+        // First cycle: Increment swaps, then stop
+        benchmarker.startProfiling();
+        benchmarker.incrementSwaps();
+        benchmarker.stopProfiling();
+
+        // Second cycle: Start and stop, no increment
+        benchmarker.startProfiling();
+        benchmarker.stopProfiling();
+
+        BenchmarkResult result = benchmarker.getResult();
+
+        assertNotNull(result, "Result should not be null.");
+        assertEquals(0, result.getValue(), "Swap count should reset to 0 in the second cycle.");
     }
 
     // Tests the stopProfiling() method when called without starting profiling.
