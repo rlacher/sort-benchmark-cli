@@ -22,14 +22,16 @@
 
 package com.github.rlacher.sortbench;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
 import com.github.rlacher.sortbench.benchmark.Benchmarker;
@@ -119,30 +121,63 @@ public class Main
             throw new IllegalArgumentException("The list of sort strategies must not be null.");
         }
 
-        // Initialise benchmarkDataSet with data arrangements that all sort strategies will run on.
-        Set<BenchmarkData> benchmarkDataSet = Stream.generate(() -> BenchmarkDataFactory.createRandomData(BENCHMARK_DATA_SIZES[2]))
-            .limit(DEFAULT_NUMBER_OF_RUNS)
-            .collect(Collectors.toSet());
+        // Initialise benchmarkData with data arrangements that all sort strategies will run on.
+        Map<Integer, List<BenchmarkData>> benchmarkDataMap = generateRandomBenchmarkDataBySizes(BENCHMARK_DATA_SIZES);
 
         ResultAggregator resultAggregator = new ResultAggregator(ResultAggregator.DEFAULT_FILTER, ResultAggregator.DEFAULT_AGGREGATOR);
 
-        for (SortStrategy sortStrategy : sortStrategies)
+        benchmarkDataMap.forEach((dataSize, benchmarkDataList) ->
         {
-            Sorter sorter = new Sorter(sortStrategy);
+            logger.info(String.format("Data size: %d", dataSize));
 
-            List<BenchmarkResult> benchmarkResults = new ArrayList<>();
-            for(BenchmarkData benchmarkData : benchmarkDataSet)
+            sortStrategies.forEach(sortStrategy ->
             {
-                BenchmarkData benchmarkDataCopy = new BenchmarkData(benchmarkData);
-                logger.finer(String.format("Data before sorting: %s", benchmarkDataCopy.toString()));
-                BenchmarkResult benchmarkResult = sorter.sort(benchmarkDataCopy.getData());
-                logger.finer(String.format("Data after sorting: %s", benchmarkDataCopy.toString()));
-                benchmarkResults.add(benchmarkResult);
-                logger.fine(String.format("Sorting strategy: %s, benchmark result: %s", sortStrategy.getClass().getSimpleName(), benchmarkResult.toString()));
-            }
+                Sorter sorter = new Sorter(sortStrategy);
 
-            BenchmarkResult aggregatedBenchmarkResult = resultAggregator.process(benchmarkResults);
-            logger.info(String.format("Sorting strategy: %s, aggregated benchmark result: %s", sortStrategy.getClass().getSimpleName(), aggregatedBenchmarkResult));
-        }
+                List<BenchmarkResult> benchmarkResults = benchmarkDataList.stream()
+                .map(benchmarkData ->
+                     performSorting(sorter, benchmarkData))
+                .toList();
+
+                benchmarkResults.stream().forEach(result ->  
+                    logger.fine(String.format("Sorting strategy: %s, benchmark result: %s", sortStrategy.getClass().getSimpleName(), result.toString())));
+
+                BenchmarkResult aggregatedBenchmarkResult = resultAggregator.process(benchmarkResults);
+                logger.info(String.format("Sorting strategy: %s, aggregated benchmark result: %s", sortStrategy.getClass().getSimpleName(), aggregatedBenchmarkResult));
+            });
+        });
+    }
+
+    private static BenchmarkResult performSorting(Sorter sorter, final BenchmarkData benchmarkData)
+    {
+        BenchmarkData benchmarkDataCopy = new BenchmarkData(benchmarkData);
+        logger.finer(String.format("Data before sorting: %s", benchmarkDataCopy.toString()));
+        BenchmarkResult benchmarkResult = sorter.sort(benchmarkDataCopy.getData());
+        logger.finer(String.format("Data after sorting: %s", benchmarkDataCopy.toString()));
+        return benchmarkResult;
+    }
+
+    /**
+     * Generates benchmark data grouped by data length to facilitate batch processing.
+     * This improves JVM optimisation by enhancing data locality.
+     *
+     * @param sizes An array of data sizes to generate benchmark data for.
+     * @return A map where keys are data lengths and values are lists of benchmark data.
+     */
+    private static Map<Integer, List<BenchmarkData>> generateRandomBenchmarkDataBySizes(final int[] sizes)
+    {
+        Map<Integer, List<BenchmarkData>> dataBySize = new HashMap<>();
+
+        IntStream.range(0, sizes.length)
+            .forEach(i -> 
+            {
+                final int dataSize = sizes[i];
+                List<BenchmarkData> dataList = Stream.generate(() -> BenchmarkDataFactory.createRandomData(dataSize))
+                    .limit(DEFAULT_NUMBER_OF_RUNS)
+                    .collect(Collectors.toList());
+                dataBySize.put(dataSize, dataList);
+            });
+
+        return dataBySize;
     }
 }
