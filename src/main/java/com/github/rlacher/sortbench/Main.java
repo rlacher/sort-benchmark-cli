@@ -97,10 +97,13 @@ public class Main
         List<SortStrategy> sortStrategies = Arrays.asList
         (
             new BubbleSortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME)),
-            new MergeSortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME)),
             new BubbleSortStrategy(new Benchmarker(ProfilingMode.MEMORY_USAGE)),
-            new MergeSortStrategy(new Benchmarker(ProfilingMode.MEMORY_USAGE)),
             new BubbleSortStrategy(new Benchmarker(ProfilingMode.SWAP_COUNT)),
+            new InsertionSortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME)),
+            new InsertionSortStrategy(new Benchmarker(ProfilingMode.MEMORY_USAGE)),
+            new InsertionSortStrategy(new Benchmarker(ProfilingMode.SWAP_COUNT)),
+            new MergeSortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME)),
+            new MergeSortStrategy(new Benchmarker(ProfilingMode.MEMORY_USAGE)),
             new MergeSortStrategy(new Benchmarker(ProfilingMode.SWAP_COUNT))
         );
         

@@ -49,6 +49,7 @@ public class SortStrategyContractTest
         return Stream.of
         (
             new BubbleSortStrategy(mockBenchmarker),
+            new InsertionSortStrategy(mockBenchmarker),
             new MergeSortStrategy(mockBenchmarker)
         );
     }
@@ -58,6 +59,13 @@ public class SortStrategyContractTest
     void bubbleSortConstructor_givenNullArgument_throwsIllegalArgumentException()
     {
         assertThrows(IllegalArgumentException.class, () -> new BubbleSortStrategy(null), "Constructor should throw IllegalArgumentException when benchmarker is null");
+    }
+
+    // Tests the constructor of the InsertionSortStrategy class when the benchmarker is null.
+    @Test
+    void insertionSortConstructor_givenNullArgument_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> new InsertionSortStrategy(null), "Constructor should throw IllegalArgumentException when benchmarker is null");
     }
 
     // Tests the constructor of the MergeSortStrategy class when the benchmarker is null.

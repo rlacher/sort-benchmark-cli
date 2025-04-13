@@ -50,6 +50,7 @@ public class SortStrategyProfilingTest
         return Stream.of
         (
             new BubbleSortStrategy(mockBenchmarker),
+            new InsertionSortStrategy(mockBenchmarker),
             new MergeSortStrategy(mockBenchmarker)
         );
     }
