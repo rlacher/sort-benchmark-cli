@@ -148,21 +148,24 @@
             {
                 buffer[bufferIndex++] = leftValue;
                 leftIndex++;
-                benchmarker.incrementSwaps();
+                benchmarker.reportWrite();
             }
             else
             {
                 buffer[bufferIndex++] = rightValue;
                 rightIndex++;
-                benchmarker.incrementSwaps();
+                benchmarker.reportWrite();
             }
         }
 
         // Copy remaining elements, if any
         System.arraycopy(array, leftIndex, buffer, bufferIndex, rightStartEnd - leftIndex);
+        benchmarker.reportWrites(rightStartEnd - leftIndex);
         System.arraycopy(array, rightIndex, buffer, bufferIndex, rightEndExcl - rightIndex);
+        benchmarker.reportWrites(rightEndExcl - rightIndex);
 
         System.arraycopy(buffer, 0, array, leftStart, length);
+        benchmarker.reportWrites(length);
      }
  }
  

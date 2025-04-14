@@ -97,7 +97,7 @@ This project is built and tested with the following environment:
 **Measurement:**
 
 - *Runtime:* Measured by profiling the sort operation's execution time.
-- *Swaps:* Counted directly within the sorting algorithm's code during element swaps.
+- *Data writes:* Counted directly within the sorting algorithm's code by tracking the number of element writes (swaps, shifts, and inserts).
 - *Memory:* JVM heap memory consumption, measured at key points during the sorting process.
 
 **Algorithm implmementation:**
@@ -138,7 +138,7 @@ After the tests complete, an HTML report will be generated in the `build/reports
 
 ## Benchmark Results
 
-- Strong positive correlation between runtime and perfored swaps.
+- Strong positive correlation between runtime and performed data write operations.
 - Swaps to verify theoretical complexity and inherent efficiency of algorithm. It is a hardware and environment-independent measure.
 
 ## License

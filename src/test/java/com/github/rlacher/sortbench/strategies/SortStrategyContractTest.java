@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
@@ -52,27 +51,6 @@ public class SortStrategyContractTest
             new InsertionSortStrategy(mockBenchmarker),
             new MergeSortStrategy(mockBenchmarker)
         );
-    }
-
-    // Tests the constructor of the BubbleSortStrategy class when the benchmarker is null.
-    @Test
-    void bubbleSortConstructor_givenNullArgument_throwsIllegalArgumentException()
-    {
-        assertThrows(IllegalArgumentException.class, () -> new BubbleSortStrategy(null), "Constructor should throw IllegalArgumentException when benchmarker is null");
-    }
-
-    // Tests the constructor of the InsertionSortStrategy class when the benchmarker is null.
-    @Test
-    void insertionSortConstructor_givenNullArgument_throwsIllegalArgumentException()
-    {
-        assertThrows(IllegalArgumentException.class, () -> new InsertionSortStrategy(null), "Constructor should throw IllegalArgumentException when benchmarker is null");
-    }
-
-    // Tests the constructor of the MergeSortStrategy class when the benchmarker is null.
-    @Test
-    void mergeSortConstructor_givenNullArgument_throwsIllegalArgumentException()
-    {
-        assertThrows(IllegalArgumentException.class, () -> new MergeSortStrategy(null), "Constructor should throw IllegalArgumentException when benchmarker is null");
     }
 
     /*

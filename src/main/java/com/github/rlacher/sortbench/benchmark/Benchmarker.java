@@ -40,14 +40,14 @@ public class Benchmarker
      * 
      * NONE: No profiling.
      * MEMORY_USAGE: Memory usage profiling.
-     * SWAP_COUNT: Swap count profiling.
+     * DATA_WRITE_COUNT: Data modification profiling.
      * EXECUTION_TIME: Execution time profiling.
      */
     public enum ProfilingMode
     {
         NONE,
         MEMORY_USAGE,
-        SWAP_COUNT,
+        DATA_WRITE_COUNT,
         EXECUTION_TIME
     }
 
@@ -73,10 +73,10 @@ public class Benchmarker
     private long maxMemoryKb;
 
     /**
-     * Swap count for swap count profiling.
+     * Data write count for data operation profiling.
      * This value is updated during the sorting process.
      */
-    private long swapCount;
+    private long dataWriteCount;
 
     /**
      * MemoryMXBean instance for memory profiling.
@@ -136,9 +136,9 @@ public class Benchmarker
             initialMemoryKb = memoryBean.getHeapMemoryUsage().getUsed() / 1024;
             maxMemoryKb = initialMemoryKb;
         }
-        else if (profilingMode == ProfilingMode.SWAP_COUNT)
+        else if (profilingMode == ProfilingMode.DATA_WRITE_COUNT)
         {
-            swapCount = 0;
+            dataWriteCount = 0;
         }
     }
 
@@ -171,11 +171,19 @@ public class Benchmarker
 
     /**
      * Measures the memory usage during the sorting process.
-     * 
+     *
+     * This method should only be called when memory profiling is active.
      * The scope of this benchmark is limited to heap memory analysis. Stack memory usage is not measured for simplicity.
+     * 
+     * @throws IllegalStateException if profiling is not currently active.
      */
     public void measureMemory()
     {
+        if(!isProfiling)
+        {
+            throw new IllegalStateException("Cannot measure memory usage when profiling is inactive.");
+        }
+
         if (profilingMode == ProfilingMode.MEMORY_USAGE)
         {
             final long currentMemoryKb = memoryBean.getHeapMemoryUsage().getUsed() / 1024;;
@@ -183,30 +191,94 @@ public class Benchmarker
         }
     }
 
+    /**
+     * Reports a swap operation during the sorting process.
+     *
+     * A swap refers to the exchange of two elements in the array being sorted (also known as invertion).
+     * This method increases the data write counter by 2.
+     */
+    public void reportSwap()
+    {
+        reportWrites(2);
+    }
 
     /**
-     * Increments the swap count during the sorting process.
-     * 
-     * A swap refers to the exchange of two elements in the array being sorted (also known as invertion).
+     * Reports a shift operation during the sorting process.
+     *
+     * A shift refers to movement of an element to the right within the array.
+     * This method increments the data write counter by 1.
      */
-    public void incrementSwaps()
+    public void reportShift()
     {
-        if (profilingMode == ProfilingMode.SWAP_COUNT)
+        reportWrites(1);
+    }
+
+    /**
+     * Reports an insert operation during the sorting process.
+     *
+     * An insert writes a specified value at a specified location within the array.
+     * This method increments the data write counter by 1.
+     */
+    public void reportInsert()
+    {
+        reportWrites(1);
+    }
+
+    /**
+     * Reports a write operation during the sorting process.
+     *
+     * This method increments the data write counter by 1.
+     */
+    public void reportWrite()
+    {
+        reportWrites(1);
+    }
+
+    /**
+     * Reports write operations during the sorting process.
+     * 
+     * This method increments the data write counter by the specified amount
+     * only when profiling is active and the profiling mode is set to
+     * DATA_WRITE_COUNT.
+     * 
+     * @param count The number of write operations performed.
+     * @throws IllegalArgumentException if count is negative.
+     * @throws IllegalStateException if profiling is not currently active.
+     */
+    public void reportWrites(final int count)
+    {
+        if(count < 0)
         {
-            ++swapCount;
+            throw new IllegalArgumentException("Write count must not be negative.");
+        }
+        if(!isProfiling)
+        {
+            throw new IllegalStateException("Cannot report writes when profiling is inactive.");
+        }
+
+        if (profilingMode == ProfilingMode.DATA_WRITE_COUNT)
+        {
+            dataWriteCount+=count;
         }
     }
 
     /**
      * Resets the benchmarker to its initial state.
+     * 
+     * @throws IllegalStateException if profiling is currently active.
      */
     public void reset()
     {
+        if(isProfiling)
+        {
+            throw new IllegalStateException("Cannot reset while profiling is active.");
+        }
+
         startTime = null;
         endTime = null;
         initialMemoryKb = 0;
         maxMemoryKb = 0;
-        swapCount = 0;
+        dataWriteCount = 0;
     }
 
     /**
@@ -228,8 +300,8 @@ public class Benchmarker
                 return new BenchmarkResult(profilingMode, 0);
             case MEMORY_USAGE:
                 return new BenchmarkResult(profilingMode, maxMemoryKb - initialMemoryKb);
-            case SWAP_COUNT:
-                return new BenchmarkResult(profilingMode, swapCount);
+            case DATA_WRITE_COUNT:
+                return new BenchmarkResult(profilingMode, dataWriteCount);
             case EXECUTION_TIME:
                 return new BenchmarkResult(profilingMode, (startTime == null) ? 0 : Duration.between(startTime, endTime).toNanos() / 1e6);
             default:

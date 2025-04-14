@@ -22,7 +22,6 @@
 
 package com.github.rlacher.sortbench;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -98,13 +97,13 @@ public class Main
         (
             new BubbleSortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME)),
             new BubbleSortStrategy(new Benchmarker(ProfilingMode.MEMORY_USAGE)),
-            new BubbleSortStrategy(new Benchmarker(ProfilingMode.SWAP_COUNT)),
+            new BubbleSortStrategy(new Benchmarker(ProfilingMode.DATA_WRITE_COUNT)),
             new InsertionSortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME)),
             new InsertionSortStrategy(new Benchmarker(ProfilingMode.MEMORY_USAGE)),
-            new InsertionSortStrategy(new Benchmarker(ProfilingMode.SWAP_COUNT)),
+            new InsertionSortStrategy(new Benchmarker(ProfilingMode.DATA_WRITE_COUNT)),
             new MergeSortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME)),
             new MergeSortStrategy(new Benchmarker(ProfilingMode.MEMORY_USAGE)),
-            new MergeSortStrategy(new Benchmarker(ProfilingMode.SWAP_COUNT))
+            new MergeSortStrategy(new Benchmarker(ProfilingMode.DATA_WRITE_COUNT))
         );
         
         sortBenchmark(sortStrategies);

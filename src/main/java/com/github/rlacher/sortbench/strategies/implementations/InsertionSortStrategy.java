@@ -89,11 +89,11 @@
             while(j >= 0 && current < array[j])
             {
                 shift(array, j);
-                benchmarker.incrementSwaps();
+                benchmarker.reportShift();
                 --j;
             }
             insert(array, j + 1, current);
-            benchmarker.incrementSwaps();
+            benchmarker.reportInsert();
          }
  
          benchmarker.stopProfiling();

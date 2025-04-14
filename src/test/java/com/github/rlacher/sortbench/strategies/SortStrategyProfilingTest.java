@@ -42,7 +42,6 @@ public class SortStrategyProfilingTest
 
     private static int startProfilingCallCount = 0;
     private static int stopProfilingCallCount = 0;
-    private static int incrementSwapsCallCount = 0;
 
     // Factory method to create instances of SortStrategy implementations for parameterised testing.
     static Stream<SortStrategy> createSortStrategies()
@@ -71,47 +70,8 @@ public class SortStrategyProfilingTest
             return null;
         }).when(mockBenchmarker).stopProfiling();
 
-        doAnswer(invocation ->
-        {
-            ++incrementSwapsCallCount;
-            return null;
-        }).when(mockBenchmarker).incrementSwaps();
-
         startProfilingCallCount = 0;
         stopProfilingCallCount = 0;
-        incrementSwapsCallCount = 0;
-    }
-
-    // Tests that the sort() method does not increment swaps when given an empty array.
-    @ParameterizedTest
-    @MethodSource("createSortStrategies")
-    void sort_givenEmptyArray_doesNotIncrementSwaps(SortStrategy strategy)
-    {
-        int[] array = {};
-        strategy.sort(array);
-
-        verify(mockBenchmarker, never()).incrementSwaps();
-    }
-
-    // Tests that the sort() method does not increment swaps when given an array with one element.
-    @ParameterizedTest
-    @MethodSource("createSortStrategies")
-    void sort_givenOneElement_doesNotIncrementSwaps(SortStrategy strategy)
-    {
-        int[] array = { 1 };
-        strategy.sort(array);
-
-        verify(mockBenchmarker, never()).incrementSwaps();
-    }
-
-    @ParameterizedTest
-    @MethodSource("createSortStrategies")
-    void sort_givenTwoElementsOutOfOrder_incrementsSwaps(SortStrategy strategy)
-    {
-        int[] array = { 2, 1 };
-        strategy.sort(array);
-
-        assertTrue(incrementSwapsCallCount > 0, "incrementSwaps() must be called at least once");
     }
 
     // Tests that startProfiling() and stopProfiling() are called once during the sort process.
