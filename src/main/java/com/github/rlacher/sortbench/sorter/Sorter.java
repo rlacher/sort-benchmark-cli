@@ -51,23 +51,6 @@ public class Sorter
     private SortStrategy sortStrategy;
 
     /**
-     * Constructor for the Sorter class.
-     * 
-     * @param sortStrategy The sorting strategy to be used.
-     * @throws IllegalArgumentException If the sort strategy is null.
-     */
-    public Sorter(SortStrategy sortStrategy)
-    {
-        if(sortStrategy == null)
-        {
-            throw new IllegalArgumentException("Sort strategy must not be null.");
-        }
-
-        logger.fine(String.format("Set initial sort strategy to %s", sortStrategy.getClass().getSimpleName()));
-        this.sortStrategy = sortStrategy;
-    }
-
-    /**
      * Sets the sorting strategy to be used.
      * 
      * @throws IllegalArgumentException If the sort strategy is null.
@@ -87,15 +70,23 @@ public class Sorter
     /**
      * Validates the input array and delegates the sorting task to the currently set {@link SortStrategy}.
      * 
+     * Requires a prior call to setStrategy().
+     * 
      * @param array The array to be sorted.
      * @return Returns a {@link BenchmarkResult} with the metric value for the {@link ProfilingMode}. Returns 0 if the array is empty.
      * @throws IllegalArgumentException If the array is null.
+     * @throws IllegalStateException If the sort strategy is null.
      */
     public BenchmarkResult sort(final int[] array)
     {
         if(array == null)
         {
             throw new IllegalArgumentException("Array must not be null.");
+        }
+
+        if(sortStrategy == null)
+        {
+            throw new IllegalStateException("Sort strategy is null");
         }
 
         if(array.length == 0)
