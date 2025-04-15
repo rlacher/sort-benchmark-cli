@@ -38,6 +38,8 @@ import org.mockito.Mockito;
 import com.github.rlacher.sortbench.sorter.Sorter;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
+import com.github.rlacher.sortbench.results.BenchmarkMetric;
+import com.github.rlacher.sortbench.results.BenchmarkResult;
 
 // Unit tests for the BenchmarkRunner class.
 class BenchmarkRunnerTest {

@@ -22,13 +22,20 @@
 
 package com.github.rlacher.sortbench.strategies;
 
-import com.github.rlacher.sortbench.benchmark.BenchmarkMetric;
+import com.github.rlacher.sortbench.results.BenchmarkMetric;
 
 /**
  * Defines the contract for sorting algorithms.
  */
 public interface SortStrategy
 {
+    /**
+     * Returns the name of the sorting strategy.
+     *
+     * @return The name of the sorting strategy.
+     */
+    String name();
+
     /**
      * Sorts the given integer array and returns profiling metrics.
      * 

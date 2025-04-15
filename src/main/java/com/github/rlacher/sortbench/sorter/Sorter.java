@@ -24,8 +24,8 @@ package com.github.rlacher.sortbench.sorter;
 
 import java.util.logging.Logger;
 
-import com.github.rlacher.sortbench.benchmark.BenchmarkMetric;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
+import com.github.rlacher.sortbench.results.BenchmarkMetric;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
 
 /**

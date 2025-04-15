@@ -29,7 +29,9 @@ import java.util.logging.Logger;
 
 import com.github.rlacher.sortbench.benchmark.*;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
-import com.github.rlacher.sortbench.reporting.ResultAggregator;
+import com.github.rlacher.sortbench.results.AggregatedResult;
+import com.github.rlacher.sortbench.results.BenchmarkResult;
+import com.github.rlacher.sortbench.results.ResultAggregator;
 import com.github.rlacher.sortbench.sorter.Sorter;
 
 
@@ -76,8 +78,8 @@ public class Main
         List<BenchmarkResult> results = runner.run(config);
 
         ResultAggregator resultAggregator = new ResultAggregator(ResultAggregator.DEFAULT_FILTER, ResultAggregator.DEFAULT_AGGREGATOR);
-        BenchmarkResult aggregatedBenchmarkResult = resultAggregator.process(results);
-        logger.info(String.format("Aggregated benchmark result: %s", aggregatedBenchmarkResult));
+        AggregatedResult aggregatedResult = resultAggregator.process(results);
+        logger.info(String.format("Aggregated benchmark result: %s", aggregatedResult));
     }
 
     /**
@@ -88,7 +90,7 @@ public class Main
     private static Map<String, Object> buildBenchmarkConfig()
     {
         Map<String, Object> config = new HashMap<>();
-        config.put("input_sizes", BENCHMARK_DATA_SIZES);
+        config.put("input_sizes", List.of(BENCHMARK_DATA_SIZES.get(2)));
         config.put("iterations", BENCHMARK_ITERATIONS);
         config.put("strategies", List.of("MergeSort"));
         config.put("profiling_mode", ProfilingMode.EXECUTION_TIME);

@@ -28,6 +28,8 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.util.logging.Logger;
 
+import com.github.rlacher.sortbench.results.BenchmarkMetric;
+
 /**
  * Benchmarker class for profiling sorting algorithms.
  */
@@ -49,19 +51,19 @@ public class Benchmarker
         EXECUTION_TIME
     }
 
-    /// Logger for logging messages.
+    /** Logger for logging messages. */
     private static final Logger logger = Logger.getLogger(Benchmarker.class.getName());
 
-    /// Flag indicating profiling status.
+    /** Flag indicating profiling status. */
     private boolean isProfiling = false;
 
-    /// Start time for execution time profiling.
+    /** Start time for execution time profiling. */
     private Instant startTime;
 
-    /// End time for execution time profiling.
+    /** End time for execution time profiling. */
     private Instant endTime;
 
-    /// Initial memory usage in kilobytes for memory profiling.
+    /** Initial memory usage in kilobytes for memory profiling. */
     private long initialMemoryKb;
 
     /**

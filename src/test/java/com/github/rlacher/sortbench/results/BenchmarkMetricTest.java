@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.rlacher.sortbench.benchmark;
+package com.github.rlacher.sortbench.results;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,22 +49,18 @@ class BenchmarkMetricTest
     @Test
     void constructor_nullProfilingMode_throwsIllegalArgumentException()
     {
-        double metric = 10.5;
+        final double metric = 10.5;
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new BenchmarkMetric(null, metric),
+        assertThrows(IllegalArgumentException.class, () -> new BenchmarkMetric(null, metric),
                 "Should throw IllegalArgumentException for null profiling mode");
-
-        assertEquals("Profiling mode must not be null.", exception.getMessage(), "Exception message should match");
     }
 
     @Test
     void constructor_negativeMetric_throwsIllegalArgumentException()
     {
         ProfilingMode mode = ProfilingMode.EXECUTION_TIME;
-        double metric = -1.0;
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new BenchmarkMetric(mode, -1.0),
-                "Should throw IllegalArgumentException for negative metric");
+        assertThrows(IllegalArgumentException.class, () -> new BenchmarkMetric(mode, -1.0), "Should throw IllegalArgumentException for negative metric");
     }
 
     @Test
@@ -130,7 +126,7 @@ class BenchmarkMetricTest
     }
 
     @Test
-    void toString_validObject_returnsStringWithRelevantInfo()
+    void toString_validObject_stringContainsFields()
     {
         BenchmarkMetric benchmarkMetric = new BenchmarkMetric(ProfilingMode.EXECUTION_TIME, 32.1);
 

@@ -23,9 +23,9 @@
 package com.github.rlacher.sortbench.strategies.implementations;
 
 import java.util.logging.Logger;
- 
-import com.github.rlacher.sortbench.benchmark.BenchmarkMetric;
+
 import com.github.rlacher.sortbench.benchmark.Benchmarker;
+import com.github.rlacher.sortbench.results.BenchmarkMetric;
 import com.github.rlacher.sortbench.sorter.Sorter;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
 
@@ -62,6 +62,17 @@ public class BubbleSortStrategy implements SortStrategy
 
         this.benchmarker = benchmarker;
         logger.finest(BubbleSortStrategy.class.getSimpleName() + " initialised with benchmarker.");
+    }
+
+    /**
+     * Returns the unique name of the BubbleSortStrategy
+     *
+     * @return The unique name of the strategy.
+     */
+    @Override
+    public String name()
+    {
+        return "BubbleSort";
     }
 
     /**

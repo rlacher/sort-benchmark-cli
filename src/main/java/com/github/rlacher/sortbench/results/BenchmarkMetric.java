@@ -20,36 +20,42 @@
  * SOFTWARE.
  */
 
-package com.github.rlacher.sortbench.benchmark;
+package com.github.rlacher.sortbench.results;
 
 import java.util.Objects;
 
+import com.github.rlacher.sortbench.benchmark.Benchmarker;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
-
+ 
 /**
- * A POJO class representing the result of a benchmark corresponding to the {@link ProfilingMode}.
+ * Represents a raw profiling measurement from a single benchmark iteration.
+ *
+ * The meaning of this metric value is determined by the {@link ProfilingMode} used.
+ * This object is the direct result of a sorting operation,
+ * instantiated by the {@link Benchmarker}.
+ * 
  */
-public final class BenchmarkResult
+public final class BenchmarkMetric
 {
     /**
-     * The profiling mode used during the benchmark.
+     * The profiling mode used during the benchmark iteration.
      */
     private final ProfilingMode profilingMode;
 
     /**
-     * The benchmark metric value in correspondence to the {@link ProfilingMode}.
+     * The profiling metric in correspondence to the {@link ProfilingMode}.
      */
     private final double value;
 
 
     /**
-     * Constructs a new BenchmarkResult object.
+     * Constructs a new BenchmarkMetric object.
      *
-     * @param mode The profiling mode used during the benchmark.
-     * @param value The value of the benchmark metric.
+     * @param mode The profiling mode used during the benchmark iteration.
+     * @param value The metric of the benchmark iteration.
      * @throws IllegalArgumentException If either mode or value are negative.
      */
-    public BenchmarkResult(final ProfilingMode mode, final double value)
+    public BenchmarkMetric(final ProfilingMode mode, final double value)
     {
         if(mode == null)
         {
@@ -58,7 +64,7 @@ public final class BenchmarkResult
 
         if(value < 0)
         {
-            throw new IllegalArgumentException("Value must not be negative.");
+            throw new IllegalArgumentException("Metric value must not be negative.");
         }
 
         this.profilingMode = mode;
@@ -66,7 +72,7 @@ public final class BenchmarkResult
     }
     
     /**
-     * Returns the profiling mode used during the benchmark.
+     * Returns the profiling mode used during the benchmark iteration.
      * 
      * @return The profiling mode used in the benchmark.
      */
@@ -76,7 +82,7 @@ public final class BenchmarkResult
     }
 
     /**
-     * Returns the metric value representing the benchmark result.
+     * Returns a measurement value representing the profiling metric of a benchmark iteration.
      *
      * @return The benchmark metric value.
      */
@@ -86,7 +92,7 @@ public final class BenchmarkResult
     }
 
     /**
-     * Checks if two BenchmarkResult objects are equal based on their profiling mode and value.
+     * Checks if two BenchmarkMetric objects are equal based on their profiling mode and metric value.
      */
     @Override
     public boolean equals(Object obj)
@@ -100,12 +106,12 @@ public final class BenchmarkResult
             return false;
         }
 
-        BenchmarkResult that = (BenchmarkResult) obj;
+        BenchmarkMetric that = (BenchmarkMetric) obj;
         return (Double.compare(this.value, that.value) == 0) && (profilingMode == that.profilingMode);
     }
 
     /**
-     * Generates a hash code for the BenchmarkResult object based on its profiling mode and value.
+     * Generates a hash code for the BenchmarkMetric object based on its profiling mode and value.
      */
     @Override
     public int hashCode()
@@ -114,13 +120,13 @@ public final class BenchmarkResult
     }
 
     /**
-     * Turns the BenchmarkResult into a string representation.
+     * Turns the BenchmarkMetric into a string representation.
      *
-     * @return A string representation of the benchmark result.
+     * @return A string representation of the benchmark metric.
      */
     @Override
     public String toString()
     {
-        return String.format("{mode=%s, value=%.2f}", profilingMode, value);
-    }   
+        return String.format("{profilingMode=%s, value=%.2f}", profilingMode, value);
+    }
 }

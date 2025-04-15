@@ -28,8 +28,8 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.github.rlacher.sortbench.benchmark.BenchmarkMetric;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
+import com.github.rlacher.sortbench.results.BenchmarkMetric;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
 
 

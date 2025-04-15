@@ -34,6 +34,9 @@ import java.util.stream.Stream;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkDataFactory;
+import com.github.rlacher.sortbench.results.BenchmarkMetric;
+import com.github.rlacher.sortbench.results.BenchmarkResult;
+import com.github.rlacher.sortbench.results.BenchmarkContext;
 import com.github.rlacher.sortbench.sorter.Sorter;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
 import com.github.rlacher.sortbench.strategies.implementations.*;
@@ -46,10 +49,10 @@ import com.github.rlacher.sortbench.strategies.implementations.*;
  */
 public class BenchmarkRunner
 {
-    /// Logger for logging messages.
+    /** Logger for logging messages. */
     private static final Logger logger = Logger.getLogger(BenchmarkRunner.class.getName());
 
-    /// Maps sort strategy names (e.g. "BubbleSort") to their {@link SortStrategy} classes for dynamic instantiation.
+    /** Maps sort strategy names (e.g. "BubbleSort") to their {@link SortStrategy} classes for dynamic instantiation. */
     private static final Map<String, Class<? extends SortStrategy>> strategyMap = new HashMap<>();
 
     static
@@ -59,7 +62,7 @@ public class BenchmarkRunner
         strategyMap.put("MergeSort", MergeSortStrategy.class);
     }
 
-    /// Sort context to execute and benchmark different sorting strategies.
+    /** Sort context to execute and benchmark different sorting strategies. */
     private Sorter sorter;
 
     /**
@@ -148,16 +151,26 @@ public class BenchmarkRunner
         return benchmarkResults;
     }
 
-
     /**
      * Runs the provided sorting strategies on the given benchmark data through the sorter context.
      *
      * @param strategies The list of sorting strategies to be executed.
      * @param benchmarkDataMap The map of data sizes to lists of benchmark data.
      * @return A list of benchmark results.
+     * @throws IllegalArgumentException If strategies or benchmarkDataMap are null or empty.
      */
     private List<BenchmarkResult> runIterations(final List<SortStrategy> strategies, final Map<Integer, List<BenchmarkData>> benchmarkDataMap)
     {
+        if (strategies == null || strategies.isEmpty())
+        {
+            throw new IllegalArgumentException("Strategies list must not be null or empty.");
+        }
+    
+        if (benchmarkDataMap == null || benchmarkDataMap.isEmpty())
+        {
+            throw new IllegalArgumentException("Benchmark data map must not be null or empty.");
+        }
+
         List<BenchmarkResult> allResults = new ArrayList<>();
 
         benchmarkDataMap.forEach((dataSize, benchmarkDataList) ->
@@ -177,7 +190,14 @@ public class BenchmarkRunner
                 metrics.stream().forEach(metric ->
                     logger.fine(String.format("Sorting strategy: %s, benchmark metric: %s", sortStrategy.getClass().getSimpleName(), metric.toString())));
 
-                List<BenchmarkResult> results = metrics.stream().map(metric -> new BenchmarkResult(metric.getProfilingMode(), metric.getValue())).collect(Collectors.toList());
+                BenchmarkContext context = new BenchmarkContext(BenchmarkData.DataType.RANDOM, dataSize, sortStrategy.name());
+
+                List<BenchmarkResult> results = metrics.stream()
+                    .map
+                    (
+                        metric -> new BenchmarkResult(context, metric.getProfilingMode(), metric.getValue())
+                    )
+                    .collect(Collectors.toList());
 
                 allResults.addAll(results);
             });
