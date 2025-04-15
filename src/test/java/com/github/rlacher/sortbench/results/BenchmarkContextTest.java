@@ -107,4 +107,29 @@ class BenchmarkContextTest
         assertTrue(contextString.contains(String.valueOf(dataLength)), "toString() should contain the data length.");
         assertTrue(contextString.contains(dataType.toString()), "toString() should contain the string representation of the data type.");
     }
+
+    @Test
+    void compareTo_differentDataTypes_correctOrder()
+    {
+        BenchmarkContext context1 = new BenchmarkContext(BenchmarkData.DataType.RANDOM, 100, "BubbleSort");
+        BenchmarkContext context2 = new BenchmarkContext(BenchmarkData.DataType.SORTED, 100, "BubbleSort");
+        assertTrue(context1.compareTo(context2) < 0, "RANDOM should come before SORTED");
+        assertTrue(context2.compareTo(context1) > 0, "SORTED should come after RANDOM");
+    }
+
+    @Test
+    void compareTo_differentDataLengths_correctOrder()
+    {
+        BenchmarkContext context1 = new BenchmarkContext(BenchmarkData.DataType.RANDOM, 100, "BubbleSort");
+        BenchmarkContext context2 = new BenchmarkContext(BenchmarkData.DataType.RANDOM, 200, "BubbleSort");
+        assertTrue(context1.compareTo(context2) < 0, "100 should come before 200");
+        assertTrue(context2.compareTo(context1) > 0, "200 should come after 100");
+    }
+
+    @Test
+    void compareTo_nullOther_throwsIllegalArgumentException()
+    {
+        BenchmarkContext context1 = new BenchmarkContext(BenchmarkData.DataType.RANDOM, 100, "BubbleSort");
+        assertThrows(IllegalArgumentException.class, () -> context1.compareTo(null), "Should throw IllegalArgumentException when comparing to null");
+    }
 }

@@ -78,8 +78,12 @@ public class Main
         List<BenchmarkResult> results = runner.run(config);
 
         ResultAggregator resultAggregator = new ResultAggregator(ResultAggregator.DEFAULT_FILTER, ResultAggregator.DEFAULT_AGGREGATOR);
-        AggregatedResult aggregatedResult = resultAggregator.process(results);
-        logger.info(String.format("Aggregated benchmark result: %s", aggregatedResult));
+        List<AggregatedResult> aggregatedResults = resultAggregator.process(results);
+
+        for(var aggregatedResult : aggregatedResults)
+        {
+            logger.info(String.format("Aggregated result: %s", aggregatedResult));
+        }
     }
 
     /**
@@ -90,9 +94,9 @@ public class Main
     private static Map<String, Object> buildBenchmarkConfig()
     {
         Map<String, Object> config = new HashMap<>();
-        config.put("input_sizes", List.of(BENCHMARK_DATA_SIZES.get(2)));
+        config.put("input_sizes", BENCHMARK_DATA_SIZES);
         config.put("iterations", BENCHMARK_ITERATIONS);
-        config.put("strategies", List.of("MergeSort"));
+        config.put("strategies", List.of("BubbleSort", "InsertionSort", "MergeSort"));
         config.put("profiling_mode", ProfilingMode.EXECUTION_TIME);
         return config;
     }

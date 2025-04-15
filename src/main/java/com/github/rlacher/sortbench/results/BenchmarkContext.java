@@ -35,7 +35,7 @@ import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 *
 * This class is immutable, ensuring that context parameters cannot be modified after creation.
 */
-public final class BenchmarkContext
+public final class BenchmarkContext implements Comparable<BenchmarkContext>
 {
     /** The type of input data that was sorted. */
     private final BenchmarkData.DataType dataType;
@@ -147,5 +147,38 @@ public final class BenchmarkContext
     public int hashCode()
     {
         return Objects.hash(dataType, dataLength, sortStrategyName);
+    }
+
+    @Override
+    /**
+     * Compares this BenchmarkContext for order: dataType, dataLength, sortStrategyName.
+     *
+     * @param other The BenchmarkContext to be compared with.
+     * @return Negative, zero, or positive integer for less, equal, or greater.
+     * @throws IllegalArgumentException If other is null.
+     */
+    public int compareTo(BenchmarkContext other)
+    {
+        if (other == null)
+        {
+            throw new IllegalArgumentException("Cannot compare to null");
+        }
+
+        // Compare by data type first
+        int dataTypeComparison = this.dataType.compareTo(other.dataType);
+        if (dataTypeComparison != 0)
+        {
+            return dataTypeComparison;
+        }
+
+        // If data types are equal, compare by data length
+        int dataLengthComparison = Integer.compare(this.dataLength, other.dataLength);
+        if (dataLengthComparison != 0)
+        {
+            return dataLengthComparison;
+        }
+
+        // If data types and data lengths are equal, compare by sort strategy name
+        return this.sortStrategyName.compareTo(other.sortStrategyName);
     }
 }

@@ -76,7 +76,12 @@ class ResultAggregatorTest
             new BenchmarkResult(context, profilingMode, 3.0)
         );
 
-        AggregatedResult aggregatedResult = aggregator.process(results);
+        List<AggregatedResult> aggregatedResults = aggregator.process(results);
+
+        assertNotNull(aggregatedResults);
+        assertEquals(1, aggregatedResults.size());
+
+        AggregatedResult aggregatedResult = aggregatedResults.getFirst();
 
         assertNotNull(aggregatedResult);
         assertEquals(2.0, aggregatedResult.getAggregate(), 1e-9, "Aggregated result does not match expected value");
@@ -90,9 +95,13 @@ class ResultAggregatorTest
     {
         List<BenchmarkResult> results = List.of(new BenchmarkResult(context, profilingMode, 7.0));
 
-        AggregatedResult aggregatedResult = aggregator.process(results);
+        List<AggregatedResult> aggregatedResults = aggregator.process(results);
 
-        assertNotNull(aggregatedResult);
+        assertNotNull(aggregatedResults);
+        assertEquals(1, aggregatedResults.size());
+
+        AggregatedResult aggregatedResult = aggregatedResults.getFirst();
+
         assertEquals(7.0, aggregatedResult.getAggregate(), 1e-9, "Aggregated result does not match expected value");
         assertEquals(1, aggregatedResult.getIterations(), "Iterations count is incorrect");
         assertEquals(context, aggregatedResult.getContext(), "Context is incorrect");
@@ -111,7 +120,7 @@ class ResultAggregatorTest
     }
 
     @Test
-    void process_inconsistentContexts_throwsIllegalArgumentException()
+    void process_twoContexts_returnsTwoAggregatedResults()
     {
         BenchmarkContext differentContext = new BenchmarkContext(BenchmarkData.DataType.SORTED, 10, "BubbleSort");
         List<BenchmarkResult> results = List.of(
@@ -119,6 +128,15 @@ class ResultAggregatorTest
             new BenchmarkResult(differentContext, profilingMode, 2.0)
         );
 
-        assertThrows(IllegalArgumentException.class, () -> aggregator.process(results), "Results must have the same context");
+        List<AggregatedResult> aggregatedResults = aggregator.process(results);
+
+        assertNotNull(aggregatedResults, "Aggregated results must not be null");
+        assertEquals(2, aggregatedResults.size(), "process() must return a list of two aggregated results.");
+        
+        // Check that the contexts are present, regardless of order
+        assertTrue(aggregatedResults.stream().anyMatch(result -> result.getContext().equals(context)),
+                "Aggregated results should contain a result with the first context");
+        assertTrue(aggregatedResults.stream().anyMatch(result -> result.getContext().equals(differentContext)),
+                "Aggregated results should contain a result with the second context");
     }
 }

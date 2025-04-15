@@ -22,10 +22,14 @@
 
 package com.github.rlacher.sortbench.results;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 
@@ -73,11 +77,11 @@ public class ResultAggregator
      * Processes the given list of benchmark results, applying the filter and aggregator.
      * 
      * @param results The list of benchmark results to process. Must neither be null nor empty.
-     * @return A new {@link AggregatedResult} containing the aggregated result.
+     * @return A list of {@link AggregatedResult} containing the aggregated results.
      * @throws IllegalArgumentException If the results list is null or empty, or if any two results within the list
      * have differing {@link BenchmarkContext} or {@link ProfilingMode} values.
      */
-    public AggregatedResult process(List<BenchmarkResult> results)
+    public List<AggregatedResult> process(List<BenchmarkResult> results)
     {
         if(results == null)
         {
@@ -89,20 +93,44 @@ public class ResultAggregator
             throw new IllegalArgumentException("Results must not be empty");
         }
 
-        final BenchmarkContext context = results.get(0).getContext();
         final ProfilingMode profilingMode = results.get(0).getProfilingMode();
-
-        if(results.stream().anyMatch(result -> !Objects.equals(result.getContext(), context)))
-        {
-            throw new IllegalArgumentException("All results must have the same context");
-        }
 
         if(results.stream().anyMatch(result -> result.getProfilingMode() != profilingMode))
         {
             throw new IllegalArgumentException("All results must have the same profiling mode");
         }
 
-        List<BenchmarkResult> filteredResults = results.stream().filter(filter).toList();
+        Map<String, List<BenchmarkResult>> resultMap = results.stream()
+            .collect(Collectors.groupingBy(result -> result.getContext().toString()));
+
+        List<AggregatedResult> aggregatedResults = new ArrayList<>();
+        for(var resultGroupByContext: resultMap.values())
+        {
+            AggregatedResult aggregatedResultByContext = processResultsByContext(resultGroupByContext);
+            aggregatedResults.add(aggregatedResultByContext);
+        }
+
+        Collections.sort(aggregatedResults);
+        return aggregatedResults;
+    }
+
+    /**
+     * Processes benchmark results for a single context.
+     * 
+     * @param resultGroup The results to process.
+     * @return The aggregated result.
+     * @throws IllegalArgumentException If results have different contexts or no results match the filter.
+     */
+    protected AggregatedResult processResultsByContext(final List<BenchmarkResult> resultGroup)
+    {
+        final BenchmarkContext context = resultGroup.get(0).getContext();
+
+        if(resultGroup.stream().anyMatch(result -> !Objects.equals(result.getContext(), context)))
+        {
+            throw new IllegalArgumentException("All results in group must have the same context");
+        }
+
+        List<BenchmarkResult> filteredResults = resultGroup.stream().filter(filter).toList();
 
         if(filteredResults.isEmpty())
         {
@@ -110,14 +138,9 @@ public class ResultAggregator
         }
 
         // Use original list size for correct iteration count
-        final int iterations = results.size();
+        final int iterations = resultGroup.size();
+        final ProfilingMode profilingMode = resultGroup.getFirst().getProfilingMode();
 
-        return new AggregatedResult
-        (
-            context,
-            profilingMode,
-            aggregator.apply(filteredResults),
-            iterations
-        );
+        return new AggregatedResult(context, profilingMode, aggregator.apply(filteredResults), iterations);
     }
 }

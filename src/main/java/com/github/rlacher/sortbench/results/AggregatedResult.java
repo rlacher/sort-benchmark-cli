@@ -32,7 +32,7 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
  * This class encapsulates the aggregated benchmark result produced by the {@link ResultAggregator},
  * associating it with a specific {@link BenchmarkContext} and {@link ProfilingMode}.
  */
-public final class AggregatedResult
+public final class AggregatedResult implements Comparable<AggregatedResult>
 {
     /** The benchmark context that defines the contextual parameters of the aggregated result. */
     private final BenchmarkContext context;
@@ -78,6 +78,20 @@ public final class AggregatedResult
         this.profilingMode = profilingMode;
         this.aggregate = aggregate;
         this.iterations = iterations;
+    }
+
+    /**
+     * Defines the natural comparison logic for AggregatedResult.
+     * 
+     * @param other The aggregated result to be compared.
+     * @return A negative integer, zero, or a positive integer as this object
+     * is less than, equal to, or greater than the specified object.
+     * @throws NullPointerException if the specified object is null.
+     */
+    @Override
+    public int compareTo(AggregatedResult other)
+    {
+        return context.compareTo(other.getContext());
     }
 
     /**
