@@ -83,7 +83,7 @@ class BenchmarkerTest
         benchmarker.reportShift();
         benchmarker.stopProfiling();
 
-        assertEquals(1, Double.valueOf(benchmarker.getResult().getValue()).intValue(), "Data write count should be 1");
+        assertEquals(1, Double.valueOf(benchmarker.getMetric().getValue()).intValue(), "Data write count should be 1");
     }
 
     // Test if reportSwap() increases data write counter correctly in the Benchmarker class.
@@ -95,7 +95,7 @@ class BenchmarkerTest
         benchmarker.reportSwap();
         benchmarker.stopProfiling();;
 
-        assertEquals(2, Double.valueOf(benchmarker.getResult().getValue()).intValue(), "Data write count should be 2");
+        assertEquals(2, Double.valueOf(benchmarker.getMetric().getValue()).intValue(), "Data write count should be 2");
     }
 
     // Tests that the Benchmarker class does not increment swaps when a different profiling mode is used.
@@ -107,7 +107,7 @@ class BenchmarkerTest
         benchmarker.reportSwap();
         benchmarker.stopProfiling();
 
-        assertEquals(0, Double.valueOf(benchmarker.getResult().getValue()).intValue(), "Swaps should not be incremented");
+        assertEquals(0, Double.valueOf(benchmarker.getMetric().getValue()).intValue(), "Swaps should not be incremented");
     }
 
     // Tests the negative write count check in reportWrites()
@@ -139,7 +139,7 @@ class BenchmarkerTest
         benchmarker.reportWrites(1);
         benchmarker.stopProfiling();
 
-        assertEquals(0, Double.valueOf(benchmarker.getResult().getValue()).intValue(), "Result value should not change if profiling mode is not DATA_WRITE_COUNT.");
+        assertEquals(0, Double.valueOf(benchmarker.getMetric().getValue()).intValue(), "Result value should not change if profiling mode is not DATA_WRITE_COUNT.");
     }
 
     // Test if data write counter is accumulative over multiple reportWrites() calls.
@@ -153,7 +153,7 @@ class BenchmarkerTest
         benchmarker.reportWrites(2);
         benchmarker.stopProfiling();
 
-        assertEquals(3, Double.valueOf(benchmarker.getResult().getValue()).intValue(), "Result value should equal the sum of reported write counts.");
+        assertEquals(3, Double.valueOf(benchmarker.getMetric().getValue()).intValue(), "Result value should equal the sum of reported write counts.");
     }
 
     // Tests the reset method of the Benchmarker class when called with the profiling mode set to {@link Benchmarker.ProfilingMode#SWAP_COUNT}.
@@ -166,7 +166,7 @@ class BenchmarkerTest
         benchmarker.stopProfiling();
         benchmarker.reset();
 
-        assertEquals(0, Double.valueOf(benchmarker.getResult().getValue()).intValue(), "Data write counter should be reset to 0");
+        assertEquals(0, Double.valueOf(benchmarker.getMetric().getValue()).intValue(), "Data write counter should be reset to 0");
     }
 
     // Tests if reset() throws an IllegalStateException while profiling is active.
@@ -195,7 +195,7 @@ class BenchmarkerTest
 
         benchmarker.stopProfiling();
 
-        assertTrue(Double.valueOf(benchmarker.getResult().getValue()).intValue() >= HUNDRED_MS, "Execution time should be greater than or equal to sleep time");
+        assertTrue(Double.valueOf(benchmarker.getMetric().getValue()).intValue() >= HUNDRED_MS, "Execution time should be greater than or equal to sleep time");
     }
 
     /*
@@ -214,7 +214,7 @@ class BenchmarkerTest
 
         benchmarker.stopProfiling();
 
-        assertEquals(FIFTY_MB / 1024, Double.valueOf(benchmarker.getResult().getValue()).intValue(), TEN_MB / 1024, "Memory consumption should be approximately 50MB");
+        assertEquals(FIFTY_MB / 1024, Double.valueOf(benchmarker.getMetric().getValue()).intValue(), TEN_MB / 1024, "Memory consumption should be approximately 50MB");
     }
 
     // Tests the startProfiling() method when called twice.
@@ -242,7 +242,7 @@ class BenchmarkerTest
         benchmarker.startProfiling();
         benchmarker.stopProfiling();
 
-        assertEquals(0, Double.valueOf(benchmarker.getResult().getValue()).intValue(), "Data write count should reset to 0 in the second cycle.");
+        assertEquals(0, Double.valueOf(benchmarker.getMetric().getValue()).intValue(), "Data write count should reset to 0 in the second cycle.");
     }
 
     // Tests the stopProfiling() method when called without starting profiling.
@@ -262,7 +262,7 @@ class BenchmarkerTest
         benchmarker.startProfiling();
         benchmarker.stopProfiling();
 
-        assertEquals(0, Double.valueOf(benchmarker.getResult().getValue()).intValue(), "Result value should be 0");
+        assertEquals(0, Double.valueOf(benchmarker.getMetric().getValue()).intValue(), "Result value should be 0");
     }
 
     // Tests the getResult() method when profiling is still active.
@@ -272,7 +272,7 @@ class BenchmarkerTest
         Benchmarker benchmarker = new Benchmarker(Benchmarker.ProfilingMode.EXECUTION_TIME);
         benchmarker.startProfiling();
 
-        assertThrows(IllegalStateException.class, () -> benchmarker.getResult(), "getResult() should throw IllegalStateException when profiling is active");
+        assertThrows(IllegalStateException.class, () -> benchmarker.getMetric(), "getResult() should throw IllegalStateException when profiling is active");
     }
 
     // Tests measureMemory() throws an IllegalStateException if not profiling.
@@ -305,6 +305,6 @@ class BenchmarkerTest
 
         benchmarker.stopProfiling();
 
-        assertEquals(FIFTY_MB / 1024, Double.valueOf(benchmarker.getResult().getValue()).intValue(), TEN_MB / 1024, "Memory usage should be approximately 50MB");
+        assertEquals(FIFTY_MB / 1024, Double.valueOf(benchmarker.getMetric().getValue()).intValue(), TEN_MB / 1024, "Memory usage should be approximately 50MB");
     }
 }

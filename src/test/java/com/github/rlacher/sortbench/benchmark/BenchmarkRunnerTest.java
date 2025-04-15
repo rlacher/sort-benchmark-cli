@@ -87,8 +87,9 @@ class BenchmarkRunnerTest {
     @Test
     void run_validConfig_returnsBenchmarkResults()
     {
-        BenchmarkResult mockResult = mock(BenchmarkResult.class);
-        when(sorter.sort(any(int[].class))).thenReturn(mockResult);
+        BenchmarkMetric mockMetric = mock(BenchmarkMetric.class);
+        when(sorter.sort(any(int[].class))).thenReturn(mockMetric);
+        when(mockMetric.getProfilingMode()).thenReturn((ProfilingMode)validConfig.get("profiling_mode"));
 
         List<BenchmarkResult> results = benchmarkRunner.run(validConfig);
         assertNotNull(results, "run() should return a non-null list of BenchmarkResults");

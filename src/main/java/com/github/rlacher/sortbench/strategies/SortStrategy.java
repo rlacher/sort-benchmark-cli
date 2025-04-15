@@ -22,18 +22,19 @@
 
 package com.github.rlacher.sortbench.strategies;
 
-import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
+import com.github.rlacher.sortbench.benchmark.BenchmarkMetric;
 
 /**
- * Interface for sorting strategies.
+ * Defines the contract for sorting algorithms.
  */
 public interface SortStrategy
 {
     /**
-     * Contract for sorting algorithms.
-     * @param array The array to be sorted.
+     * Sorts the given integer array and returns profiling metrics.
+     * 
+     * @param array The array to be sorted. Must not be null.
+     * @returns A {@link BenchmarkMetric} object containing profiling metrics.
      * @throws NullPointerException If the input array is null.
-     * returns A {@link BenchmarkResult} object containing profiling metrics.
      */ 
-    BenchmarkResult sort(final int[] array);
+    BenchmarkMetric sort(final int[] array);
 }

@@ -24,7 +24,7 @@ package com.github.rlacher.sortbench.sorter;
 
 import java.util.logging.Logger;
 
-import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
+import com.github.rlacher.sortbench.benchmark.BenchmarkMetric;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
 
@@ -73,11 +73,11 @@ public class Sorter
      * Requires a prior call to setStrategy().
      * 
      * @param array The array to be sorted.
-     * @return Returns a {@link BenchmarkResult} with the metric value for the {@link ProfilingMode}. Returns 0 if the array is empty.
+     * @return Returns a {@link BenchmarkMetric} with the metric value for the {@link ProfilingMode}. Returns 0 if the array is empty.
      * @throws IllegalArgumentException If the array is null.
      * @throws IllegalStateException If the sort strategy is null.
      */
-    public BenchmarkResult sort(final int[] array)
+    public BenchmarkMetric sort(final int[] array)
     {
         if(array == null)
         {
@@ -92,7 +92,7 @@ public class Sorter
         if(array.length == 0)
         {
             logger.info("Array is empty, no sorting performed.");
-            return new BenchmarkResult(ProfilingMode.NONE, 0);
+            return new BenchmarkMetric(ProfilingMode.NONE, 0);
         }
 
         logger.finer(String.format("Performing sort using sort strategy %s", sortStrategy.getClass().getSimpleName()));

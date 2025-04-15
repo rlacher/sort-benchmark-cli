@@ -30,8 +30,6 @@ import java.util.logging.Logger;
 
 /**
  * Benchmarker class for profiling sorting algorithms.
- * 
- * TODO: The current design of the Benchmarker needs refactoring as it is becoming too monolithic and difficult to maintain. See issue #2.
  */
 public class Benchmarker
 {
@@ -282,28 +280,28 @@ public class Benchmarker
     }
 
     /**
-     * Returns the benchmark result based on the profiling mode.
+     * Returns the benchmark metric based on the profiling mode.
      * 
-     * @return The benchmark result containing the profiling mode and the corresponding metric value.
+     * @return The benchmark iteration metric containing the profiling mode and the corresponding metric value.
      * @throws IllegalStateException If the profiling is still in progress or the profiling mode is not set (should not happen).
      */
-    public BenchmarkResult getResult()
+    public BenchmarkMetric getMetric()
     {
         if(isProfiling)
         {
-            throw new IllegalStateException("Cannot get result while profiling is still in progress.");
+            throw new IllegalStateException("Cannot get metric while profiling is still in progress.");
         }
 
         switch(profilingMode)
         {
             case NONE:
-                return new BenchmarkResult(profilingMode, 0);
+                return new BenchmarkMetric(profilingMode, 0);
             case MEMORY_USAGE:
-                return new BenchmarkResult(profilingMode, maxMemoryKb - initialMemoryKb);
+                return new BenchmarkMetric(profilingMode, maxMemoryKb - initialMemoryKb);
             case DATA_WRITE_COUNT:
-                return new BenchmarkResult(profilingMode, dataWriteCount);
+                return new BenchmarkMetric(profilingMode, dataWriteCount);
             case EXECUTION_TIME:
-                return new BenchmarkResult(profilingMode, (startTime == null) ? 0 : Duration.between(startTime, endTime).toNanos() / 1e6);
+                return new BenchmarkMetric(profilingMode, (startTime == null) ? 0 : Duration.between(startTime, endTime).toNanos() / 1e6);
             default:
                 throw new IllegalStateException("Unexpected profiling mode: " + profilingMode);
         }

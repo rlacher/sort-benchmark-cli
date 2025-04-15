@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
+import com.github.rlacher.sortbench.benchmark.BenchmarkMetric;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
 
@@ -84,10 +84,10 @@ class SorterTest
     void sort_emptyArray_returnsResultZero()
     {
         sorter.setStrategy(mockStrategy);
-        BenchmarkResult result = sorter.sort(new int[0]);
+        BenchmarkMetric metric = sorter.sort(new int[0]);
 
-        assertEquals(0, result.getValue(), "sort() should return 0 for empty array");
-        assertEquals(ProfilingMode.NONE, result.getProfilingMode(), "sort() should return NONE for empty array");
+        assertEquals(0, metric.getValue(), "sort() should return 0 for empty array");
+        assertEquals(ProfilingMode.NONE, metric.getProfilingMode(), "sort() should return NONE for empty array");
     }
 
     @Test

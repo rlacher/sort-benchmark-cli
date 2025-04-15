@@ -168,14 +168,16 @@ public class BenchmarkRunner
             {
                 sorter.setStrategy(sortStrategy);
 
-                List<BenchmarkResult> results = benchmarkDataList.stream()
+                List<BenchmarkMetric> metrics = benchmarkDataList.stream()
                 .map(benchmarkData ->
                         sorter.sort(new BenchmarkData(benchmarkData).getData())
                     )
                 .toList();
 
-                results.stream().forEach(result ->  
-                    logger.fine(String.format("Sorting strategy: %s, benchmark result: %s", sortStrategy.getClass().getSimpleName(), result.toString())));
+                metrics.stream().forEach(metric ->
+                    logger.fine(String.format("Sorting strategy: %s, benchmark metric: %s", sortStrategy.getClass().getSimpleName(), metric.toString())));
+
+                List<BenchmarkResult> results = metrics.stream().map(metric -> new BenchmarkResult(metric.getProfilingMode(), metric.getValue())).collect(Collectors.toList());
 
                 allResults.addAll(results);
             });

@@ -24,7 +24,7 @@
 
  import java.util.logging.Logger;
   
- import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
+ import com.github.rlacher.sortbench.benchmark.BenchmarkMetric;
  import com.github.rlacher.sortbench.benchmark.Benchmarker;
  import com.github.rlacher.sortbench.sorter.Sorter;
  import com.github.rlacher.sortbench.strategies.SortStrategy;
@@ -77,7 +77,7 @@
       * @return The sorted array.
       */
      @Override
-     public BenchmarkResult sort(final int[] array)
+     public BenchmarkMetric sort(final int[] array)
      {
          benchmarker.startProfiling();
 
@@ -99,7 +99,7 @@
          benchmarker.stopProfiling();
          logger.finest(InsertionSortStrategy.class.getSimpleName() + " completed sorting.");
  
-         return benchmarker.getResult();
+         return benchmarker.getMetric();
      }
 
     /**
