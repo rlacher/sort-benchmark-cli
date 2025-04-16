@@ -50,7 +50,8 @@ public class SortStrategyProfilingTest
         (
             new BubbleSortStrategy(mockBenchmarker),
             new InsertionSortStrategy(mockBenchmarker),
-            new MergeSortStrategy(mockBenchmarker)
+            new MergeSortStrategy(mockBenchmarker),
+            new HeapSortStrategy(mockBenchmarker)
         );
     }
 

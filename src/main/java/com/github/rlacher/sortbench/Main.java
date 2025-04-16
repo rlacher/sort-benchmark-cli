@@ -96,7 +96,7 @@ public class Main
         Map<String, Object> config = new HashMap<>();
         config.put("input_sizes", BENCHMARK_DATA_SIZES);
         config.put("iterations", BENCHMARK_ITERATIONS);
-        config.put("strategies", List.of("BubbleSort", "InsertionSort", "MergeSort"));
+        config.put("strategies", List.of("BubbleSort", "InsertionSort", "MergeSort", "HeapSort"));
         config.put("profiling_mode", ProfilingMode.EXECUTION_TIME);
         return config;
     }

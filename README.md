@@ -96,11 +96,20 @@ This project is built and tested with the following environment:
 
 **Measurement:**
 
-- *Runtime:* Measured by profiling the sort operation's execution time.
+- *Execution time:* Measured by profiling the sort operation's runtime.
 - *Data writes:* Counted directly within the sorting algorithm's code by tracking the number of element writes (swaps, shifts, and inserts).
-- *Memory:* JVM heap memory consumption, measured at key points during the sorting process.
+- *Memory usage:* JVM heap memory consumption, measured at key points during the sorting process.
 
-**Algorithm implmementation:**
+**Algorithm implementation:**
+
+The following sorting algorithms are implemented in Java to sort in ascending order.
+
+| **Algorithm** | **Description** | **Implementation**
+| --- | --- | --- |
+| Bubble Sort| Performs iterative passes through the array, comparing adjacent elements and swapping them if out of order. | Standard in-place. |
+| Insertion Sort | Iteratively builds a sorted array by inserting each unsorted element into its correct position within the sorted portion. | Standard in-place. |
+| Merge Sort | Recursively divides an array into smaller subarrays, sorts them, and merges them into a single sorted array. | Recursive top-down implementation with standard two-way merging using an auxiliary array. |
+| Heap Sort | Leverages a heap data structure to sort an array by repeatedly extracting the root element and placing it in its final position. | Max heap is built bottom-up from the last non-leaf node. The `heapify` operation is implemented recursively. |
 
 ### Design
 
@@ -115,9 +124,9 @@ Pre-generated `BenchmarkData`, created upfront by the `BenchmarkDataFactory`, is
 
 ### Test
 
-This project features a robust suite of unit tests, built with JUnit and Mockito, to ensure the reliability and correctness of the benchmarking framework. The testing strategy rigorously applies principles such as boundary condition analysis, equivalence class partitioning, exception handling verification, and thorough data flow validation across components.
+This project features a robust suite of **224 unit tests**, built with JUnit and Mockito, to ensure the reliability and correctness of the benchmarking framework. The testing strategy rigorously applies principles such as boundary condition analysis, equivalence class partitioning, exception handling verification, and thorough data flow validation across components.
 
-The current test suite achieves significant coverage, reaching **97% statement coverage** and **90% branch coverage**, demonstrating a strong commitment to code quality and comprehensive testing throughout the project.
+The current test suite achieves significant coverage, reaching **92% statement coverage** and **89% branch coverage**, demonstrating a strong commitment to code quality and comprehensive testing throughout the project.
 
 **Running Tests:**
 
