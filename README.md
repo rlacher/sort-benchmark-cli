@@ -6,6 +6,8 @@ Repository topics: java, docker, benchmark, sorting, algorithm, microservices, r
 
 # Sorting Algorithm Benchmark
 
+[![CI Checks](https://github.com/rlacher/sort-benchmark/actions/workflows/ci.yml/badge.svg)](https://github.com/rlacher/sort-benchmark/actions/workflows/ci.yml)
+
 This project compares the performance of various sorting algorithms. The algorithms are implemented in Java.
 
 ## Purpose
