@@ -118,23 +118,4 @@ public class BubbleSortStrategy implements SortStrategy
 
         return benchmarker.getMetric();
     }
-
-    /**
-     * Swaps two elements at the specified indices within the given array.
-     * 
-     * This method assumes a non-null array and valid indices for optimal performance,
-     * and therefore omits argument checks.
-     * 
-     * @param array The array in which the elements are to be swapped.
-     * @param i The index of the first element.
-     * @param j The index of the second element.
-     * @throws NullPointerException if {@code array} is {@code null}.
-     * @throws ArrayIndexOutOfBoundsException if either {@code i} or {@code j} is out of bounds.
-     */
-    private void swap(final int[] array, final int i, final int j)
-    {
-        int temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
 }

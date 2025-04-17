@@ -58,9 +58,10 @@ public class BenchmarkRunner
     static
     {
         strategyMap.put("BubbleSort", BubbleSortStrategy.class);
+        strategyMap.put("HeapSort", HeapSortStrategy.class);
         strategyMap.put("InsertionSort", InsertionSortStrategy.class);
         strategyMap.put("MergeSort", MergeSortStrategy.class);
-        strategyMap.put("HeapSort", HeapSortStrategy.class);
+        strategyMap.put("QuickSort", QuickSortStrategy.class);
     }
 
     /** Sort context to execute and benchmark different sorting strategies. */

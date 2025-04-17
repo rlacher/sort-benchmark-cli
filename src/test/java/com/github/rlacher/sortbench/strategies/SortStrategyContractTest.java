@@ -49,9 +49,10 @@ public class SortStrategyContractTest
         return Stream.of
         (
             new BubbleSortStrategy(mockBenchmarker),
+            new HeapSortStrategy(mockBenchmarker),
             new InsertionSortStrategy(mockBenchmarker),
             new MergeSortStrategy(mockBenchmarker),
-            new HeapSortStrategy(mockBenchmarker)
+            new QuickSortStrategy(mockBenchmarker)
         );
     }
 

@@ -101,6 +101,7 @@ public class HeapSortStrategy implements SortStrategy
         for(int i = array.length -1; i > 0; --i)
         {
            swap(array, 0, i);
+           benchmarker.reportSwap();
            --heapSize;
            heapify(array, heapSize, 0);
         }
@@ -156,24 +157,9 @@ public class HeapSortStrategy implements SortStrategy
        if(largest != root)
        {
            swap(array, largest, root);
+           benchmarker.reportSwap();
            heapify(array, heapSize, largest);
        }
     }
-
-    /**
-     * Swaps the elements at two specified indices within the given array.
-     * 
-     * @param array The array in which the swap operation takes place.
-     * @param i The index of one element to be swapped.
-     * @param j The index of the other element to be swapped.
-     * @throws NullPointerException If array is null.
-     */
-     private void swap(final int[] array, final int i, final int j)
-     {
-        final int temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-        benchmarker.reportSwap();
-     }
 }
  
