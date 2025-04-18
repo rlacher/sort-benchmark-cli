@@ -121,6 +121,7 @@ public class QuickSortStrategy implements SortStrategy
      * Elements smaller than the pivot are moved to the left, and elements greater than or equal to
      * the pivot are moved to the right.
      *
+     * This partitioning employs a two-pointer approach, with pointers moving from the left and right of the subarray.
      * Only call with subarrays of size > 1. Subroutine of {@link QuickSortStrategy#quickSort}.
      *
      * @param array The array to be partitioned.
