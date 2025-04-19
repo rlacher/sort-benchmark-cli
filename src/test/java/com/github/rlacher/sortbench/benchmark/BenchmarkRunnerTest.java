@@ -36,7 +36,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.github.rlacher.sortbench.sorter.Sorter;
-import com.github.rlacher.sortbench.strategies.SortStrategy;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 import com.github.rlacher.sortbench.results.BenchmarkMetric;
@@ -45,15 +44,15 @@ import com.github.rlacher.sortbench.results.BenchmarkResult;
 // Unit tests for the BenchmarkRunner class.
 class BenchmarkRunnerTest {
 
-    private Sorter sorter;
+    private Sorter mockSorter;
     private BenchmarkRunner benchmarkRunner;
     private Map<String, Object> validConfig;
 
     @BeforeEach
     void setUp()
     {
-        sorter = Mockito.mock(Sorter.class);
-        benchmarkRunner = new BenchmarkRunner(sorter);
+        mockSorter = Mockito.mock(Sorter.class);
+        benchmarkRunner = new BenchmarkRunner(mockSorter);
         validConfig = new HashMap<>();
         validConfig.put("input_sizes", Arrays.asList(10));
         validConfig.put("iterations", 1);
@@ -106,7 +105,7 @@ class BenchmarkRunnerTest {
     void run_validConfig_returnsBenchmarkResults()
     {
         BenchmarkMetric mockMetric = mock(BenchmarkMetric.class);
-        when(sorter.sort(any(int[].class))).thenReturn(mockMetric);
+        when(mockSorter.sort(any(int[].class))).thenReturn(mockMetric);
         when(mockMetric.getProfilingMode()).thenReturn((ProfilingMode)validConfig.get("profiling_mode"));
 
         List<BenchmarkResult> results = benchmarkRunner.run(validConfig);
@@ -115,15 +114,11 @@ class BenchmarkRunnerTest {
     }
 
     @Test
-    void getStrategyInstance_validStrategy_returnsStrategy()
+    void run_unknownStrategy_throwsIllegalArgumentException()
     {
-        SortStrategy strategy = BenchmarkRunner.getStrategyInstance("MergeSort", ProfilingMode.EXECUTION_TIME);
-        assertNotNull(strategy, "getStrategyInstance should return a valid SortStrategy instance");
-    }
-
-    @Test
-    void getStrategyInstance_invalidStrategy_throwsIllegalArgumentException()
-    {
-        assertThrows(IllegalArgumentException.class, () -> BenchmarkRunner.getStrategyInstance("InvalidStrategy", ProfilingMode.EXECUTION_TIME), "getStrategyInstance should throw IllegalArgumentException for an invalid strategy name");
+        Map<String, Object> unknownStrategyConfig = new HashMap<>(validConfig);
+        // Valid string in validation but unknown strategy name
+        unknownStrategyConfig.put("strategies", List.of("UnknownSort"));
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(unknownStrategyConfig), "getStrategyInstance should throw IllegalArgumentException for an invalid strategy name");
     }
 }

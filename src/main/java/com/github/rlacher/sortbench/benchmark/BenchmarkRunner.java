@@ -177,7 +177,7 @@ public class BenchmarkRunner
      * @param iterations The number of data arrangements per size and dataType to be generated.
      * @return A map where keys are data lengths and values are lists of benchmark data.
      */
-    private static Map<Integer, List<BenchmarkData>> generateBenchmarkDataBySizes(final List<Integer> sizes, BenchmarkData.DataType dataType, final int iterations)
+    private Map<Integer, List<BenchmarkData>> generateBenchmarkDataBySizes(final List<Integer> sizes, BenchmarkData.DataType dataType, final int iterations)
     {
         Map<Integer, List<BenchmarkData>> dataBySize = new HashMap<>();
 
@@ -201,7 +201,7 @@ public class BenchmarkRunner
      * @param mode The profiling mode to use.
      * @return An instance of the SortStrategy. Returns null in case of instantiation failure.
      */
-    public static SortStrategy getStrategyInstance(String strategyName, ProfilingMode mode)
+    protected SortStrategy getStrategyInstance(String strategyName, ProfilingMode mode)
     {
         Class<? extends SortStrategy> strategyClass = strategyMap.get(strategyName);
         if (strategyClass == null)
