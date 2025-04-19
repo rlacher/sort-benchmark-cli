@@ -34,6 +34,7 @@ import java.util.stream.Stream;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkDataFactory;
+import com.github.rlacher.sortbench.config.ConfigValidator;
 import com.github.rlacher.sortbench.results.BenchmarkMetric;
 import com.github.rlacher.sortbench.results.BenchmarkResult;
 import com.github.rlacher.sortbench.results.BenchmarkContext;
@@ -67,34 +68,6 @@ public class BenchmarkRunner
     /** Sort context to execute and benchmark different sorting strategies. */
     private Sorter sorter;
 
-    /**
-     * Creates an instance of a SortStrategy based on the provided strategy name and profiling mode.
-     * 
-     * @param strategyName The name of the sorting strategy.
-     * @param mode The profiling mode to use.
-     * @return An instance of the SortStrategy. Returns null in case of instantiation failure.
-     */
-    public static SortStrategy getStrategyInstance(String strategyName, ProfilingMode mode)
-    {
-        Class<? extends SortStrategy> strategyClass = strategyMap.get(strategyName);
-        if (strategyClass == null)
-        {
-            throw new IllegalArgumentException(String.format("Unknown sort strategy '%s'", strategyName));
-        }
-
-        SortStrategy strategy = null;
-        try
-        {
-            strategy = strategyClass.getConstructor(new Class<?>[]{ Benchmarker.class }).newInstance(new Benchmarker(mode));
-        }
-        catch(ReflectiveOperationException exception)
-        {
-            logger.warning(String.format("Exception instantiating strategy name '%s' (type: %s, message: %s)", strategyName, exception.getClass().getSimpleName(), exception.getMessage()));
-        }
-
-        return strategy;
-    }
-
     public BenchmarkRunner(Sorter sorter)
     {
         if(sorter == null)
@@ -119,42 +92,18 @@ public class BenchmarkRunner
             throw new IllegalArgumentException("Benchmark config must not be null");
         }
 
-        final List<?> inputSizesList = (List<?>) benchmarkConfig.get("input_sizes");
+        final List<Integer> inputSizes = ConfigValidator.validateAndGetList(benchmarkConfig, "input_sizes", Integer.class);
+        final int iterations = ConfigValidator.validateAndGet(benchmarkConfig, "iterations", Integer.class);
+        final ProfilingMode profilingMode = ConfigValidator.validateAndGet(benchmarkConfig, "profiling_mode", ProfilingMode.class);
 
-        if (inputSizesList == null || !inputSizesList.stream().allMatch(Integer.class::isInstance))
-        {
-            throw new IllegalArgumentException("Invalid input sizes configuration");
-        }
-
-        final int[] inputSizes = inputSizesList.stream()
-            .map(Integer.class::cast)
-            .mapToInt(Integer::intValue)
-            .toArray();
-
-        final int iterations = (int) benchmarkConfig.get("iterations");
-        final ProfilingMode profilingMode = (ProfilingMode) benchmarkConfig.get("profiling_mode");
-        final List<?> strategyNames = (List<?>) benchmarkConfig.get("strategies");
-
-        if (strategyNames == null || !strategyNames.stream().allMatch(String.class::isInstance))
-        {
-            throw new IllegalArgumentException("Invalid strategies configuration");
-        }
-
+        final List<String> strategyNames = ConfigValidator.validateAndGetList(benchmarkConfig, "strategies", String.class);
         final List<SortStrategy> strategies = strategyNames.stream()
             .map(String.class::cast)
             .map(s -> getStrategyInstance(s, profilingMode))
             .collect(Collectors.toList());
 
-        Object rawDataType = benchmarkConfig.get("data_type");
-        if (rawDataType == null)
-        {
-            throw new IllegalArgumentException("Benchmark configuration is missing 'data_type'.");
-        }
-        if (!(rawDataType instanceof String))
-        {
-            throw new IllegalArgumentException("Benchmark configuration 'data_type' must be a String, but found: " + rawDataType.getClass().getSimpleName());
-        }
-        BenchmarkData.DataType dataType = BenchmarkData.DataType.fromString((String)benchmarkConfig.get("data_type"));
+        final String dataTypeString = ConfigValidator.validateAndGet(benchmarkConfig, "data_type", String.class);
+        final BenchmarkData.DataType dataType = BenchmarkData.DataType.fromString(dataTypeString);
 
         // Initialise benchmarkData with data arrangements that all sort strategies will run on.
         Map<Integer, List<BenchmarkData>> benchmarkDataMap = generateBenchmarkDataBySizes(inputSizes, dataType, iterations);
@@ -223,19 +172,19 @@ public class BenchmarkRunner
      * Generates benchmark data grouped by data length to facilitate batch processing.
      * This improves JVM optimisation by enhancing data locality.
      *
-     * @param sizes An array of data sizes to generate benchmark data for.
+     * @param sizes An integer list of data sizes to generate benchmark data for.
      * @param dataType The type of data to be generated.
      * @param iterations The number of data arrangements per size and dataType to be generated.
      * @return A map where keys are data lengths and values are lists of benchmark data.
      */
-    private static Map<Integer, List<BenchmarkData>> generateBenchmarkDataBySizes(final int[] sizes, BenchmarkData.DataType dataType, final int iterations)
+    private static Map<Integer, List<BenchmarkData>> generateBenchmarkDataBySizes(final List<Integer> sizes, BenchmarkData.DataType dataType, final int iterations)
     {
         Map<Integer, List<BenchmarkData>> dataBySize = new HashMap<>();
 
-        IntStream.range(0, sizes.length)
+        IntStream.range(0, sizes.size())
             .forEach(i -> 
             {
-                final int dataSize = sizes[i];
+                final int dataSize = sizes.get(i);
                 List<BenchmarkData> dataList = Stream.generate(() -> BenchmarkDataFactory.createData(dataType, dataSize))
                     .limit(iterations)
                     .collect(Collectors.toList());
@@ -243,5 +192,33 @@ public class BenchmarkRunner
             });
 
         return dataBySize;
+    }
+
+    /**
+     * Creates an instance of a SortStrategy based on the provided strategy name and profiling mode.
+     * 
+     * @param strategyName The name of the sorting strategy.
+     * @param mode The profiling mode to use.
+     * @return An instance of the SortStrategy. Returns null in case of instantiation failure.
+     */
+    public static SortStrategy getStrategyInstance(String strategyName, ProfilingMode mode)
+    {
+        Class<? extends SortStrategy> strategyClass = strategyMap.get(strategyName);
+        if (strategyClass == null)
+        {
+            throw new IllegalArgumentException(String.format("Unknown sort strategy '%s'", strategyName));
+        }
+
+        SortStrategy strategy = null;
+        try
+        {
+            strategy = strategyClass.getConstructor(new Class<?>[]{ Benchmarker.class }).newInstance(new Benchmarker(mode));
+        }
+        catch(ReflectiveOperationException exception)
+        {
+            logger.warning(String.format("Exception instantiating strategy name '%s' (type: %s, message: %s)", strategyName, exception.getClass().getSimpleName(), exception.getMessage()));
+        }
+
+        return strategy;
     }
 }
