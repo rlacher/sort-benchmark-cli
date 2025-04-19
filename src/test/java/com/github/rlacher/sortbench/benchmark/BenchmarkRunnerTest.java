@@ -38,6 +38,7 @@ import org.mockito.Mockito;
 import com.github.rlacher.sortbench.sorter.Sorter;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
+import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 import com.github.rlacher.sortbench.results.BenchmarkMetric;
 import com.github.rlacher.sortbench.results.BenchmarkResult;
 
@@ -58,6 +59,7 @@ class BenchmarkRunnerTest {
         validConfig.put("iterations", 1);
         validConfig.put("strategies", Arrays.asList("MergeSort"));
         validConfig.put("profiling_mode", ProfilingMode.EXECUTION_TIME);
+        validConfig.put("data_type", BenchmarkData.DataType.RANDOM.toString());
     }
 
    @Test
@@ -69,21 +71,35 @@ class BenchmarkRunnerTest {
     @Test
     void run_nullConfig_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(null), "run() should throw IllegalArgumentException when config is null");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(null), "run should throw IllegalArgumentException when config is null");
     }
 
     @Test
     void run_invalidInputSizes_throwsIllegalArgumentException()
     {
         validConfig.put("input_sizes", Arrays.asList("invalid"));
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when input_sizes is invalid");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run should throw IllegalArgumentException when input_sizes is invalid");
     }
 
     @Test
     void run_invalidStrategies_throwsIllegalArgumentException()
     {
         validConfig.put("strategies", Arrays.asList(123));
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when strategies is invalid");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run should throw IllegalArgumentException when strategies is invalid");
+    }
+
+    @Test
+    void run_undefinedDataType_throwsIllegalArgumentException()
+    {
+        validConfig.remove("data_type");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run should throw IllegalArgumentException when data type is undefined");
+    }
+
+    @Test
+    void run_nonStringDataType_throwsIllegalArgumentException()
+    {
+        validConfig.replace("data_type", 3);
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run should throw IllegalArgumentException when data type is not of type String");
     }
 
     @Test
@@ -94,20 +110,20 @@ class BenchmarkRunnerTest {
         when(mockMetric.getProfilingMode()).thenReturn((ProfilingMode)validConfig.get("profiling_mode"));
 
         List<BenchmarkResult> results = benchmarkRunner.run(validConfig);
-        assertNotNull(results, "run() should return a non-null list of BenchmarkResults");
-        assertFalse(results.isEmpty(), "run() should return a non-empty list of BenchmarkResults");
+        assertNotNull(results, "run should return a non-null list of BenchmarkResults");
+        assertFalse(results.isEmpty(), "run should return a non-empty list of BenchmarkResults");
     }
 
     @Test
     void getStrategyInstance_validStrategy_returnsStrategy()
     {
         SortStrategy strategy = BenchmarkRunner.getStrategyInstance("MergeSort", ProfilingMode.EXECUTION_TIME);
-        assertNotNull(strategy, "getStrategyInstance() should return a valid SortStrategy instance");
+        assertNotNull(strategy, "getStrategyInstance should return a valid SortStrategy instance");
     }
 
     @Test
     void getStrategyInstance_invalidStrategy_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> BenchmarkRunner.getStrategyInstance("InvalidStrategy", ProfilingMode.EXECUTION_TIME), "getStrategyInstance() should throw IllegalArgumentException for an invalid strategy name");
+        assertThrows(IllegalArgumentException.class, () -> BenchmarkRunner.getStrategyInstance("InvalidStrategy", ProfilingMode.EXECUTION_TIME), "getStrategyInstance should throw IllegalArgumentException for an invalid strategy name");
     }
 }

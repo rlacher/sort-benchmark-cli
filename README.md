@@ -129,7 +129,7 @@ Pre-generated `BenchmarkData`, created upfront by the `BenchmarkDataFactory`, is
 
 ### Test
 
-This project features a robust suite of **253 unit tests**, built with JUnit and Mockito, to ensure the reliability and correctness of both the benchmarking framework and sorting routines. The testing strategy rigorously applies principles such as boundary condition analysis, equivalence class partitioning, exception handling verification, and thorough data flow validation across components.
+This project features a robust suite of **267 unit tests**, built with JUnit and Mockito, to ensure the reliability and correctness of both the benchmarking framework and sorting routines. The testing strategy rigorously applies principles such as boundary condition analysis, equivalence class partitioning, exception handling verification, and thorough data flow validation across components.
 
 The current test suite achieves significant coverage, reaching **92% statement coverage** and **90% branch coverage**, demonstrating a strong commitment to code quality and comprehensive testing throughout the project.
 
@@ -156,6 +156,7 @@ After the tests complete, an HTML report will be generated in the `build/reports
 
 - A strong positive correlation exists between runtime and the number of data write operations performed. However, while runtime is an empirical measure, the number of swaps serves to verify the theoretical complexity and inherent efficiency of the algorithm, being a measure independent of specific hardware and the execution environment.
 - Despite their similar O(n log n) average-case scaling, quicksort frequently outperforms heapsort and mergesort in practice. This is largely attributed to its smaller constant factors, resulting from fewer swaps and improved cache locality compared to the overhead of heap maintenance and the extensive data movements associated with mergesort's auxiliary arrays.
+- With a consistently poor pivot selection strategy (like always picking the smallest or largest element), a standard recursive Quicksort implementation is highly susceptible to stack overflow errors.
 
 ## License
 

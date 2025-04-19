@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 
 import com.github.rlacher.sortbench.benchmark.*;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
+import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 import com.github.rlacher.sortbench.results.AggregatedResult;
 import com.github.rlacher.sortbench.results.BenchmarkResult;
 import com.github.rlacher.sortbench.results.ResultAggregator;
@@ -97,6 +98,7 @@ public class Main
         config.put("input_sizes", BENCHMARK_DATA_SIZES);
         config.put("iterations", BENCHMARK_ITERATIONS);
         config.put("strategies", List.of("BubbleSort", "HeapSort", "InsertionSort", "MergeSort", "QuickSort"));
+        config.put("data_type", BenchmarkData.DataType.RANDOM.toString());
         config.put("profiling_mode", ProfilingMode.EXECUTION_TIME);
         return config;
     }

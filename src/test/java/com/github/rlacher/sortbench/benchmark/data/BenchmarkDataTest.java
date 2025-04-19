@@ -27,8 +27,6 @@ import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
-
 // Unit tests for the BenchmarkData class.
 class BenchmarkDataTest
 {

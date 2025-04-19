@@ -145,8 +145,19 @@ public class BenchmarkRunner
             .map(s -> getStrategyInstance(s, profilingMode))
             .collect(Collectors.toList());
 
+        Object rawDataType = benchmarkConfig.get("data_type");
+        if (rawDataType == null)
+        {
+            throw new IllegalArgumentException("Benchmark configuration is missing 'data_type'.");
+        }
+        if (!(rawDataType instanceof String))
+        {
+            throw new IllegalArgumentException("Benchmark configuration 'data_type' must be a String, but found: " + rawDataType.getClass().getSimpleName());
+        }
+        BenchmarkData.DataType dataType = BenchmarkData.DataType.fromString((String)benchmarkConfig.get("data_type"));
+
         // Initialise benchmarkData with data arrangements that all sort strategies will run on.
-        Map<Integer, List<BenchmarkData>> benchmarkDataMap = generateRandomBenchmarkDataBySizes(inputSizes, iterations);
+        Map<Integer, List<BenchmarkData>> benchmarkDataMap = generateBenchmarkDataBySizes(inputSizes, dataType, iterations);
 
         List<BenchmarkResult> benchmarkResults = runIterations(strategies, benchmarkDataMap);
 
@@ -192,7 +203,7 @@ public class BenchmarkRunner
                 metrics.stream().forEach(metric ->
                     logger.fine(String.format("Sorting strategy: %s, benchmark metric: %s", sortStrategy.getClass().getSimpleName(), metric.toString())));
 
-                BenchmarkContext context = new BenchmarkContext(BenchmarkData.DataType.RANDOM, dataSize, sortStrategy.name());
+                BenchmarkContext context = new BenchmarkContext(benchmarkDataList.getFirst().getType(), dataSize, sortStrategy.name());
 
                 List<BenchmarkResult> results = metrics.stream()
                     .map
@@ -213,9 +224,11 @@ public class BenchmarkRunner
      * This improves JVM optimisation by enhancing data locality.
      *
      * @param sizes An array of data sizes to generate benchmark data for.
+     * @param dataType The type of data to be generated.
+     * @param iterations The number of data arrangements per size and dataType to be generated.
      * @return A map where keys are data lengths and values are lists of benchmark data.
      */
-    private static Map<Integer, List<BenchmarkData>> generateRandomBenchmarkDataBySizes(final int[] sizes, final int iterations)
+    private static Map<Integer, List<BenchmarkData>> generateBenchmarkDataBySizes(final int[] sizes, BenchmarkData.DataType dataType, final int iterations)
     {
         Map<Integer, List<BenchmarkData>> dataBySize = new HashMap<>();
 
@@ -223,7 +236,7 @@ public class BenchmarkRunner
             .forEach(i -> 
             {
                 final int dataSize = sizes[i];
-                List<BenchmarkData> dataList = Stream.generate(() -> BenchmarkDataFactory.createRandomData(dataSize))
+                List<BenchmarkData> dataList = Stream.generate(() -> BenchmarkDataFactory.createData(dataType, dataSize))
                     .limit(iterations)
                     .collect(Collectors.toList());
                 dataBySize.put(dataSize, dataList);

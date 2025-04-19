@@ -40,10 +40,33 @@ public final class BenchmarkData
      */
     public enum DataType
     {
+        PARTIALLY_SORTED,
         RANDOM,
         REVERSED,
-        PARTIALLY_SORTED,
-        SORTED,
+        SORTED;
+
+        /**
+         * Convert a string representation into a {@link DataType} enum instance.
+         *
+         * This method is case-insensitive and ignores leading/trailing whitespace.
+         *
+         * @param value The string representation of the data type (e.g. "random", "SORTED").
+         * @return The corresponding {@link DataType} enum instance.
+         * @throws IllegalArgumentException If {@code value} is null, blank or does not match any of the enum constant names.
+         */
+        public static DataType fromString(String value)
+        {
+            if(value == null)
+            {
+                throw new IllegalArgumentException("Value must not be null");
+            }
+            if(value.isBlank())
+            {
+                throw new IllegalArgumentException("Value must not be blank");
+            }
+
+            return DataType.valueOf(value.trim().toUpperCase());
+        }
     }
 
     /**
