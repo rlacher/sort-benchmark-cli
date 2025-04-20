@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
@@ -97,16 +96,15 @@ public class BenchmarkRunner
         final ProfilingMode profilingMode = ConfigValidator.validateAndGet(benchmarkConfig, "profiling_mode", ProfilingMode.class);
 
         final List<String> strategyNames = ConfigValidator.validateAndGetList(benchmarkConfig, "strategies", String.class);
-        final List<SortStrategy> strategies = strategyNames.stream()
-            .map(String.class::cast)
-            .map(s -> getStrategyInstance(s, profilingMode))
-            .collect(Collectors.toList());
+        
+        final Map<String, SortStrategy> strategies = new HashMap<>(strategyNames.size());
+        strategyNames.stream().forEach(s -> strategies.put(s, getStrategyInstance(s, profilingMode)));
 
         final String dataTypeString = ConfigValidator.validateAndGet(benchmarkConfig, "data_type", String.class);
         final BenchmarkData.DataType dataType = BenchmarkData.DataType.fromString(dataTypeString);
 
         // Initialise benchmarkData with data arrangements that all sort strategies will run on.
-        Map<Integer, List<BenchmarkData>> benchmarkDataMap = generateBenchmarkDataBySizes(inputSizes, dataType, iterations);
+        Map<BenchmarkContext, List<BenchmarkData>> benchmarkDataMap = generateBenchmarkData(dataType, inputSizes, strategyNames, iterations);
 
         List<BenchmarkResult> benchmarkResults = runIterations(strategies, benchmarkDataMap);
 
@@ -114,18 +112,19 @@ public class BenchmarkRunner
     }
 
     /**
-     * Runs the provided sorting strategies on the given benchmark data through the sorter context.
+     * Runs the provided sorting strategies on the given benchmark data using the sorter.
      *
-     * @param strategies The list of sorting strategies to be executed.
-     * @param benchmarkDataMap The map of data sizes to lists of benchmark data.
+     * @param strategies A map of sorting strategy names to instances.
+     * @param benchmarkDataMap The map of {@link BenchmarkContext} to lists of benchmark data.
      * @return A list of benchmark results.
-     * @throws IllegalArgumentException If strategies or benchmarkDataMap are null or empty.
+     * @throws IllegalArgumentException If the {@code strategies} or {@code benchmarkDataMap} is null or empty.
+     * @throws IllegalStateException If a required sorting strategy is not found for a benchmark context.
      */
-    private List<BenchmarkResult> runIterations(final List<SortStrategy> strategies, final Map<Integer, List<BenchmarkData>> benchmarkDataMap)
+    protected List<BenchmarkResult> runIterations(final Map<String, SortStrategy> strategies, final Map<BenchmarkContext, List<BenchmarkData>> benchmarkDataMap)
     {
         if (strategies == null || strategies.isEmpty())
         {
-            throw new IllegalArgumentException("Strategies list must not be null or empty.");
+            throw new IllegalArgumentException("Strategies map must not be null or empty.");
         }
     
         if (benchmarkDataMap == null || benchmarkDataMap.isEmpty())
@@ -135,63 +134,66 @@ public class BenchmarkRunner
 
         List<BenchmarkResult> allResults = new ArrayList<>();
 
-        benchmarkDataMap.forEach((dataSize, benchmarkDataList) ->
+        benchmarkDataMap.forEach((context, dataList) ->
         {
-            logger.fine(String.format("Data size: %d", dataSize));
+            String strategyName = context.getSortStrategyName();
+            SortStrategy strategy = strategies.get(strategyName);
 
-            strategies.forEach(sortStrategy ->
+            if (strategy == null)
             {
-                sorter.setStrategy(sortStrategy);
+                throw new IllegalStateException(String.format("No sorting strategy found for name '%s' in context: %s", strategyName, context));
+            }
 
-                List<BenchmarkMetric> metrics = benchmarkDataList.stream()
-                .map(benchmarkData ->
-                        sorter.sort(new BenchmarkData(benchmarkData).getData())
-                    )
+            sorter.setStrategy(strategy);
+
+            List<BenchmarkMetric> metrics = dataList.stream()
+                .map(data -> sorter.sort(data.getData()))
                 .toList();
 
-                metrics.stream().forEach(metric ->
-                    logger.fine(String.format("Sorting strategy: %s, benchmark metric: %s", sortStrategy.getClass().getSimpleName(), metric.toString())));
-
-                BenchmarkContext context = new BenchmarkContext(benchmarkDataList.getFirst().getType(), dataSize, sortStrategy.name());
-
-                List<BenchmarkResult> results = metrics.stream()
-                    .map
-                    (
-                        metric -> new BenchmarkResult(context, metric.getProfilingMode(), metric.getValue())
-                    )
-                    .collect(Collectors.toList());
-
-                allResults.addAll(results);
-            });
+            for (BenchmarkMetric metric : metrics)
+            {
+                logger.fine(String.format("Sorting strategy: %s, benchmark metric: %s", strategy.getClass().getSimpleName(), metric.toString()));
+                allResults.add(new BenchmarkResult(context, metric.getProfilingMode(), metric.getValue()));
+            }
         });
 
         return allResults;
     }
 
     /**
-     * Generates benchmark data grouped by data length to facilitate batch processing.
+     * Generates benchmark data grouped by context to facilitate batch processing.
+     * 
      * This improves JVM optimisation by enhancing data locality.
+     * Deep copies data for each strategy to ensure result comparability.
      *
-     * @param sizes An integer list of data sizes to generate benchmark data for.
-     * @param dataType The type of data to be generated.
-     * @param iterations The number of data arrangements per size and dataType to be generated.
-     * @return A map where keys are data lengths and values are lists of benchmark data.
+     * @param dataType The type of data to generate.
+     * @param sizes A list of integer data sizes.
+     * @param strategyNames A list of sorting strategy names.
+     * @param iterations The number of data arrangements per size and data type.
+     * @return A map of {@link BenchmarkContext} to a list of benchmark data.
      */
-    private Map<Integer, List<BenchmarkData>> generateBenchmarkDataBySizes(final List<Integer> sizes, BenchmarkData.DataType dataType, final int iterations)
+    protected Map<BenchmarkContext, List<BenchmarkData>> generateBenchmarkData(BenchmarkData.DataType dataType, final List<Integer> sizes, final List<String> strategyNames, final int iterations)
     {
-        Map<Integer, List<BenchmarkData>> dataBySize = new HashMap<>();
+        Map<BenchmarkContext, List<BenchmarkData>> generatedData = new HashMap<>();
 
-        IntStream.range(0, sizes.size())
-            .forEach(i -> 
+        for(int dataSize: sizes)
+        {
+            List<BenchmarkData> initialDataList = Stream.generate(() -> BenchmarkDataFactory.createData(dataType, dataSize))
+                .limit(iterations)
+                .collect(Collectors.toList());
+
+            for(String strategyName : strategyNames)
             {
-                final int dataSize = sizes.get(i);
-                List<BenchmarkData> dataList = Stream.generate(() -> BenchmarkDataFactory.createData(dataType, dataSize))
-                    .limit(iterations)
+                List<BenchmarkData> dataListCopy = initialDataList.stream()
+                    .map(dataArrangement -> new BenchmarkData(dataArrangement))
                     .collect(Collectors.toList());
-                dataBySize.put(dataSize, dataList);
-            });
 
-        return dataBySize;
+                BenchmarkContext context = new BenchmarkContext(dataType, dataSize, strategyName);
+                generatedData.put(context, dataListCopy);
+            };
+        };
+
+        return generatedData;
     }
 
     /**
