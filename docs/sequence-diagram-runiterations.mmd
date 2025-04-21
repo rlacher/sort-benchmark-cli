@@ -1,0 +1,28 @@
+%%{init: {'theme':'neutral'}}%%
+sequenceDiagram
+    participant BenchmarkRunner
+    activate BenchmarkRunner
+    participant BenchmarkData
+    participant Sorter
+    participant SortStrategy
+
+    loop for each (context, benchmarkDataList) in benchmarkDataMap
+        BenchmarkRunner->>Sorter: setStrategy(strategy)
+        activate Sorter
+
+        loop for each benchmarkData in benchmarkDataList
+            BenchmarkRunner->>BenchmarkData: getData()
+            BenchmarkData-->>BenchmarkRunner: data
+            BenchmarkRunner->>Sorter: sort(data)
+            activate Sorter
+            Sorter->>SortStrategy: sort(data)
+            activate SortStrategy
+            SortStrategy-->>Sorter: metric
+            deactivate SortStrategy
+            Sorter-->>BenchmarkRunner: metric
+            deactivate Sorter
+        end
+    end
+
+    note over BenchmarkRunner: Generate Benchmark Results<br/>(Context + Metric)
+    deactivate BenchmarkRunner

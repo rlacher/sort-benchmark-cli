@@ -10,11 +10,11 @@ Repository topics: java, docker, benchmark, sorting, algorithm, microservices, r
 [![CI Checks](https://github.com/rlacher/sort-benchmark/actions/workflows/ci.yml/badge.svg)](https://github.com/rlacher/sort-benchmark/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg)](https://opensource.org/licenses/MIT)
 
-This project compares the performance of various sorting algorithms. The algorithms are implemented in Java.
+Explore the nuances of sorting algorithm efficiency through this interactive benchmark application. Built with a Java API and a dynamic React.js visualisation layer, this architecture enables a scalable and containerised environment to scrutinise performance metrics across various scenarios.
 
 ## Purpose
 
-The goal is to analyse and visualise the efficiency of different common sorting algorithms under various conditions.
+This project aims to equip developers and enthusiasts with an interactive and reproducible tool for benchmarking common sorting algorithms. By comparing their performance characteristics under various data conditions, it provides practical insights into algorithm efficiency, reflecting their use in both industry and academic settings.
 
 ## Key Features
 
@@ -38,12 +38,12 @@ This project is designed for quick and easy setup. Through containerised deploym
 1. Clone the respository
 
     ```bash
-    git clone https://github.com/rlacher/sort-algorithms.git
+    git clone https://github.com/rlacher/sort-benchmark.git
     ```
 
 2. Navigate to the project directory
     ```bash
-    cd sort-algorithms
+    cd sort-benchmark
     ```
 
 2. Execute the application
@@ -118,14 +118,26 @@ The following sorting algorithms are implemented in Java to sort in ascending or
 
 ### Design
 
+#### Class Diagram: Strategy pattern for Sorting Routines
+
+![Class Diagram Sorter Strategies](./docs/class-diagram-sorter-strategies.svg)
+
 This benchmark project leverages the Strategy pattern to establish a modular and extensible architecture. Consequently, new sorting algorithms can be integrated without requiring modifications to the core benchmarking logic. Performance profiling is conducted by a dedicated `Benchmarker` class, which is injected into individual `SortStrategy` implementations, promoting loose coupling and enhanced code maintainability.
 
-![Benchmark Class Structure](./docs/benchmark-class-structure.svg)
+#### Sequence Diagram: Benchmark Run
 
+![Sequence Diagram Benchmark Run](./docs/sequence-diagram-benchmark-process.svg)
 
-Pre-generated `BenchmarkData`, created upfront by the `BenchmarkDataFactory`, is repeatedly sorted by a chosen `SortStrategy` through the `Sorter`, and the resulting benchmark metrics are robustly aggregated.
+The `BenchmarkRunner` orchestrates the repeated sorting process. It pre-generates `BenchmarkData` using the `BenchmarkDataFactory`, then repeatedly sorts this data using chosen `SortStrategy` implementations via the `Sorter`. The resulting benchmark results are then passed to a dedicated `ResultAggregator` for robust aggregation.
 
-![Benchmark Sequence Diagram](./docs/benchmark-sequence-diagram.svg)
+#### Sequence Diagram: BenchmarkRunner.runIterations()
+
+![Sequence Diagram Run Iterations](./docs/sequence-diagram-runiterations.svg)
+
+For each set of benchmark data, the `BenchmarkRunner` configures the `Sorter` with a strategy and then uses it to sort each data element, producing the raw benchmark metrics needed for the benchmark results.
+
+*Notes on Diagrams:* For clarity and conciseness, the sequence diagrams in this document may omit certain aspects of the code, such as argument validation, logging, and error handling. The diagrams focus on illustrating the core workflows and interactions between key components.
+
 
 ### Test
 
@@ -157,6 +169,7 @@ After the tests complete, an HTML report will be generated in the `build/reports
 - A strong positive correlation exists between runtime and the number of data write operations performed. However, while runtime is an empirical measure, the number of swaps serves to verify the theoretical complexity and inherent efficiency of the algorithm, being a measure independent of specific hardware and the execution environment.
 - Despite their similar O(n log n) average-case scaling, quicksort frequently outperforms heapsort and mergesort in practice. This is largely attributed to its smaller constant factors, resulting from fewer swaps and improved cache locality compared to the overhead of heap maintenance and the extensive data movements associated with mergesort's auxiliary arrays.
 - With a consistently poor pivot selection strategy (like always picking the smallest or largest element), a standard recursive Quicksort implementation is highly susceptible to stack overflow errors.
+- With a trivial pivot choice, quicksort's runtime variance can be more pronounced due to its reliance on pivot quality for even splits, unlike the more consistent performance of mergesort or heapsort.
 
 ## License
 
