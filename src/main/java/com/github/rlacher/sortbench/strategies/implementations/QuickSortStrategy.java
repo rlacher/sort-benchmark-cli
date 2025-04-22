@@ -35,14 +35,10 @@ import com.github.rlacher.sortbench.strategies.SortStrategy;
  */
 public class QuickSortStrategy implements SortStrategy
 {
-    /**
-     * Logger for logging messages.
-     */
+    /** Logger for logging messages. */
     private static final Logger logger = Logger.getLogger(QuickSortStrategy.class.getName());
 
-    /**
-     * The benchmarker used for profiling.
-     */
+    /** The benchmarker used for profiling. */
     private Benchmarker benchmarker;
 
     /**

@@ -37,19 +37,15 @@ import com.github.rlacher.sortbench.strategies.SortStrategy;
  */
 public class HeapSortStrategy implements SortStrategy
 {
-    /** 
-     * Logger for logging messages.
-     */
+    /** Logger for logging messages. */
     private static final Logger logger = Logger.getLogger(HeapSortStrategy.class.getName());
 
-    /**
-     * The benchmarker used for profiling.
-     */
+    /** The benchmarker used for profiling. */
     private Benchmarker benchmarker;
 
     /**
      * Constructor for the HeapSortStrategy class.
-     * 
+     *
      * @param benchmarker The benchmarker to be used for profiling.
      * @throws IllegalArgumentException If the benchmarker is null.
      */
@@ -77,9 +73,9 @@ public class HeapSortStrategy implements SortStrategy
 
     /**
      * Sorts the provided array in ascending order using the heap sort algorithm.
-     * 
+     *
      * Summary of heap sort algorithm:
-     * 
+     *
      * Heap Sort initially builds a max heap from the input array using {@link HeapSortStrategy#buildMaxHeap}
      * It then repeatedly extracts the maximum element (the root of the heap) and places it at the end
      * of the array. After each extraction, the heap property is restored for the remaining elements
@@ -87,7 +83,7 @@ public class HeapSortStrategy implements SortStrategy
      * is sorted in ascending order.
      *
      * Input array validation is assumed to be performed by the calling {@link Sorter} class.
-     * 
+     *
      * @param array The array to be sorted.
      * @return A {@link BenchmarkMetric} containing performance information about the sorting process.
      * @throws NullPointerException If array is null (should not happen).
@@ -130,10 +126,10 @@ public class HeapSortStrategy implements SortStrategy
 
     /**
      * Maintains the max heap property for a subtree rooted at a given index.
-     * 
+     *
      * Swaps the root with its largest child if the child is larger, then recursively
      * heapifies the affected subtree to maintain the max heap property.
-     * 
+     *
      * @param array The array representing the heap.
      * @param heapSize The number of elements in the heap portion of {@code array}.
      * @param root The index of the subtree root to heapify.
@@ -153,7 +149,7 @@ public class HeapSortStrategy implements SortStrategy
        {
            largest = right;
        }
-       
+
        if(largest != root)
        {
            swap(array, largest, root);

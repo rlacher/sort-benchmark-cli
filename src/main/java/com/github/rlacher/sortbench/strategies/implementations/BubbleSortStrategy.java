@@ -31,25 +31,21 @@ import com.github.rlacher.sortbench.strategies.SortStrategy;
 
 /**
  * Implements the bubble sort algorithm as a sorting strategy.
- * 
+ *
  * This class implements the {@link SortStrategy} interface and provides a method
  * to perform bubble sort on an array of integers.
  */
 public class BubbleSortStrategy implements SortStrategy
 {
-    /** 
-     * Logger for logging messages.
-     */
+    /** Logger for logging messages. */
     private static final Logger logger = Logger.getLogger(BubbleSortStrategy.class.getName());
 
-    /**
-     * The benchmarker used for profiling.
-     */
+    /** The benchmarker used for profiling. */
     private Benchmarker benchmarker;
 
     /**
      * Constructor for the BubbleSortStrategy class.
-     * 
+     *
      * @param benchmarker The benchmarker to be used for profiling.
      * @throws IllegalArgumentException If the benchmarker is null.
      */
@@ -77,9 +73,9 @@ public class BubbleSortStrategy implements SortStrategy
 
     /**
      * Sorts the provided array in ascending order using the bubble sort algorithm.
-     * 
+     *
      * Summary of bubble sort algorithm:
-     * 
+     *
      * Bubble sort repeatedly compares adjacent elements, swapping them if they are
      * out of order. The process continues until no swaps are needed in a complete pass,
      * indicating a sorted array.
