@@ -7,6 +7,7 @@ sequenceDiagram
     participant SortStrategy
 
     loop for each (context, benchmarkDataList) in benchmarkDataMap
+        note over BenchmarkRunner: Gets strategy from strategies using<br/>context's sort strategy name
         BenchmarkRunner->>Sorter: setStrategy(strategy)
         activate Sorter
 
