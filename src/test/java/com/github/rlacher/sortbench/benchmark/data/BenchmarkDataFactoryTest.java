@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
-import java.util.function.IntFunction;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -35,8 +34,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mockito;
-
-import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 
 // Unit tests for the BenchmarkDataFactoryTest class.
 class BenchmarkDataFactoryTest
