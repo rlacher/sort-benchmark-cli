@@ -33,16 +33,14 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker;
 // Unit tests for the BubbleSortStrategy class.
 public class BubbleSortStrategyTest
 {
-    // Tests the constructor of the BubbleSortStrategy class when the benchmarker is null.
     @Test
-    void constructor_givenNullArgument_throwsIllegalArgumentException()
+    void constructor_nullArgument_throwsIllegalArgumentException()
     {
         assertThrows(IllegalArgumentException.class, () -> new BubbleSortStrategy(null), "Constructor should throw IllegalArgumentException when benchmarker is null");
     }
 
-    // Tests if the sort() method reports a swap given an out of order array.
     @Test
-    void sort_givenTwoElementsOutOfOrder_reportsSwap()
+    void sort_twoElementsOutOfOrder_reportsSwap()
     {
         Benchmarker mockBenchmarker = mock(Benchmarker.class);
 
@@ -52,9 +50,8 @@ public class BubbleSortStrategyTest
         verify(mockBenchmarker, atLeastOnce()).reportSwap();
     }
 
-    // Tests that the sort() method does report swaps given an empty array.
     @Test
-    void sort_givenEmptyArray_noSwap()
+    void sort_emptyArray_noSwap()
     {
         Benchmarker mockBenchmarker = mock(Benchmarker.class);
 
@@ -64,9 +61,8 @@ public class BubbleSortStrategyTest
         verify(mockBenchmarker, never()).reportSwap();
     }
 
-    // Tests that the sort() method does not report swaps for a one-element array.
     @Test
-    void sort_givenOneElement_noSwap()
+    void sort_oneElementArray_noSwap()
     {
         Benchmarker mockBenchmarker = mock(Benchmarker.class);
 

@@ -33,16 +33,14 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker;
  // Unit tests for the MergeSortStrategy class.
  public class MergeSortStrategyTest
  {
-     // Tests the constructor of the MergeSortStrategy class when the benchmarker is null.
      @Test
-     void constructor_givenNullArgument_throwsIllegalArgumentException()
+     void constructor_nullArgument_throwsIllegalArgumentException()
      {
          assertThrows(IllegalArgumentException.class, () -> new MergeSortStrategy(null), "Constructor should throw IllegalArgumentException when benchmarker is null");
      }
 
-     // Tests that sort() is not reporting data writes given a one-element array.
      @Test
-     void sort_givenOneElementArray_noDataWrite()
+     void sort_oneElementArray_noDataWrite()
      {
         Benchmarker mockBenchmarker = mock(Benchmarker.class);
 
@@ -53,9 +51,8 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker;
         verify(mockBenchmarker, never()).reportWrites(anyInt());
      }
 
-    // Tests if sort() calls reportWrites() for internal buffer backcopy even for ordered array.
     @Test
-    void sort_givenSorted_reportsDataWrites()
+    void sort_sortedArray_reportsDataWrites()
     {
         Benchmarker mockBenchmarker = mock(Benchmarker.class);
 

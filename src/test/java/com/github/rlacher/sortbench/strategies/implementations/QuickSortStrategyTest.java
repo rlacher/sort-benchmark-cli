@@ -42,7 +42,7 @@ public class QuickSortStrategyTest
     }
 
     @Test
-    void constructor_givenNullArgument_throwsIllegalArgumentException()
+    void constructor_nullArgument_throwsIllegalArgumentException()
     {
         assertThrows(IllegalArgumentException.class, () -> new QuickSortStrategy(null), "Constructor should throw IllegalArgumentException when benchmarker is null");
     }

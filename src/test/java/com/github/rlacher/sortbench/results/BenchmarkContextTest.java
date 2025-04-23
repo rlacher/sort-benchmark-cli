@@ -103,9 +103,9 @@ class BenchmarkContextTest
     void toString_validContext_returnsStringContainingFields()
     {
         String contextString = context.toString();
-        assertTrue(contextString.contains(sortStrategyName), "toString() should contain the name of the sort strategy.");
-        assertTrue(contextString.contains(String.valueOf(dataLength)), "toString() should contain the data length.");
-        assertTrue(contextString.contains(dataType.toString()), "toString() should contain the string representation of the data type.");
+        assertTrue(contextString.contains(sortStrategyName), "toString should contain the name of the sort strategy.");
+        assertTrue(contextString.contains(String.valueOf(dataLength)), "toString should contain the data length.");
+        assertTrue(contextString.contains(dataType.toString()), "toString should contain the string representation of the data type.");
     }
 
     @Test

@@ -132,7 +132,7 @@ class ResultAggregatorTest
         List<AggregatedResult> aggregatedResults = aggregator.process(results);
 
         assertNotNull(aggregatedResults, "Aggregated results must not be null");
-        assertEquals(2, aggregatedResults.size(), "process() must return a list of two aggregated results.");
+        assertEquals(2, aggregatedResults.size(), "process must return a list of two aggregated results.");
         
         // Check that the contexts are present, regardless of order
         assertTrue(aggregatedResults.stream().anyMatch(result -> result.getContext().equals(context)),

@@ -76,10 +76,9 @@ public class SortStrategyProfilingTest
         stopProfilingCallCount = 0;
     }
 
-    // Tests that startProfiling() and stopProfiling() are called once during the sort process.
     @ParameterizedTest 
     @MethodSource("createSortStrategies")
-    void sort_givenValidArray_callsStartStopProfiling(SortStrategy strategy)
+    void sort_validArray_callsStartStopProfilingOnceEach(SortStrategy strategy)
     {
         int[] array = { 5, 3, 8, 1, 2 };
         strategy.sort(array);

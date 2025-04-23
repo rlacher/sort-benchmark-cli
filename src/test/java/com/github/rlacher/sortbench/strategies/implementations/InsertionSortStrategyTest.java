@@ -32,16 +32,14 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker;
  // Unit tests for the InsertionSortStrategy class.
  public class InsertionSortStrategyTest
  {
-     // Tests the constructor of the InsertionSortStrategy class when the benchmarker is null.
      @Test
-     void constructor_givenNullArgument_throwsIllegalArgumentException()
+     void constructor_nullArgument_throwsIllegalArgumentException()
      {
          assertThrows(IllegalArgumentException.class, () -> new InsertionSortStrategy(null), "Constructor should throw IllegalArgumentException when benchmarker is null");
      }
 
-    // Tests if the sort() method reports exactly one shift and one insert for a two element descendingly sorted array.
     @Test
-    void sort_givenTwoElementsOutOfOrder_reportsShiftAndInsert()
+    void sort_twoElementsOutOfOrder_reportsShiftAndInsert()
     {
         Benchmarker mockBenchmarker = mock(Benchmarker.class);
 
@@ -52,9 +50,8 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker;
         verify(mockBenchmarker, times(1)).reportInsert();
     }
 
-    // Tests that the sort() method does neither report shifts nor inserts given an empty array.
     @Test
-    void sort_givenEmptyArray_noShiftNoInsert()
+    void sort_emptyArray_noShiftNoInsert()
     {
         Benchmarker mockBenchmarker = mock(Benchmarker.class);
 
