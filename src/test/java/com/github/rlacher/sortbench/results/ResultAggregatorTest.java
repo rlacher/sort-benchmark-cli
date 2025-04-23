@@ -23,9 +23,12 @@
 package com.github.rlacher.sortbench.results;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +46,7 @@ class ResultAggregatorTest
     @BeforeEach
     void setUp()
     {
-        aggregator = new ResultAggregator(ResultAggregator.DEFAULT_FILTER, ResultAggregator.DEFAULT_AGGREGATOR);
+        aggregator = new ResultAggregator(ResultAggregator.DEFAULT_FILTER_SUPPLIER, ResultAggregator.DEFAULT_AGGREGATOR_SUPPLIER);
         context = new BenchmarkContext(BenchmarkData.DataType.RANDOM, 10, "BubbleSort");
         profilingMode = ProfilingMode.EXECUTION_TIME;
     }
@@ -51,9 +54,38 @@ class ResultAggregatorTest
     @Test
     void constructor_nullArguments_throwsIllegalArgumentException()
     {
-        assertAll(() -> assertThrows(IllegalArgumentException.class, () -> new ResultAggregator(ResultAggregator.DEFAULT_FILTER, null), "Aggregator must not be null"),
-                  () -> assertThrows(IllegalArgumentException.class, () -> new ResultAggregator(null, ResultAggregator.DEFAULT_AGGREGATOR), "Filter must not be null"),
-                  () -> assertThrows(IllegalArgumentException.class, () -> new ResultAggregator(null, null), "Filter and aggregator must not be null"));
+        assertThrows(IllegalArgumentException.class, () -> new ResultAggregator(null, null),
+                    "Constructor should throw IllegalArgumentException when filterSupplier and aggregatorSupplier are null");
+    }
+
+   @Test
+    void constructor_nullFilterSupplier_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> new ResultAggregator(null, ResultAggregator.DEFAULT_AGGREGATOR_SUPPLIER),
+                "Constructor should throw IllegalArgumentException when filterSupplier is null");
+    }
+
+    @Test
+    void constructor_nullAggregatorSupplier_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> new ResultAggregator(ResultAggregator.DEFAULT_FILTER_SUPPLIER, null),
+                "Constructor should throw IllegalArgumentException when aggregatorSupplier is null");
+    }
+
+    @Test
+    void constructor_supplierReturnsNullFilter_throwsIllegalStateException()
+    {
+        final Supplier<Predicate<BenchmarkResult>> supplierReturnsNullFilter = () -> null;
+        assertThrows(IllegalStateException.class, () -> new ResultAggregator(supplierReturnsNullFilter, ResultAggregator.DEFAULT_AGGREGATOR_SUPPLIER),
+                "Constructor should throw IllegalStateException when filter supplier returns null");
+    }
+
+    @Test
+    void constructor_supplierReturnsNullAggregator_throwsIllegalStateException()
+    {
+        final Supplier<Function<List<BenchmarkResult>, Double>> supplierReturnsNullAggregator = () -> null;
+        assertThrows(IllegalStateException.class, () -> new ResultAggregator(ResultAggregator.DEFAULT_FILTER_SUPPLIER, supplierReturnsNullAggregator),
+                "Constructor should throw IllegalStateException when aggregator supplier returns null");
     }
 
     @Test
@@ -144,8 +176,8 @@ class ResultAggregatorTest
     @Test
     void process_excludeAllFilter_throwsIllegalArgumentException()
     {
-        final Predicate<BenchmarkResult> excludeAllFilter = result -> false;
-        aggregator = new ResultAggregator(excludeAllFilter, ResultAggregator.DEFAULT_AGGREGATOR);
+        final Supplier<Predicate<BenchmarkResult>> excludeAllFilterSupplier = () -> result -> false;
+        aggregator = new ResultAggregator(excludeAllFilterSupplier, ResultAggregator.DEFAULT_AGGREGATOR_SUPPLIER);
         final List<BenchmarkResult> results = List.of(
             new BenchmarkResult(context, profilingMode, 1.0),
             new BenchmarkResult(context, profilingMode, 2.0)

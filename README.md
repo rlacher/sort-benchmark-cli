@@ -94,17 +94,15 @@ This project is built and tested with the following environment:
 
 ### Benchmark Methodology
 
-**Execution:**
+#### Benchmark Configuration
 
-**Data generation:**
+Users can define key aspects of the benchmark execution, such as the algorithms to be tested, the data type for benchmark data generation and the profiling mode. To simplify the initial implementation and avoid overloading the user interface, some configuration parameters, including the number of iterations and data sizes used, are currently defined as heuristic compile-time constants.
 
-**Measurement:**
+#### Data Generation
 
-- *Execution time:* Measured by profiling the sort operation's runtime.
-- *Data writes:* Counted directly within the sorting algorithm's code by tracking the number of element writes (swaps, shifts, and inserts).
-- *Memory usage:* JVM heap memory consumption, measured at key points during the sorting process.
+The `BenchmarkDataFactory` provides a single, parameterised entry point, `createData()`, which accepts the data type and length as arguments. Supported data types include `RANDOM`, `SORTED`, `REVERSED`, and `PARTIALLY_SORTED`.  Internally, data is generated using integer stream ranges and the JVM's default random number generator. This approach ensures efficient and reproducible data set creation for benchmarking.
 
-**Algorithm implementation:**
+#### Algorithm implementation
 
 The following sorting algorithms are implemented in Java to sort in ascending order.
 
@@ -115,6 +113,20 @@ The following sorting algorithms are implemented in Java to sort in ascending or
 | Insertion Sort | Iteratively builds a sorted array by inserting each unsorted element into its correct position within the sorted portion. | Standard in-place. |
 | Merge Sort | Recursively divides an array into smaller subarrays, sorts them, and merges them into a single sorted array. | Recursive top-down implementation with standard two-way merging using an auxiliary array. |
 | Quick Sort | Selects a pivot element and partitions the array around it, recursively sorting the sub-arrays on either side of the pivot. | In-place sorting with the leftmost element as the pivot.
+
+#### Execution
+
+The `BenchmarkRunner` orchestrates the benchmark execution by reading the configuration, delegating data generation to the `BenchmarkDataFactory`, and managing execution based on `BenchmarkContext` instances. This design promotes a clear separation of concerns and allows for flexible benchmark configuration.
+
+#### Measurement
+
+- *Execution time:* Measured by profiling the sort operation's runtime.
+- *Data writes:* Counted directly within the sorting algorithm's code by tracking the number of element writes (swaps, shifts, and inserts).
+- *Memory usage:* JVM heap memory consumption, measured at key points during the sorting process.
+
+#### Result Aggregation
+
+To ensure robust result aggregation, the `ResultAggregator` employs filtering and context-grouped aggregation. This methodology mitigates the impact of factors such as garbage collection and JVM optimisations, leading to more reliable and accurate benchmark measurements.
 
 ### Design
 
@@ -138,12 +150,11 @@ For each set of benchmark data, the `BenchmarkRunner` configures the `Sorter` wi
 
 *Notes on Diagrams:* For clarity and conciseness, the sequence diagrams in this document may omit certain aspects of the code, such as argument validation, logging, and error handling. The diagrams focus on illustrating the core workflows and interactions between key components.
 
-
 ### Test
 
-This project features a robust suite of **298 unit tests**, built with JUnit and Mockito, to ensure the reliability and correctness of both the benchmarking framework and sorting routines. The testing strategy rigorously applies principles such as boundary condition analysis, equivalence class partitioning, exception handling verification, and thorough data flow validation across components.
+This project features a robust suite of **302 unit tests**, built with JUnit and Mockito, to ensure the reliability and correctness of both the benchmarking framework and sorting routines. The testing strategy rigorously applies principles such as boundary condition analysis, equivalence class partitioning, exception handling verification, and thorough data flow validation across components.
 
-The current test suite achieves significant coverage, reaching **92% statement coverage** and **92% branch coverage**, demonstrating a strong commitment to code quality and comprehensive testing throughout the project.
+The current test suite achieves significant coverage, reaching **92% statement coverage** and **93% branch coverage**, demonstrating a strong commitment to code quality and comprehensive testing throughout the project.
 
 **Running Tests:**
 

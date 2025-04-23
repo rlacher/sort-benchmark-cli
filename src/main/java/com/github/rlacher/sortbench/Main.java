@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import com.github.rlacher.sortbench.benchmark.BenchmarkRunner;
@@ -83,9 +84,9 @@ public class Main
 
         List<BenchmarkResult> results = runner.run(config);
 
-        Predicate<BenchmarkResult> skipIterationFilter = new SkipIterationFilter(WARMUP_ITERATIONS_TO_SKIP);
-        Function<List<BenchmarkResult>, Double> medianAggregator = new MedianAggregator();
-        ResultAggregator resultAggregator = new ResultAggregator(skipIterationFilter, medianAggregator);
+        Supplier<Predicate<BenchmarkResult>> skipIterationFilterSupplier = () -> new SkipIterationFilter(WARMUP_ITERATIONS_TO_SKIP);
+        Supplier<Function<List<BenchmarkResult>, Double>> medianAggregatorSupplier = () -> new MedianAggregator();
+        ResultAggregator resultAggregator = new ResultAggregator(skipIterationFilterSupplier, medianAggregatorSupplier);
         List<AggregatedResult> aggregatedResults = resultAggregator.process(results);
 
         for(var aggregatedResult : aggregatedResults)
