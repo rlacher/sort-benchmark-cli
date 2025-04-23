@@ -40,10 +40,33 @@ public final class BenchmarkData
      */
     public enum DataType
     {
+        PARTIALLY_SORTED,
         RANDOM,
         REVERSED,
-        PARTIALLY_SORTED,
-        SORTED,
+        SORTED;
+
+        /**
+         * Convert a string representation into a {@link DataType} enum instance.
+         *
+         * This method is case-insensitive and ignores leading/trailing whitespace.
+         *
+         * @param value The string representation of the data type (e.g. "random", "SORTED").
+         * @return The corresponding {@link DataType} enum instance.
+         * @throws IllegalArgumentException If {@code value} is null, blank or does not match any of the enum constant names.
+         */
+        public static DataType fromString(String value)
+        {
+            if(value == null)
+            {
+                throw new IllegalArgumentException("Value must not be null");
+            }
+            if(value.isBlank())
+            {
+                throw new IllegalArgumentException("Value must not be blank");
+            }
+
+            return DataType.valueOf(value.trim().toUpperCase());
+        }
     }
 
     /**
@@ -67,13 +90,34 @@ public final class BenchmarkData
     }
 
     /**
-     * Retrieves a copy of the data array.
-     *
-     * @return A copy of the data array to void modification.
+     * Copy constructor for creating a BenchmarkData object from another BenchmarkData object.
+     * 
+     * @param other The other BenchmarkData object to copy from.
+     * @throws IllegalArgumentException If the other BenchmarkData object or its data array is null.
      */
-    public int[] getDataCopy()
+    public BenchmarkData(final BenchmarkData other)
     {
-        return Arrays.copyOf(data, data.length);
+        if (other == null)
+        {
+            throw new IllegalArgumentException("The other BenchmarkData object must not be null.");
+        }
+        if (other.data == null)
+        {
+            throw new IllegalArgumentException("The data array in the other BenchmarkData object must not be null.");
+        }
+
+        this.data = Arrays.copyOf(other.data, other.data.length);
+        this.type = other.type;
+    }
+
+    /**
+     * Getter for the data array.
+     *
+     * @return Returns the same instance of the data array (no copying).
+     */
+    public int[] getData()
+    {
+        return data;
     }
 
     /**

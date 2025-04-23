@@ -25,96 +25,80 @@ package com.github.rlacher.sortbench.sorter;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
-import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
+import com.github.rlacher.sortbench.results.BenchmarkMetric;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
 
 
 // Unit tests for the Sorter class.
 class SorterTest
 {
-    // Tests the constructor of the Sorter class when argument is null.
-    @Test
-    void constructor_givenNullArgument_throwsIllegalArgumentException()
+    private Sorter sorter;
+    private SortStrategy mockStrategy;
+
+    @BeforeEach
+    void setUp()
     {
-        assertThrows(IllegalArgumentException.class, () -> new Sorter(null), "Constructor should throw IllegalArgumentException when strategy is null");
+        sorter = new Sorter();
+        mockStrategy = mock(SortStrategy.class);
     }
 
-    // Tests the constructor of the Sorter class when argument is valid.
     @Test
-    void constructor_givenValidArgument_doesNotThrow()
+    void setStrategy_nullArgument_throwsIllegalArgumentException()
     {
-        SortStrategy strategy = Mockito.mock(SortStrategy.class);
-
-        assertDoesNotThrow(() -> new Sorter(strategy), "Constructor should not throw with valid non-null argument");
+        assertThrows(IllegalArgumentException.class, () -> sorter.setStrategy(null), "setStrategy should throw IllegalArgumentException when strategy is null");
     }
 
-    // Tests the setStrategy() method when argument is null.
     @Test
-    void setSortStrategy_givenNullArgument_throwsIllegalArgumentException()
+    void setSortStrategy_validArgument_callsStrategy()
     {
-        SortStrategy strategy = Mockito.mock(SortStrategy.class);
-        Sorter sorter = new Sorter(strategy);
-
-        assertThrows(IllegalArgumentException.class, () -> sorter.setStrategy(null), "setStrategy() should throw IllegalArgumentException when strategy is null");
-    }
-
-    // Tests the setStrategy() method when argument is valid.
-    @Test
-    void setSortStrategy_givenValidArgument_callsNewStrategy()
-    {
-        SortStrategy strategy = Mockito.mock(SortStrategy.class);
-        Sorter sorter = new Sorter(strategy);
-        SortStrategy newStrategy = Mockito.mock(SortStrategy.class);
-
-        assertDoesNotThrow(() -> sorter.setStrategy(newStrategy), "setStrategy() should not throw with valid non-null argument");
+        assertDoesNotThrow(() -> sorter.setStrategy(mockStrategy), "setStrategy should not throw with valid non-null argument");
 
         int[] array = { 1, 2, 3 };
 
         // Return value is unused
         sorter.sort(array);
 
-        verify(newStrategy).sort(array);
-        verifyNoMoreInteractions(strategy);
+        verify(mockStrategy).sort(array);
+        verifyNoMoreInteractions(mockStrategy);
     }
 
-    // Tests the sort() method given a null array.
     @Test
-    void sort_givenNullArray_throwsIllegalArgumentException()
+    void sort_nullArray_throwsIllegalArgumentException()
     {
-        SortStrategy strategy = Mockito.mock(SortStrategy.class);
-        Sorter sorter = new Sorter(strategy);
-
-        assertThrows(IllegalArgumentException.class, () -> sorter.sort(null), "sort() should throw IllegalArgumentException when array is null");
+        sorter.setStrategy(mockStrategy);
+        assertThrows(IllegalArgumentException.class, () -> sorter.sort(null), "sort should throw IllegalArgumentException when array is null");
     }
 
-    // Tests the sort() method given an empty array.
     @Test
-    void sort_givenEmptyArray_returnsResultZero()
+    void sort_withoutStrategy_throwsIllegalStateException()
     {
-        SortStrategy strategy = Mockito.mock(SortStrategy.class);
-        Sorter sorter = new Sorter(strategy);
-
-        BenchmarkResult result = sorter.sort(new int[0]);
-
-        assertNotNull(result, "sort() should return a non-null BenchmarkResult");
-        assertEquals(0, result.getValue(), "sort() should return 0 for empty array");
-        assertEquals(ProfilingMode.NONE, result.getProfilingMode(), "sort() should return NONE for empty array");
+        int[] array = { 1, 2, 3 };
+        assertThrows(IllegalStateException.class, () -> sorter.sort(array), "Calling sort without a set strategy should throw IllegalStateException.");
     }
 
-    // Tests the sort() method given a non-empty array expecting the sort strategy to be called.
     @Test
-    void sort_givenNonEmptyArray_callsSortStrategy()
+    void sort_emptyArray_returnsResultZero()
     {
-        SortStrategy strategy = Mockito.mock(SortStrategy.class);
-        Sorter sorter = new Sorter(strategy);
+        sorter.setStrategy(mockStrategy);
+        BenchmarkMetric metric = sorter.sort(new int[0]);
+
+        assertEquals(0, metric.getValue(), "sort should return 0 for empty array");
+        assertEquals(ProfilingMode.NONE, metric.getProfilingMode(), "sort should return NONE for empty array");
+    }
+
+    @Test
+    void sort_nonEmptyArray_callsSortStrategy()
+    {
+        sorter.setStrategy(mockStrategy);
+
         int[] array = { 1, 2, 3 };
 
         sorter.sort(array);
 
-        verify(strategy).sort(array);
+        verify(mockStrategy).sort(array);
     }
 }

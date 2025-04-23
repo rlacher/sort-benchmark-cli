@@ -22,23 +22,19 @@
 
 package com.github.rlacher.sortbench;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
-import com.github.rlacher.sortbench.benchmark.Benchmarker;
+import com.github.rlacher.sortbench.benchmark.BenchmarkRunner;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
-import com.github.rlacher.sortbench.benchmark.data.BenchmarkDataFactory;
-import com.github.rlacher.sortbench.reporting.ResultAggregator;
+import com.github.rlacher.sortbench.results.AggregatedResult;
+import com.github.rlacher.sortbench.results.BenchmarkResult;
+import com.github.rlacher.sortbench.results.ResultAggregator;
 import com.github.rlacher.sortbench.sorter.Sorter;
-import com.github.rlacher.sortbench.strategies.SortStrategy;
-import com.github.rlacher.sortbench.strategies.DummySortStrategy;
+
 
 /**
  * The entry point for the sorting algorithm benchmarking application.
@@ -57,30 +53,14 @@ public class Main
      * 
      * The data points are chose to hightlight constant factors in smaller arrays sizes and demonstrate scaling characteristics in larger arrays.
      */
-    private static final int[] BENCHMARK_DATA_SIZES = new int[]
-    {
-        100,
-        1000,
-        10000
-    };
+    private static final List<Integer> BENCHMARK_DATA_SIZES = List.of(100, 1000, 10000);
 
     /**
-     * Default benchmark data types for the sorting algorithms (all data types are used).
-     */
-    private static final List<BenchmarkData.DataType> BENCHMARK_DATA_TYPES = Arrays.asList
-    (
-        BenchmarkData.DataType.SORTED,
-        BenchmarkData.DataType.REVERSED,
-        BenchmarkData.DataType.RANDOM,
-        BenchmarkData.DataType.PARTIALLY_SORTED
-    );
-
-    /**
-     *  Default number of runs for the benchmark.
+     *  Default number of iterations for the benchmark.
      * 
      *  This is used to determine how many times each sorting algorithm should run on input data with the same characteristics (length and type).
      */
-    private static final int DEFAULT_NUMBER_OF_RUNS = 5;
+    private static final int BENCHMARK_ITERATIONS = 5;
 
     /**
      * The main method, which starts the sorting algorithm benchmarking process.
@@ -91,49 +71,35 @@ public class Main
      */
     public static void main(String[] args)
     {
-        List<SortStrategy> sortStrategies = Arrays.asList
-        (
-            new DummySortStrategy(new Benchmarker(ProfilingMode.EXECUTION_TIME))
-        );
-        
-        sortBenchmark(sortStrategies);
+        Sorter sorter = new Sorter();
+        BenchmarkRunner runner = new BenchmarkRunner(sorter);
+        Map<String, Object> config = buildBenchmarkConfig();
+        logger.info(String.format("Benchmark config: %s", config));
+
+        List<BenchmarkResult> results = runner.run(config);
+
+        ResultAggregator resultAggregator = new ResultAggregator(ResultAggregator.DEFAULT_FILTER, ResultAggregator.DEFAULT_AGGREGATOR);
+        List<AggregatedResult> aggregatedResults = resultAggregator.process(results);
+
+        for(var aggregatedResult : aggregatedResults)
+        {
+            logger.info(String.format("Aggregated result: %s", aggregatedResult));
+        }
     }
 
     /**
-     * Runs the provided sorting strategies on the given benchmark data through the sorter context.
+     * Returns a default benchmark configuration.
      * 
-     * The benchmark result is printed to the console for each algorithm.
-     * 
-     * @param sortStrategies The list of sorting strategies to be executed.
+     * @return A map containing the default benchmark configuration.
      */
-    private static void sortBenchmark(List<SortStrategy> sortStrategies)
+    private static Map<String, Object> buildBenchmarkConfig()
     {
-        if(sortStrategies == null)
-        {
-            throw new IllegalArgumentException("The list of sort strategies must not be null.");
-        }
-
-        // Initialise benchmarkDataSet with data arrangements that all sort strategies will run on.
-        Set<BenchmarkData> benchmarkDataSet = Stream.generate(() -> BenchmarkDataFactory.createRandomData(BENCHMARK_DATA_SIZES[0]))
-            .limit(DEFAULT_NUMBER_OF_RUNS)
-            .collect(Collectors.toSet());
-
-        ResultAggregator resultAggregator = new ResultAggregator(ResultAggregator.DEFAULT_FILTER, ResultAggregator.DEFAULT_AGGREGATOR);
-
-        for (SortStrategy sortStrategy : sortStrategies)
-        {
-            Sorter sorter = new Sorter(sortStrategy);
-
-            List<BenchmarkResult> benchmarkResults = new ArrayList<>();
-            for(BenchmarkData benchmarkData : benchmarkDataSet)
-            {
-                BenchmarkResult benchmarkResult = sorter.sort(benchmarkData.getDataCopy());
-                benchmarkResults.add(benchmarkResult);
-                logger.fine(String.format("Sorting strategy: %s, benchmark result: %s", sortStrategy.getClass().getSimpleName(), benchmarkResult.toString()));
-            }
-
-            BenchmarkResult aggregatedBenchmarkResult = resultAggregator.process(benchmarkResults);
-            logger.info(String.format("Sorting strategy: %s, aggregated benchmark result: %s", sortStrategy.getClass().getSimpleName(), aggregatedBenchmarkResult));
-        }
+        Map<String, Object> config = new HashMap<>();
+        config.put("input_sizes", BENCHMARK_DATA_SIZES);
+        config.put("iterations", BENCHMARK_ITERATIONS);
+        config.put("strategies", List.of("BubbleSort", "HeapSort", "InsertionSort", "MergeSort", "QuickSort"));
+        config.put("data_type", BenchmarkData.DataType.RANDOM.toString());
+        config.put("profiling_mode", ProfilingMode.EXECUTION_TIME);
+        return config;
     }
 }

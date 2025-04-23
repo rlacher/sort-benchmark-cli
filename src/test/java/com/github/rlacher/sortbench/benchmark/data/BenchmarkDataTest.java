@@ -23,109 +23,134 @@
 package com.github.rlacher.sortbench.benchmark.data;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 // Unit tests for the BenchmarkData class.
 class BenchmarkDataTest
 {
-    // Tests the constructor of the BenchmarkData class when the input data is null.
-    @Test
-    void constructor_whenDataIsNull_thenThrowsIllegalArgumentException()
+    private int[] data;
+    private BenchmarkData benchmarkData;
+
+    @BeforeEach
+    void setUp()
     {
-        assertThrows(IllegalArgumentException.class, () -> new BenchmarkData(null, BenchmarkData.DataType.RANDOM));
+        data = new int[] { 1, 2, 3 };
+        benchmarkData = new BenchmarkData(data, BenchmarkData.DataType.SORTED);
     }
 
-    // Tests the constructor of the BenchmarkData class with valid input data.
     @Test
-    void constructor_whenParamsAreValid_thenInitFields()
+    void constructor_nullData_throwsIllegalArgumentException()
     {
-        int[] data = { 1, 2, 3 };
-        BenchmarkData benchmarkData = new BenchmarkData(data, BenchmarkData.DataType.SORTED);
-
-        assertArrayEquals(data, benchmarkData.getDataCopy());
-        assertEquals(BenchmarkData.DataType.SORTED, benchmarkData.getType());
+        assertThrows(IllegalArgumentException.class, () -> new BenchmarkData(null, BenchmarkData.DataType.RANDOM),
+                     "Constructor with null data should throw IllegalArgumentException");
     }
 
-    // Tests the constructor of the BenchmarkData class to ensure that the data field is a deep copy.
     @Test
-    void constructor_whenParamsAreValid_thenDataFieldIsDeepCopy()
+    void constructor_validParams_initFields()
     {
-        int[] data = { 1, 2, 3 };
-        BenchmarkData benchmarkData = new BenchmarkData(data, BenchmarkData.DataType.SORTED);
+        final BenchmarkData dataObject = new BenchmarkData(data, BenchmarkData.DataType.REVERSED);
 
+        assertArrayEquals(data, dataObject.getData(),
+                          "Constructor with valid params should initialise data field");
+        assertEquals(BenchmarkData.DataType.REVERSED, dataObject.getType(),
+                     "Constructor with valid params should initialise type field");
+    }
+
+    @Test
+    void constructor_validParams_deepCopiesData()
+    {
+        final BenchmarkData dataObject = new BenchmarkData(data, BenchmarkData.DataType.RANDOM);
         data[0] = 42; // Modify original data
-        assertNotEquals(data[0], benchmarkData.getDataCopy()[0]);
+
+        assertNotEquals(data[0], dataObject.getData()[0], "Constructor should create a deep copy of the data");
     }
 
-    // Tests the constructor of the BenchmarkData class when the input data is an empty array.
     @Test
-    void constructor_whenDataIsEmptyArray_thenInitializesCorrectly()
+    void constructor_emptyData_initialisesCorrectly()
     {
-        int[] data = {};
-        BenchmarkData benchmarkData = new BenchmarkData(data, BenchmarkData.DataType.RANDOM);
+        final int[] emptyData = {};
+        final BenchmarkData dataObject = new BenchmarkData(emptyData, BenchmarkData.DataType.RANDOM);
 
-        assertArrayEquals(data, benchmarkData.getDataCopy());
-        assertEquals(0, benchmarkData.getLength());
-        assertEquals(BenchmarkData.DataType.RANDOM, benchmarkData.getType());
+        assertArrayEquals(emptyData, dataObject.getData(),
+                          "Constructor with empty array should initialise data field");
+        assertEquals(0, dataObject.getLength(),
+                     "Constructor with empty array should set length to 0");
+        assertEquals(BenchmarkData.DataType.RANDOM, dataObject.getType(),
+                     "Constructor with empty array should initialise type field");
     }
 
-    // Tests the getDataCopy() method to ensure it returns a deep copy of the data.
     @Test
-    void getDataCopy_whenCalled_thenReturnedObjectIsDeepCopy()
+    void copyConstructor_otherIsNull_throwsIllegalArgumentException()
     {
-        int[] data = { 1, 2, 3 };
-        BenchmarkData benchmarkData = new BenchmarkData(data, BenchmarkData.DataType.SORTED);
-
-        int[] dataCopy = benchmarkData.getDataCopy();
-
-        assertArrayEquals(dataCopy, data);
-        assertNotSame(dataCopy, data);
+        assertThrows(IllegalArgumentException.class, () -> new BenchmarkData(null),
+                     "Copy constructor with null other should throw IllegalArgumentException");
     }
 
-    // Tests the getLength() method to ensure it returns the correct length of the data array.
     @Test
-    void getLength_whenCalled_thenReturnsCorrectLength()
+    void copyConstructor_otherHasNullData_throwsIllegalArgumentException()
     {
-        int[] data = { 1, 2, 3 };
-        BenchmarkData benchmarkData = new BenchmarkData(data, BenchmarkData.DataType.SORTED);
-
-        assertEquals(data.length, benchmarkData.getLength());
+        final BenchmarkData other = mock(BenchmarkData.class);
+        when(other.getData()).thenReturn(null);
+        assertThrows(IllegalArgumentException.class, () -> new BenchmarkData(other),
+                     "Copy constructor with other having null data should throw IllegalArgumentException");
     }
 
-    // Tests the getType() method to ensure it returns the correct type of the data.
     @Test
-    void getType_whenCalled_thenReturnsCorrectType()
+    void copyConstructor_validOther_initFields()
     {
-        int[] data = { 1, 2, 3 };
-        BenchmarkData benchmarkData = new BenchmarkData(data, BenchmarkData.DataType.SORTED);
+        final int[] originalData = { 10, 11, 12 };
+        final BenchmarkData original = new BenchmarkData(originalData, BenchmarkData.DataType.SORTED);
+        final BenchmarkData copy = new BenchmarkData(original);
 
-        assertEquals(BenchmarkData.DataType.SORTED, benchmarkData.getType());
+        assertArrayEquals(original.getData(), copy.getData(), "Copy constructor should copy the data field");
+        assertEquals(original.getLength(), copy.getLength(), "Copy constructor should copy the length field");
+        assertEquals(original.getType(), copy.getType(), "Copy constructor should copy the type field");
     }
 
-    // Tests the toString() method to ensure it returns a string representation of the object.
     @Test
-    void toString_whenCalled_thenReturnsStringWithRelevantInfo()
+    void getData_whenCalled_returnsSame()
     {
-        int[] data = { 1337, 42 };
-        BenchmarkData benchmarkData = new BenchmarkData(data, BenchmarkData.DataType.SORTED);
-        String toStringOutput = benchmarkData.toString();
-
-        assertTrue(toStringOutput.contains(BenchmarkData.DataType.SORTED.toString()),"toString() should contain the data type.");
-        assertTrue(toStringOutput.contains(String.valueOf(data[0])),"toString() should contain the first data element.");
-        assertTrue(toStringOutput.contains(String.valueOf(data[1])),"toString() should contain the second data element.");
-        assertTrue(toStringOutput.contains(String.valueOf(data.length)),"toString() should contain the length of the data.");
+        assertSame(benchmarkData.getData(), benchmarkData.getData(), "getData should return the same instance of the data array");
     }
 
-    // Tests the toString() method when the data is empty.
     @Test
-    void toString_whenDataIsEmpty_thenReturnsStringWithEmptyData()
+    void getLength_whenCalled_returnsCorrectLength()
     {
-        int[] data = {};
-        BenchmarkData benchmarkData = new BenchmarkData(data, BenchmarkData.DataType.REVERSED);
-        String toStringOutput = benchmarkData.toString();
-        
-        assertTrue(toStringOutput.contains(BenchmarkData.DataType.REVERSED.toString()));
-        assertTrue(toStringOutput.contains("length=0"));
+        assertEquals(data.length, benchmarkData.getLength(), "getLength should return the correct length of the data array");
+    }
+
+    @Test
+    void getType_whenCalled_returnsCorrectType()
+    {
+        assertEquals(BenchmarkData.DataType.SORTED, benchmarkData.getType(), "getType should return the correct type of the data");
+    }
+
+    @Test
+    void toString_whenCalled_returnsStringWithRelevantInfo()
+    {
+        final int[] identifiableData = { 1337, 42 };
+        final BenchmarkData dataObject = new BenchmarkData(identifiableData, BenchmarkData.DataType.SORTED);
+        final String toStringOutput = dataObject.toString();
+
+        assertTrue(toStringOutput.contains(BenchmarkData.DataType.SORTED.toString()),"toString should contain the data type.");
+        assertTrue(toStringOutput.contains(String.valueOf(identifiableData[0])),"toString should contain the first data element.");
+        assertTrue(toStringOutput.contains(String.valueOf(identifiableData[1])),"toString should contain the second data element.");
+        assertTrue(toStringOutput.contains(String.valueOf(identifiableData.length)),"toString should contain the length of the data.");
+    }
+
+    @Test
+    void toString_emptyData_returnsStringWithEmptyData()
+    {
+        final int[] emptyData = {};
+        final BenchmarkData dataObject = new BenchmarkData(emptyData, BenchmarkData.DataType.REVERSED);
+        final String toStringOutput = dataObject.toString();
+        final String toStringOutputNoWhitespaces = toStringOutput.replaceAll("\\s+", "");
+
+        assertTrue(toStringOutput.contains(BenchmarkData.DataType.REVERSED.toString()), "toString with empty data should contain the data type");
+        assertTrue(toStringOutputNoWhitespaces.contains("length=0"), "toString with empty data should contain length=0");
     }
 }

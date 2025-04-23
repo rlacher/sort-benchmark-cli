@@ -30,13 +30,12 @@ import java.util.stream.IntStream;
  */
 public class BenchmarkDataFactory
 {
-    /**
-     * Random instance for use in generating benchmark data.
-     */
+    /** Random instance for use in generating benchmark data. */
     private static Random random = new Random();
 
     /**
      * Sets the random instance for benchmark data generation or testing purposes.
+     *
      * @param random The random instance to be set.
      * @throws IllegalArgumentException If the provided random instance is null.
      */
@@ -51,78 +50,118 @@ public class BenchmarkDataFactory
     }
 
     /**
-     * Creates sorted benchmark data of a specified length.
-     * @param length The length of the data array to be created. Must be a greater than 0.
-     * @return A BenchmarkData object containing sorted data.
-     * @throws IllegalArgumentException If the length is not positive.
+     * Creates benchmark data of the specified type and length.
+     *
+     * This is the single entry point for generating benchmark data using this factory.
+     * All requests for benchmark data should be made through this method.
+     *
+     * @param dataType The type of benchmark data to create.
+     * @param dataLength The desired length of the benchmark data. Must be a positive integer.
+     * @return An instance of {@link BenchmarkData} containing the generated data.
+     * @throws IllegalArgumentException If the {@code dataLength} is not positive.
+     * @throws IllegalStateException If an unknown {@code dataType} is provided.
      */
-    public static BenchmarkData createSortedData(final int length) throws IllegalArgumentException
+    public static BenchmarkData createData(final BenchmarkData.DataType dataType, final int dataLength)
     {
-        if (length <= 0)
+        if(dataLength <= 0)
         {
-            throw new IllegalArgumentException("Length must be positive.");
+            throw new IllegalArgumentException("Data length must be positive.");
         }
 
-        int[] data = IntStream.range(0, length).toArray();
+        BenchmarkData generatedData;
+
+        switch(dataType)
+        {
+            case PARTIALLY_SORTED:
+                generatedData = createPartiallySortedData(dataLength);
+                break;
+            case RANDOM:
+                generatedData = createRandomData(dataLength);
+                break;
+            case REVERSED:
+                generatedData = createReversedData(dataLength);
+                break;
+            case SORTED:
+                generatedData = createSortedData(dataLength);
+                break;
+            default:
+                throw new IllegalStateException(String.format("Unknown data type %s", dataType));
+        }
+
+        return generatedData;
+    }
+
+    /**
+     * Creates sorted benchmark data of a specified length.
+     *
+     * {@code dataLength} is guaranteed to be positive as validation is performed
+     * by the calling method, {@link BenchmarkDataFactory#createData}.
+     *
+     * @param dataLength The length of the data array to be created.
+     * @return A {@link BenchmarkData} object containing sorted data.
+     */
+    private static BenchmarkData createSortedData(final int dataLength)
+    {
+        int[] data = IntStream.range(0, dataLength).toArray();
         return new BenchmarkData(data, BenchmarkData.DataType.SORTED);
     }
 
     /**
-     * Creates reversed benchmark data of a specified length.
-     * 
-     * @param length The length of the data array to be created. Must be a greater than 0.
-     * @return A BenchmarkData object containing reversed data.
-     * @throws IllegalArgumentException If the length is not positive.
+     * Creates reversely sorted benchmark data of a specified length.
+     *
+     * {@code dataLength} is guaranteed to be positive as validation is performed
+     * by the calling method, {@link BenchmarkDataFactory#createData}.
+     *
+     * @param dataLength The length of the data array to be created.
+     * @return A {@link BenchmarkData} object containing sorted data.
      */
-    public static BenchmarkData createReversedData(final int length) throws IllegalArgumentException
+    private static BenchmarkData createReversedData(final int dataLength)
     {
-        if (length <= 0)
-        {
-            throw new IllegalArgumentException("Length must be positive.");
-        }
-
-        int[] data = IntStream.range(0, length).map(i -> length - i - 1).toArray();
-
+        int[] data = IntStream.range(0, dataLength)
+            .map(i -> dataLength - i - 1)
+            .toArray();
         return new BenchmarkData(data, BenchmarkData.DataType.REVERSED);
     }
 
     /**
      * Creates random benchmark data of a specified length.
-     * 
-     * @param length The length of the data array to be created. Must be a greater than 0.
-     * @return A BenchmarkData object containing random data.
-     * @throws IllegalArgumentException If the length is not positive.
+     *
+     * {@code dataLength} is guaranteed to be positive as validation is performed
+     * by the calling method, {@link BenchmarkDataFactory#createData}.
+     *
+     * This method uses the shared random number generator field ({@code random})
+     * which can be externally set via the {@link #setRandom(Random)} method.
+     *
+     * @param dataLength The length of the data array to be created.
+     * @return A {@link BenchmarkData} object containing sorted data.
      */
-    public static BenchmarkData createRandomData(final int length) throws IllegalArgumentException
+    private static BenchmarkData createRandomData(final int dataLength)
     {
-        if (length <= 0)
-        {
-            throw new IllegalArgumentException("Length must be positive.");
-        }
-
-        int[] data = IntStream.generate(random::nextInt).limit(length).toArray();
+        int[] data = IntStream.generate(() -> random.nextInt(dataLength))
+            .limit(dataLength)
+            .toArray();
         return new BenchmarkData(data, BenchmarkData.DataType.RANDOM);
     }
 
     /**
      * Creates partially sorted benchmark data of a specified length.
-     * 
-     * @param length The length of the data array to be created. Must be greater than or equal to 2.
-     * @return A BenchmarkData object containing partially sorted data.
-     * @throws IllegalArgumentException If the length is less than 2.
+     *
+     * {@code dataLength} is guaranteed to be positive as validation is performed
+     * by the calling method, {@link BenchmarkDataFactory#createData}.
+     *
+     * This method uses the shared random number generator field ({@code random})
+     * which can be externally set via the {@link #setRandom(Random)} method.
+     *
+     * @param dataLength The length of the data array to be created.
+     * @return A {@link BenchmarkData} object containing sorted data.
      */
-    public static BenchmarkData createPartiallySortedData(final int length) throws IllegalArgumentException
+    private static BenchmarkData createPartiallySortedData(final int dataLength)
     {
-        if (length < 2)
-        {
-            throw new IllegalArgumentException("Length must be larger or equal to 2.");
-        }
-
-        final int half1Length = length / 2;
-        final int half2Length = length - half1Length;
+        final int half1Length = dataLength / 2;
+        final int half2Length = dataLength - half1Length;
 
         final int[] sortedData = IntStream.range(0, half1Length).toArray();
-        final int[] randomData = random.ints(half2Length).toArray();
+        final int[] randomData = random.ints(half2Length, 0, dataLength).toArray();
 
         int[] data = random.nextBoolean()
             ? IntStream.concat(IntStream.of(sortedData), IntStream.of(randomData)).toArray()

@@ -3,20 +3,23 @@ classDiagram
 
     class Sorter {
         -sortStrategy SortStrategy
-        +Sorter(SortStrategy)
+        +Sorter()
         +setStrategy(SortStrategy)
-        +sort(int[]) BenchmarkResult
+        +sort(int[]) BenchmarkMetric
     }
 
     class SortStrategy {
         <<interface>>
-        +sort(int[])* BenchmarkResult
+        +name()* String
+        +sort(int[])* BenchmarkMetric
+        +swap(int[], int, int)* void
     }
 
     class ConcreteSortStrategy {
         -Benchmarker benchmarker
         +ConcreteSortStrategy(Benchmarker)
-        +sort(int[]) BenchmarkResult
+        +name() String
+        +sort(int[]) BenchmarkMetric
     }
 
     Sorter "1" *-- "1" SortStrategy

@@ -22,18 +22,45 @@
 
 package com.github.rlacher.sortbench.strategies;
 
-import com.github.rlacher.sortbench.benchmark.BenchmarkResult;
+import com.github.rlacher.sortbench.results.BenchmarkMetric;
 
 /**
- * Interface for sorting strategies.
+ * Defines the contract for sorting algorithms.
  */
 public interface SortStrategy
 {
     /**
-     * Contract for sorting algorithms.
-     * @param array The array to be sorted.
+     * Returns the name of the sorting strategy.
+     *
+     * @return The name of the sorting strategy.
+     */
+    String name();
+
+    /**
+     * Sorts the given integer array and returns profiling metrics.
+     *
+     * @param array The array to be sorted. Must not be null.
+     * @return A {@link BenchmarkMetric} object containing profiling metrics.
      * @throws NullPointerException If the input array is null.
-     * returns A {@link BenchmarkResult} object containing profiling metrics.
-     */ 
-    BenchmarkResult sort(final int[] array);
+     */
+    BenchmarkMetric sort(final int[] array);
+
+    /**
+     * Swaps two elements at the specified indices within the given array.
+     *
+     * This method assumes a non-null array and valid indices for optimal performance,
+     * and therefore omits argument checks.
+     *
+     * @param array The array in which the elements are to be swapped.
+     * @param i The index of one element to be swapped.
+     * @param j The index of the other element to be swapped.
+     * @throws NullPointerException if {@code array} is {@code null}.
+     * @throws ArrayIndexOutOfBoundsException if either {@code i} or {@code j} is out of bounds.
+     */
+    default void swap(final int[] array, final int i, final int j)
+    {
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
 }
