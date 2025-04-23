@@ -25,12 +25,14 @@ package com.github.rlacher.sortbench;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import com.github.rlacher.sortbench.benchmark.BenchmarkRunner;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
+import com.github.rlacher.sortbench.processing.MedianAggregator;
 import com.github.rlacher.sortbench.processing.SkipIterationFilter;
 import com.github.rlacher.sortbench.results.AggregatedResult;
 import com.github.rlacher.sortbench.results.BenchmarkResult;
@@ -82,7 +84,8 @@ public class Main
         List<BenchmarkResult> results = runner.run(config);
 
         Predicate<BenchmarkResult> skipIterationFilter = new SkipIterationFilter(WARMUP_ITERATIONS_TO_SKIP);
-        ResultAggregator resultAggregator = new ResultAggregator(skipIterationFilter, ResultAggregator.DEFAULT_AGGREGATOR);
+        Function<List<BenchmarkResult>, Double> medianAggregator = new MedianAggregator();
+        ResultAggregator resultAggregator = new ResultAggregator(skipIterationFilter, medianAggregator);
         List<AggregatedResult> aggregatedResults = resultAggregator.process(results);
 
         for(var aggregatedResult : aggregatedResults)

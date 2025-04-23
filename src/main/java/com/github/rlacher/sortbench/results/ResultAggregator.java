@@ -43,7 +43,6 @@ public class ResultAggregator
 
     /** Default aggregator that calculates the average of the benchmark results. */
     public static final Function<List<BenchmarkResult>, Double> DEFAULT_AGGREGATOR = results ->
-            results == null || results.isEmpty() ? Double.NaN :
             results.stream().mapToDouble(BenchmarkResult::getValue).average().orElse(Double.NaN);
 
     /** Filter to select which benchmark results to aggregate. */
