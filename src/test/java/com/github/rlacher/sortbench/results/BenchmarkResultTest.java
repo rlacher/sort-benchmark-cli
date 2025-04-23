@@ -147,8 +147,8 @@ class BenchmarkResultTest
     @Test
     void toString_whenCalled_stringContainsFields()
     {
-        assertTrue(benchmarkResult.toString().contains(profilingMode.toString()), "toString should contain the profiling mode.");
-        assertTrue(benchmarkResult.toString().contains(String.valueOf(value)), "toString should contain the value.");
-        assertTrue(benchmarkResult.toString().contains(context.toString()),"toString should contain context information");
+        assertTrue(benchmarkResult.toString().contains(profilingMode.toString()), "toString() should contain the profiling mode.");
+        assertTrue(benchmarkResult.toString().contains(String.valueOf(value)), "toString() should contain the value.");
+        assertTrue(benchmarkResult.toString().contains(context.toString()),"toString() should contain context information");
     }
 }

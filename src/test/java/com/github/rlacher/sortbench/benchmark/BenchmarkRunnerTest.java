@@ -70,35 +70,35 @@ class BenchmarkRunnerTest {
     @Test
     void run_nullConfig_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(null), "run should throw IllegalArgumentException when config is null");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(null), "run() should throw IllegalArgumentException when config is null");
     }
 
     @Test
     void run_invalidInputSizes_throwsIllegalArgumentException()
     {
         validConfig.put("input_sizes", Arrays.asList("invalid"));
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run should throw IllegalArgumentException when input_sizes is invalid");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when input_sizes is invalid");
     }
 
     @Test
     void run_invalidStrategies_throwsIllegalArgumentException()
     {
         validConfig.put("strategies", Arrays.asList(123));
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run should throw IllegalArgumentException when strategies is invalid");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when strategies is invalid");
     }
 
     @Test
     void run_undefinedDataType_throwsIllegalArgumentException()
     {
         validConfig.remove("data_type");
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run should throw IllegalArgumentException when data type is undefined");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when data type is undefined");
     }
 
     @Test
     void run_nonStringDataType_throwsIllegalArgumentException()
     {
         validConfig.replace("data_type", 3);
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run should throw IllegalArgumentException when data type is not of type String");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when data type is not of type String");
     }
 
     @Test
@@ -109,8 +109,8 @@ class BenchmarkRunnerTest {
         when(mockMetric.getProfilingMode()).thenReturn((ProfilingMode)validConfig.get("profiling_mode"));
 
         List<BenchmarkResult> results = benchmarkRunner.run(validConfig);
-        assertNotNull(results, "run should return a non-null list of BenchmarkResults");
-        assertFalse(results.isEmpty(), "run should return a non-empty list of BenchmarkResults");
+        assertNotNull(results, "run() should return a non-null list of BenchmarkResults");
+        assertFalse(results.isEmpty(), "run() should return a non-empty list of BenchmarkResults");
     }
 
     @Test
@@ -119,6 +119,6 @@ class BenchmarkRunnerTest {
         Map<String, Object> unknownStrategyConfig = new HashMap<>(validConfig);
         // Valid string in validation but unknown strategy name
         unknownStrategyConfig.put("strategies", List.of("UnknownSort"));
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(unknownStrategyConfig), "getStrategyInstance should throw IllegalArgumentException for an invalid strategy name");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(unknownStrategyConfig), "getStrategyInstance() should throw IllegalArgumentException for an invalid strategy name");
     }
 }
