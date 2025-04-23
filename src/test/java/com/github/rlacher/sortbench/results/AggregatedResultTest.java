@@ -83,10 +83,22 @@ class AggregatedResultTest
     }
 
     @Test
-    void equals_sameObject_returnsTrue()
+    void compareTo_nullArgument_throwsIllegalArgumentException()
     {
-        AggregatedResult result2 = new AggregatedResult(context, profilingMode, aggregate, iterations);
-        assertEquals(aggregatedResult, result2);
+        assertThrows(IllegalArgumentException.class, () -> aggregatedResult.compareTo(null), "Comparing to null should throw IllegalArgumentException");
+    }
+
+    @Test
+    void equals_sameInstance_returnsTrue()
+    {
+        assertTrue(() -> aggregatedResult.equals(aggregatedResult), "equals should return true for the same object instance.");
+    }
+
+    @Test
+    void equals_equivalentInstance_returnsTrue()
+    {   
+        AggregatedResult equivalentResult = new AggregatedResult(context, profilingMode, aggregate, iterations);
+        assertTrue(aggregatedResult.equals(equivalentResult), "equals should return true for an equivalent object instance.");
     }
 
     @Test

@@ -22,6 +22,8 @@
 
 package com.github.rlacher.sortbench.config;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,8 +31,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class ConfigValidatorTest
 {
@@ -59,6 +59,34 @@ public class ConfigValidatorTest
                      "validateAndGet should return the correct integer value");
         assertEquals(true, ConfigValidator.validateAndGet(config, "booleanKey", Boolean.class),
                      "validateAndGet should return the correct boolean value");
+    }
+
+    @Test
+    void validateAndGet_nullConfig_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGet(null, "stringKey", String.class),
+                     "validateAndGet with a null config should throw an IllegalArgumentException");
+    }
+
+    @Test
+    void validateAndGet_nullKey_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGet(config, null, String.class),
+                     "validateAndGet with a null key should throw an IllegalArgumentException");
+    }
+
+    @Test
+    void validateAndGet_blankKey_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGet(config, "  ", String.class),
+                     "validateAndGet with a blank key should throw an IllegalArgumentException");
+    }
+
+    @Test
+    void validateAndGet_nullExpectedType_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGet(config, "stringKey", null),
+                     "validateAndGet with a null expected type should throw an IllegalArgumentException");
     }
 
     @Test
@@ -93,6 +121,34 @@ public class ConfigValidatorTest
         List<Integer> expectedIntegerList = Arrays.asList(1, 2, 3);
         assertEquals(expectedIntegerList, ConfigValidator.validateAndGetList(config, "integerListKey", Integer.class),
                      "validateAndGetList should return the correct integer list");
+    }
+
+    @Test
+    void validateAndGetList_nullConfig_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetList(null, "stringListKey", String.class),
+                     "validateAndGetList with a null config should throw an IllegalArgumentException");
+    }
+
+    @Test
+    void validateAndGetList_nullKey_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetList(config, null, String.class),
+                     "validateAndGetList with a null key should throw an IllegalArgumentException");
+    }
+
+    @Test
+    void validateAndGetList_blankKey_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetList(config, "  ", String.class),
+                     "validateAndGetList with a blank key should throw an IllegalArgumentException");
+    }
+
+    @Test
+    void validateAndGetList_nullExpectedElementType_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetList(config, "stringListKey", null),
+                     "validateAndGetList with a null expected element type should throw an IllegalArgumentException");
     }
 
     @Test

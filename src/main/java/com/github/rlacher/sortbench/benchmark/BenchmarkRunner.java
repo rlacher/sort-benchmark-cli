@@ -171,6 +171,8 @@ public class BenchmarkRunner
      * @param strategyNames A list of sorting strategy names.
      * @param iterations The number of data arrangements per size and data type.
      * @return A map of {@link BenchmarkContext} to a list of benchmark data.
+     * @throws NullPointerException If any of {@code dataType}, {@code sizes} or {@code strategyNames} are {@code null}.
+     * This is unexpected as the caller {@link BenchmarkRunner#run} ensures these arguments are not null.
      */
     protected Map<BenchmarkContext, List<BenchmarkData>> generateBenchmarkData(BenchmarkData.DataType dataType, final List<Integer> sizes, final List<String> strategyNames, final int iterations)
     {

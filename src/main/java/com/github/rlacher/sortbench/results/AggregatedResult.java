@@ -82,15 +82,19 @@ public final class AggregatedResult implements Comparable<AggregatedResult>
 
     /**
      * Defines the natural comparison logic for AggregatedResult.
-     * 
+     *
      * @param other The aggregated result to be compared.
      * @return A negative integer, zero, or a positive integer as this object
      * is less than, equal to, or greater than the specified object.
-     * @throws NullPointerException if the specified object is null.
+     * @throws IllegalArgumentException if the specified object is null.
      */
     @Override
     public int compareTo(AggregatedResult other)
     {
+        if(other == null)
+        {
+            throw new IllegalArgumentException("Cannot compare to null");
+        }
         return context.compareTo(other.getContext());
     }
 

@@ -141,9 +141,9 @@ For each set of benchmark data, the `BenchmarkRunner` configures the `Sorter` wi
 
 ### Test
 
-This project features a robust suite of **276 unit tests**, built with JUnit and Mockito, to ensure the reliability and correctness of both the benchmarking framework and sorting routines. The testing strategy rigorously applies principles such as boundary condition analysis, equivalence class partitioning, exception handling verification, and thorough data flow validation across components.
+This project features a robust suite of **287 unit tests**, built with JUnit and Mockito, to ensure the reliability and correctness of both the benchmarking framework and sorting routines. The testing strategy rigorously applies principles such as boundary condition analysis, equivalence class partitioning, exception handling verification, and thorough data flow validation across components.
 
-The current test suite achieves significant coverage, reaching **91% statement coverage** and **90% branch coverage**, demonstrating a strong commitment to code quality and comprehensive testing throughout the project.
+The current test suite achieves significant coverage, reaching **92% statement coverage** and **92% branch coverage**, demonstrating a strong commitment to code quality and comprehensive testing throughout the project.
 
 **Running Tests:**
 

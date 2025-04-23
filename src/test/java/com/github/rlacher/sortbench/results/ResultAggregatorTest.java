@@ -25,6 +25,7 @@ package com.github.rlacher.sortbench.results;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,7 +71,7 @@ class ResultAggregatorTest
     @Test
     void process_validResults_returnsAggregatedResult()
     {
-        List<BenchmarkResult> results = List.of(
+        final List<BenchmarkResult> results = List.of(
             new BenchmarkResult(context, profilingMode, 1.0),
             new BenchmarkResult(context, profilingMode, 2.0),
             new BenchmarkResult(context, profilingMode, 3.0)
@@ -93,7 +94,7 @@ class ResultAggregatorTest
     @Test
     void process_singleResultList_returnSameValue()
     {
-        List<BenchmarkResult> results = List.of(new BenchmarkResult(context, profilingMode, 7.0));
+        final List<BenchmarkResult> results = List.of(new BenchmarkResult(context, profilingMode, 7.0));
 
         List<AggregatedResult> aggregatedResults = aggregator.process(results);
 
@@ -111,7 +112,7 @@ class ResultAggregatorTest
     @Test
     void process_inconsistentProfilingModes_throwsIllegalArgumentException()
     {
-        List<BenchmarkResult> results = List.of(
+        final List<BenchmarkResult> results = List.of(
             new BenchmarkResult(context, profilingMode, 1.0),
             new BenchmarkResult(context, ProfilingMode.MEMORY_USAGE, 2.0)
         );
@@ -122,8 +123,8 @@ class ResultAggregatorTest
     @Test
     void process_twoContexts_returnsTwoAggregatedResults()
     {
-        BenchmarkContext differentContext = new BenchmarkContext(BenchmarkData.DataType.SORTED, 10, "BubbleSort");
-        List<BenchmarkResult> results = List.of(
+        final BenchmarkContext differentContext = new BenchmarkContext(BenchmarkData.DataType.SORTED, 10, "BubbleSort");
+        final List<BenchmarkResult> results = List.of(
             new BenchmarkResult(context, profilingMode, 1.0),
             new BenchmarkResult(differentContext, profilingMode, 2.0)
         );
@@ -138,5 +139,18 @@ class ResultAggregatorTest
                 "Aggregated results should contain a result with the first context");
         assertTrue(aggregatedResults.stream().anyMatch(result -> result.getContext().equals(differentContext)),
                 "Aggregated results should contain a result with the second context");
+    }
+
+    @Test
+    void process_excludeAllFilter_throwsIllegalArgumentException()
+    {
+        final Predicate<BenchmarkResult> excludeAllFilter = result -> false;
+        aggregator = new ResultAggregator(excludeAllFilter, ResultAggregator.DEFAULT_AGGREGATOR);
+        final List<BenchmarkResult> results = List.of(
+            new BenchmarkResult(context, profilingMode, 1.0),
+            new BenchmarkResult(context, profilingMode, 2.0)
+        );
+
+        assertThrows(IllegalArgumentException.class, () -> aggregator.process(results), "Processing results with a filter that excludes all should throw an IllegalArgumentException");
     }
 }

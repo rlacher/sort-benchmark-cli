@@ -104,9 +104,9 @@ public class ResultAggregator
             .collect(Collectors.groupingBy(result -> result.getContext().toString()));
 
         List<AggregatedResult> aggregatedResults = new ArrayList<>();
-        for(var resultGroupByContext: resultMap.values())
+        for(var resultsByContext: resultMap.values())
         {
-            AggregatedResult aggregatedResultByContext = processResultsByContext(resultGroupByContext);
+            AggregatedResult aggregatedResultByContext = processResultsByContext(resultsByContext);
             aggregatedResults.add(aggregatedResultByContext);
         }
 
@@ -117,20 +117,22 @@ public class ResultAggregator
     /**
      * Processes benchmark results for a single context.
      * 
-     * @param resultGroup The results to process.
+     * @param resultsByContext The results to process.
      * @return The aggregated result.
-     * @throws IllegalArgumentException If results have different contexts or no results match the filter.
+     * @throws IllegalArgumentException If the results within the list have different contexts, or if no results match the internal filter.
+     * @throws NullPointerException If {@code resultsByContext} is null. This exception is unexpected
+     * as the calling {@link ResultAggregator#process} method ensures a non-null list.
      */
-    protected AggregatedResult processResultsByContext(final List<BenchmarkResult> resultGroup)
+    protected AggregatedResult processResultsByContext(final List<BenchmarkResult> resultsByContext)
     {
-        final BenchmarkContext context = resultGroup.get(0).getContext();
+        final BenchmarkContext context = resultsByContext.get(0).getContext();
 
-        if(resultGroup.stream().anyMatch(result -> !Objects.equals(result.getContext(), context)))
+        if(resultsByContext.stream().anyMatch(result -> !Objects.equals(result.getContext(), context)))
         {
             throw new IllegalArgumentException("All results in group must have the same context");
         }
 
-        List<BenchmarkResult> filteredResults = resultGroup.stream().filter(filter).toList();
+        List<BenchmarkResult> filteredResults = resultsByContext.stream().filter(filter).toList();
 
         if(filteredResults.isEmpty())
         {
@@ -138,8 +140,8 @@ public class ResultAggregator
         }
 
         // Use original list size for correct iteration count
-        final int iterations = resultGroup.size();
-        final ProfilingMode profilingMode = resultGroup.getFirst().getProfilingMode();
+        final int iterations = resultsByContext.size();
+        final ProfilingMode profilingMode = resultsByContext.getFirst().getProfilingMode();
 
         return new AggregatedResult(context, profilingMode, aggregator.apply(filteredResults), iterations);
     }

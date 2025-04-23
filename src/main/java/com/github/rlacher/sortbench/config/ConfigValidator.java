@@ -39,10 +39,28 @@ public class ConfigValidator
      * @param expectedType The expected class type of the configuration value.
      * @param <T> The type of the expected configuration value.
      * @return The validated and cast configuration value.
-     * @throws IllegalArgumentException If the key is missing, the value is null, or the value is not of the expected type.
+     * @throws IllegalArgumentException IllegalArgumentException If any input is invalid (null {@code config}, null/blank {@code key}, null {@code expectedType}),
+     * or if the {@code key} is missing/null in {@code config}, or if the value is not of {@code expectedType}.
      */
     public static <T> T validateAndGet(Map<String, Object> config, String key, Class<T> expectedType)
     {
+        if(config == null)
+        {
+            throw new IllegalArgumentException("Config must not be null");
+        }
+        if(key == null)
+        {
+            throw new IllegalArgumentException("Key must not be null");
+        }
+        if(key.isBlank())
+        {
+            throw new IllegalArgumentException("Key must not be blank");
+        }
+        if(expectedType == null)
+        {
+            throw new IllegalArgumentException("Expected type must not be null");
+        }
+
         Object rawValue = config.get(key);
 
         if (rawValue == null)
@@ -68,11 +86,29 @@ public class ConfigValidator
      * @param expectedElementType The expected class type of each element in the list.
      * @param <T> The type of the elements in the expected list.
      * @return The validated and cast list of configuration values.
-     * @throws IllegalArgumentException If the key is missing, the value is null, the value is not a list,
-     * or if the list contains null elements or elements of the incorrect type.
+     * @throws IllegalArgumentException If {@code config} is null, {@code key} is null or blank, {@code expectedElementType} is null,
+     * the {@code key} is missing in {@code config}, the value for {@code key} is null or not a {@link List},
+     * or the list contains null elements or elements not of {@code expectedElementType}.
      */
     public static <T> List<T> validateAndGetList(Map<String, Object> config, String key, Class<T> expectedElementType)
     {
+        if(config == null)
+        {
+            throw new IllegalArgumentException("Config must not be null");
+        }
+        if(key == null)
+        {
+            throw new IllegalArgumentException("Key must not be null");
+        }
+        if(key.isBlank())
+        {
+            throw new IllegalArgumentException("Key must not be blank");
+        }
+        if(expectedElementType == null)
+        {
+            throw new IllegalArgumentException("Expected element type must not be null");
+        }
+
         Object rawObject = config.get(key);
 
         if (rawObject == null)
