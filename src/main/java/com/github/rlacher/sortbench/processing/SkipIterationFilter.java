@@ -27,10 +27,11 @@ import java.util.function.Predicate;
 import com.github.rlacher.sortbench.results.BenchmarkResult;
 
 /**
- * Skips the initial N iterations.
- * 
+ * Skips the initial number of iterations
+ *
  * Provides a basic JVM warmup by ignoring the first few benchmark runs,
- * allowing time for JVM optimisation.
+ * allowing time for JVM optimisation. The number of initial iterations
+ * to skip is configured via the {@code iterationsToSkip} constructor parameter.
  */
 public class SkipIterationFilter implements Predicate<BenchmarkResult>
 {
