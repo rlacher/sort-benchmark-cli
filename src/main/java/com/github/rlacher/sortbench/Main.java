@@ -25,11 +25,16 @@ package com.github.rlacher.sortbench;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import com.github.rlacher.sortbench.benchmark.BenchmarkRunner;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
+import com.github.rlacher.sortbench.processing.MedianAggregator;
+import com.github.rlacher.sortbench.processing.SkipIterationFilter;
 import com.github.rlacher.sortbench.results.AggregatedResult;
 import com.github.rlacher.sortbench.results.BenchmarkResult;
 import com.github.rlacher.sortbench.results.ResultAggregator;
@@ -43,9 +48,7 @@ import com.github.rlacher.sortbench.sorter.Sorter;
  */
 public class Main
 {
-    /** 
-     * Logger for logging messages.
-     */
+    /** Logger for logging messages. */
     private static final Logger logger = Logger.getLogger(Main.class.getName());
 
     /**
@@ -61,6 +64,9 @@ public class Main
      *  This is used to determine how many times each sorting algorithm should run on input data with the same characteristics (length and type).
      */
     private static final int BENCHMARK_ITERATIONS = 5;
+
+    /** The number of JVM warmup iterations to skip. */
+    private static final int WARMUP_ITERATIONS_TO_SKIP = 2;
 
     /**
      * The main method, which starts the sorting algorithm benchmarking process.
@@ -78,7 +84,9 @@ public class Main
 
         List<BenchmarkResult> results = runner.run(config);
 
-        ResultAggregator resultAggregator = new ResultAggregator(ResultAggregator.DEFAULT_FILTER, ResultAggregator.DEFAULT_AGGREGATOR);
+        Supplier<Predicate<BenchmarkResult>> skipIterationFilterSupplier = () -> new SkipIterationFilter(WARMUP_ITERATIONS_TO_SKIP);
+        Supplier<Function<List<BenchmarkResult>, Double>> medianAggregatorSupplier = () -> new MedianAggregator();
+        ResultAggregator resultAggregator = new ResultAggregator(skipIterationFilterSupplier, medianAggregatorSupplier);
         List<AggregatedResult> aggregatedResults = resultAggregator.process(results);
 
         for(var aggregatedResult : aggregatedResults)

@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
@@ -38,43 +39,59 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
  */
 public class ResultAggregator
 {
-    /** Default filter that accepts all results. */
-    public static final Predicate<BenchmarkResult> DEFAULT_FILTER = result -> true;
+    /** Default {@link Supplier} providing a filter that accepts all results. */
+    public static final Supplier<Predicate<BenchmarkResult>> DEFAULT_FILTER_SUPPLIER = () -> result -> true;
 
-    /** Default aggregator that calculates the average of the benchmark results. */
-    public static final Function<List<BenchmarkResult>, Double> DEFAULT_AGGREGATOR = results ->
-            results == null || results.isEmpty() ? Double.NaN :
+    /** Default {@link Supplier} to an aggregator that calculates the average of the benchmark results. */
+    public static final Supplier<Function<List<BenchmarkResult>, Double>> DEFAULT_AGGREGATOR_SUPPLIER = () -> results ->
             results.stream().mapToDouble(BenchmarkResult::getValue).average().orElse(Double.NaN);
 
-    /** Filter to select which benchmark results to aggregate. */
-    private final Predicate<BenchmarkResult> filter;
+    /** Filter supplier to select which benchmark results to aggregate. */
+    private final Supplier<Predicate<BenchmarkResult>> filterSupplier;
 
-    /** Aggregator function to compute the final result from the filtered results. */
-    private final Function<List<BenchmarkResult>, Double> aggregator;
+    /** Aggregator function supplier to compute the final result from the filtered results. */
+    private final Supplier<Function<List<BenchmarkResult>, Double>> aggregatorSupplier;
 
     /**
-     * Constructor to create a ResultAggregator passing a filter and an aggregator.
-     * @param filter The filter to select benchmark results
-     * @param aggregator The aggregator function to compute the final result
-     * @throws IllegalArgumentException If the filter or aggregator is null
+     * Constructs a {@code ResultAggregator} with the provided suppliers for the filter and aggregator.
+     *
+     * @param filterSupplier    Supplier of the {@link Predicate} to filter results.
+     * @param aggregatorSupplier Supplier of the {@link Function} to aggregate results.
+     * @throws IllegalArgumentException If either {@code filterSupplier} or {@code aggregatorSupplier} is {@code null}.
+     * @throws IllegalStateException If the filter and aggregator supplier provide a {@code null} {@link Predicate} or {@link Function}, respectively.
      */
-    public ResultAggregator(Predicate<BenchmarkResult> filter, Function<List<BenchmarkResult>, Double> aggregator)
+    public ResultAggregator(Supplier<Predicate<BenchmarkResult>> filterSupplier,
+                            Supplier<Function<List<BenchmarkResult>, Double>> aggregatorSupplier)
     {
-        if(filter == null)
+        if(filterSupplier == null)
         {
-            throw new IllegalArgumentException("Filter must not be null");
-        }
-        if(aggregator == null)
-        {
-            throw new IllegalArgumentException("Aggregator must not be null");
+            throw new IllegalArgumentException("Filter supplier cannot be null.");
         }
 
-        this.filter = filter;
-        this.aggregator = aggregator;
+        final Predicate<BenchmarkResult> filter = filterSupplier.get();
+        if (filter == null)
+        {
+            throw new IllegalStateException("Filter provided by the supplier cannot be null.");
+        }
+
+        if(aggregatorSupplier == null)
+        {
+            throw new IllegalArgumentException("Aggregator supplier cannot be null.");
+        }
+
+        final Function<List<BenchmarkResult>, Double> aggregator = aggregatorSupplier.get();
+        if (aggregator == null)
+        {
+            throw new IllegalStateException("Aggregator provided by the supplier cannot be null.");
+        }
+
+        this.filterSupplier = filterSupplier;
+        this.aggregatorSupplier = aggregatorSupplier;
     }
 
     /**
-     * Processes the given list of benchmark results, applying the filter and aggregator.
+     * Processes the given list of benchmark results, applying the filter from
+     * the {@code filterSupplier} and aggregator from the {@code aggregatorSupplier}.
      * 
      * @param results The list of benchmark results to process. Must neither be null nor empty.
      * @return A list of {@link AggregatedResult} containing the aggregated results.
@@ -100,7 +117,7 @@ public class ResultAggregator
             throw new IllegalArgumentException("All results must have the same profiling mode");
         }
 
-        Map<String, List<BenchmarkResult>> resultMap = results.stream()
+        final Map<String, List<BenchmarkResult>> resultMap = results.stream()
             .collect(Collectors.groupingBy(result -> result.getContext().toString()));
 
         List<AggregatedResult> aggregatedResults = new ArrayList<>();
@@ -132,7 +149,8 @@ public class ResultAggregator
             throw new IllegalArgumentException("All results in group must have the same context");
         }
 
-        List<BenchmarkResult> filteredResults = resultsByContext.stream().filter(filter).toList();
+        final Predicate<BenchmarkResult> filter = filterSupplier.get();
+        final List<BenchmarkResult> filteredResults = resultsByContext.stream().filter(filter).toList();
 
         if(filteredResults.isEmpty())
         {
@@ -142,6 +160,8 @@ public class ResultAggregator
         // Use original list size for correct iteration count
         final int iterations = resultsByContext.size();
         final ProfilingMode profilingMode = resultsByContext.getFirst().getProfilingMode();
+
+        final Function<List<BenchmarkResult>, Double> aggregator = aggregatorSupplier.get();
 
         return new AggregatedResult(context, profilingMode, aggregator.apply(filteredResults), iterations);
     }

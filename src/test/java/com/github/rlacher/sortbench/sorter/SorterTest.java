@@ -49,13 +49,13 @@ class SorterTest
     @Test
     void setStrategy_nullArgument_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> sorter.setStrategy(null), "setStrategy should throw IllegalArgumentException when strategy is null");
+        assertThrows(IllegalArgumentException.class, () -> sorter.setStrategy(null), "setStrategy() should throw IllegalArgumentException when strategy is null");
     }
 
     @Test
     void setSortStrategy_validArgument_callsStrategy()
     {
-        assertDoesNotThrow(() -> sorter.setStrategy(mockStrategy), "setStrategy should not throw with valid non-null argument");
+        assertDoesNotThrow(() -> sorter.setStrategy(mockStrategy), "setStrategy() should not throw with valid non-null argument");
 
         int[] array = { 1, 2, 3 };
 
@@ -70,14 +70,14 @@ class SorterTest
     void sort_nullArray_throwsIllegalArgumentException()
     {
         sorter.setStrategy(mockStrategy);
-        assertThrows(IllegalArgumentException.class, () -> sorter.sort(null), "sort should throw IllegalArgumentException when array is null");
+        assertThrows(IllegalArgumentException.class, () -> sorter.sort(null), "sort() should throw IllegalArgumentException when array is null");
     }
 
     @Test
     void sort_withoutStrategy_throwsIllegalStateException()
     {
         int[] array = { 1, 2, 3 };
-        assertThrows(IllegalStateException.class, () -> sorter.sort(array), "Calling sort without a set strategy should throw IllegalStateException.");
+        assertThrows(IllegalStateException.class, () -> sorter.sort(array), "Calling sort() without a set strategy should throw IllegalStateException.");
     }
 
     @Test
@@ -86,8 +86,8 @@ class SorterTest
         sorter.setStrategy(mockStrategy);
         BenchmarkMetric metric = sorter.sort(new int[0]);
 
-        assertEquals(0, metric.getValue(), "sort should return 0 for empty array");
-        assertEquals(ProfilingMode.NONE, metric.getProfilingMode(), "sort should return NONE for empty array");
+        assertEquals(0, metric.getValue(), "sort() should return 0 for empty array");
+        assertEquals(ProfilingMode.NONE, metric.getProfilingMode(), "sort() should return NONE for empty array");
     }
 
     @Test

@@ -23,8 +23,9 @@
 package com.github.rlacher.sortbench.benchmark.data;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.*;
+
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -114,19 +115,19 @@ class BenchmarkDataTest
     @Test
     void getData_whenCalled_returnsSame()
     {
-        assertSame(benchmarkData.getData(), benchmarkData.getData(), "getData should return the same instance of the data array");
+        assertSame(benchmarkData.getData(), benchmarkData.getData(), "getData() should return the same instance of the data array");
     }
 
     @Test
     void getLength_whenCalled_returnsCorrectLength()
     {
-        assertEquals(data.length, benchmarkData.getLength(), "getLength should return the correct length of the data array");
+        assertEquals(data.length, benchmarkData.getLength(), "getLength() should return the correct length of the data array");
     }
 
     @Test
     void getType_whenCalled_returnsCorrectType()
     {
-        assertEquals(BenchmarkData.DataType.SORTED, benchmarkData.getType(), "getType should return the correct type of the data");
+        assertEquals(BenchmarkData.DataType.SORTED, benchmarkData.getType(), "getType() should return the correct type of the data");
     }
 
     @Test
@@ -136,10 +137,24 @@ class BenchmarkDataTest
         final BenchmarkData dataObject = new BenchmarkData(identifiableData, BenchmarkData.DataType.SORTED);
         final String toStringOutput = dataObject.toString();
 
-        assertTrue(toStringOutput.contains(BenchmarkData.DataType.SORTED.toString()),"toString should contain the data type.");
-        assertTrue(toStringOutput.contains(String.valueOf(identifiableData[0])),"toString should contain the first data element.");
-        assertTrue(toStringOutput.contains(String.valueOf(identifiableData[1])),"toString should contain the second data element.");
-        assertTrue(toStringOutput.contains(String.valueOf(identifiableData.length)),"toString should contain the length of the data.");
+        assertTrue(toStringOutput.contains(BenchmarkData.DataType.SORTED.toString()),"toString() should contain the data type.");
+        assertTrue(toStringOutput.contains(String.valueOf(identifiableData[0])),"toString() should contain the first data element.");
+        assertTrue(toStringOutput.contains(String.valueOf(identifiableData[1])),"toString() should contain the second data element.");
+        assertTrue(toStringOutput.contains(String.valueOf(identifiableData.length)),"toString() should contain the length of the data.");
+    }
+
+    @Test
+    void toString_longArray_cropsArrayRetaininigRelevantInfo()
+    {
+        final int[] arrayOfLength10 = IntStream.range(0, 10).toArray();
+        final BenchmarkData dataObject = new BenchmarkData(arrayOfLength10, BenchmarkData.DataType.SORTED);
+        final String toStringOutput = dataObject.toString();
+
+        assertTrue(toStringOutput.contains(BenchmarkData.DataType.SORTED.toString()),"toString() should contain the data type.");
+        assertTrue(toStringOutput.contains(String.valueOf(arrayOfLength10[0])),"toString() should contain the first data element.");
+        assertTrue(toStringOutput.contains(String.valueOf(arrayOfLength10[1])),"toString() should contain the second data element.");
+        assertFalse(toStringOutput.contains(String.valueOf(arrayOfLength10[arrayOfLength10.length-1])),"toString() should not contain the last data element for longer arrays.");
+        assertTrue(toStringOutput.contains(String.valueOf(arrayOfLength10.length)),"toString() should contain the length of the data.");
     }
 
     @Test
@@ -150,7 +165,7 @@ class BenchmarkDataTest
         final String toStringOutput = dataObject.toString();
         final String toStringOutputNoWhitespaces = toStringOutput.replaceAll("\\s+", "");
 
-        assertTrue(toStringOutput.contains(BenchmarkData.DataType.REVERSED.toString()), "toString with empty data should contain the data type");
-        assertTrue(toStringOutputNoWhitespaces.contains("length=0"), "toString with empty data should contain length=0");
+        assertTrue(toStringOutput.contains(BenchmarkData.DataType.REVERSED.toString()), "toString() with empty data should contain the data type");
+        assertTrue(toStringOutputNoWhitespaces.contains("length=0"), "toString() with empty data should contain length=0");
     }
 }

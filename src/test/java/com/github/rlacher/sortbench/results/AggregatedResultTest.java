@@ -91,14 +91,14 @@ class AggregatedResultTest
     @Test
     void equals_sameInstance_returnsTrue()
     {
-        assertTrue(() -> aggregatedResult.equals(aggregatedResult), "equals should return true for the same object instance.");
+        assertTrue(() -> aggregatedResult.equals(aggregatedResult), "equals() should return true for the same object instance.");
     }
 
     @Test
     void equals_equivalentInstance_returnsTrue()
     {   
         AggregatedResult equivalentResult = new AggregatedResult(context, profilingMode, aggregate, iterations);
-        assertTrue(aggregatedResult.equals(equivalentResult), "equals should return true for an equivalent object instance.");
+        assertTrue(aggregatedResult.equals(equivalentResult), "equals() should return true for an equivalent object instance.");
     }
 
     @Test

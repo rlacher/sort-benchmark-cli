@@ -63,6 +63,17 @@ class BenchmarkMetricTest
         assertThrows(IllegalArgumentException.class, () -> new BenchmarkMetric(mode, -1.0), "Should throw IllegalArgumentException for negative metric");
     }
 
+    @ParameterizedTest
+    @EnumSource(ProfilingMode.class)
+    void constructor_validProfilingModes(ProfilingMode mode)
+    {
+        double metric = 1.0;
+
+        BenchmarkMetric benchmarkMetric = new BenchmarkMetric(mode, metric);
+
+        assertEquals(mode, benchmarkMetric.getProfilingMode(), "Profiling mode should match");
+    }
+
     @Test
     void equals_sameObject_returnsTrue()
     {
@@ -132,16 +143,5 @@ class BenchmarkMetricTest
 
         assertTrue(benchmarkMetric.toString().contains(ProfilingMode.EXECUTION_TIME.toString()), "toString() should contain the profiling mode.");
         assertTrue(benchmarkMetric.toString().contains("32.1"), "toString() should contain the value.");
-    }
-
-    @ParameterizedTest
-    @EnumSource(ProfilingMode.class)
-    void constructor_validProfilingModes(ProfilingMode mode)
-    {
-        double metric = 1.0;
-
-        BenchmarkMetric benchmarkMetric = new BenchmarkMetric(mode, metric);
-
-        assertEquals(mode, benchmarkMetric.getProfilingMode(), "Profiling mode should match");
     }
 }
