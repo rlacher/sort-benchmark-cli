@@ -66,7 +66,7 @@ public class MedianAggregator implements Function<List<BenchmarkResult>, Double>
     private static Double median(DoubleStream stream)
     {
         List<Double> sortedList = stream.boxed().sorted().toList();
-        int middle = sortedList.size() / 2;
+        final int middle = sortedList.size() / 2;
 
         final int size = sortedList.size();
 
