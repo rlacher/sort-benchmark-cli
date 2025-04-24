@@ -82,7 +82,8 @@ public class BenchmarkRunner
      *
      * @param benchmarkConfig A map containing benchmark configuration parameters.
      * @return A list of benchmark results.
-     * @throws IllegalArgumentException If benchmark config is null or configuration is invalid.
+     * @throws IllegalArgumentException If benchmark config is null, the configuration is otherwise invalid
+     * or if required list-based parameters are empty.
      */
     public List<BenchmarkResult> run(Map<String, Object> benchmarkConfig)
     {

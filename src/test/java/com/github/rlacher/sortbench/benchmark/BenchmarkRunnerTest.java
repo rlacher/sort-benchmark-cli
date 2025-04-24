@@ -27,6 +27,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,8 @@ import org.mockito.Mockito;
 import com.github.rlacher.sortbench.sorter.Sorter;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
+import com.github.rlacher.sortbench.benchmark.data.BenchmarkData.DataType;
+import com.github.rlacher.sortbench.results.BenchmarkContext;
 import com.github.rlacher.sortbench.results.BenchmarkMetric;
 import com.github.rlacher.sortbench.results.BenchmarkResult;
 
@@ -120,5 +123,40 @@ class BenchmarkRunnerTest {
         // Valid string in validation but unknown strategy name
         unknownStrategyConfig.put("strategies", List.of("UnknownSort"));
         assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(unknownStrategyConfig), "getStrategyInstance() should throw IllegalArgumentException for an invalid strategy name");
+    }
+
+    @Test
+    void run_emptyInputSizes_throwsIllegalArgumentException()
+    {
+        Map<String, Object> emptySizesConfig = new HashMap<>(validConfig);
+        emptySizesConfig.put("input_sizes", List.of());
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(emptySizesConfig), 
+        "Running with empty input sizes should result in an IllegalArgumentException.");
+    }
+
+    @Test
+    void run_emptyStrategies_throwsIllegalArgumentException()
+    {
+        Map<String, Object> emptyStrategiesConfig = new HashMap<>(validConfig);
+        emptyStrategiesConfig.put("strategies", List.of());
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(emptyStrategiesConfig), 
+        "Running with empty strategies should result in an IllegalArgumentException.");
+    }
+
+    @Test
+    void run_benchmarkDataWithInvalidStrategy_throwsIllegalStateException()
+    {
+        BenchmarkContext invalidStrategyContext = new BenchmarkContext(DataType.SORTED, 10, "InvalidStrategyName");
+
+        Map<BenchmarkContext, List<BenchmarkData>> invalidStrategyMap = new HashMap<>();
+        invalidStrategyMap.put(invalidStrategyContext, new ArrayList<BenchmarkData>());
+
+        BenchmarkRunner spiedRunner = spy(new BenchmarkRunner(mockSorter));
+        doReturn(invalidStrategyMap)
+            .when(spiedRunner)
+            .generateBenchmarkData(any(DataType.class), any(), any(), anyInt());
+
+        assertThrows(IllegalStateException.class, () -> spiedRunner.run(validConfig),
+        "Running with benchmark data containing an invalid strategy should throw an IllegalStateException.");
     }
 }
