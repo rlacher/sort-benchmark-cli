@@ -34,6 +34,8 @@ Explore the nuances of sorting algorithm efficiency through this interactive ben
     - [Sequence Diagram: Benchmark Run](#sequence-diagram-benchmark-run)
     - [Sequence Diagram: BenchmarkRunner.runIterations](#sequence-diagram-benchmarkrunnerruniterations)
 - [Test](#test)
+    - [Running Tests](#running-tests)
+    - [Viewing Test Coverage](#viewing-test-coverage)
 - [Benchmark Results](#benchmark-results)
 - [Discussion](#discussion)
 - [License](#license)
@@ -175,11 +177,11 @@ For each set of benchmark data, the `BenchmarkRunner` configures the `Sorter` wi
 
 ## Test
 
-This project features a robust suite of **305 unit tests**, built with JUnit and Mockito, to ensure the reliability and correctness of both the benchmarking framework and sorting routines. The testing strategy rigorously applies principles such as boundary condition analysis, equivalence class partitioning, exception handling verification, and thorough data flow validation across components.
+This project features a robust suite of **309 unit tests**, built with JUnit and Mockito, to ensure the reliability and correctness of both the benchmarking framework and sorting routines. The testing strategy rigorously applies principles such as boundary condition analysis, equivalence class partitioning, exception handling verification, and thorough data flow validation across components.
 
-The current test suite achieves significant coverage, reaching **93% statement coverage** and **94% branch coverage**, demonstrating a strong commitment to code quality and comprehensive testing throughout the project.
+The current test suite achieves significant coverage, reaching **93% statement coverage** and **95% branch coverage**, demonstrating a strong commitment to code quality and comprehensive testing throughout the project.
 
-**Running Tests:**
+### Running Tests
 
 1.  Clone the repository (if you haven't already).
 2.  Navigate to the project directory in your terminal or command prompt.
@@ -188,7 +190,7 @@ The current test suite achieves significant coverage, reaching **93% statement c
     ./gradlew test
     ```
 
-**Viewing Test Coverage:**
+### Viewing Test Coverage
 
 After the tests complete, an HTML report will be generated in the `build/reports/jacoco/testReport/html` directory. Open the `index.html` file in your web browser to explore the coverage details.
 
