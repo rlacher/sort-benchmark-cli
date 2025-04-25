@@ -32,7 +32,10 @@ import java.util.stream.IntStream;
  */
 public final class BenchmarkData
 {
+    /** The integer array to be sorted. */
     private final int[] data;
+
+    /** The type of data in the array (e.g. RANDOM, SORTED). */
     private final DataType type;
 
     /**
@@ -40,9 +43,13 @@ public final class BenchmarkData
      */
     public enum DataType
     {
+        /** Data exhibiting a partial ordering of its elements. */
         PARTIALLY_SORTED,
+        /** Data with elements arranged in a random order. */
         RANDOM,
+        /** Data with elements arranged in reverse sorted order. */
         REVERSED,
+        /** Data that is already fully sorted. */
         SORTED;
 
         /**
@@ -125,7 +132,7 @@ public final class BenchmarkData
      *
      * Benchmark data of various lengths are required for performance assessment of the sorting algorithms.
      *
-     * @return  The length of the data array.
+     * @return The length of the data array.
      */
     public int getLength()
     {
@@ -134,8 +141,10 @@ public final class BenchmarkData
 
     /**
      * Returns the type of the data.
-     * 
+     *
      * Benchmark data of various types help assess the performance of sorting algorithms.
+     *
+     * @return The type of the data array.
      */
     public DataType getType()
     {
@@ -144,7 +153,7 @@ public final class BenchmarkData
 
     /**
      * Returns a string representation of the BenchmarkData object.
-     * 
+     *
      * @return A string representation of the BenchmarkData object.
      */
     @Override

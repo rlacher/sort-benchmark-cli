@@ -52,7 +52,7 @@ public class Sorter
 
     /**
      * Sets the sorting strategy to be used.
-     * 
+     *
      * @throws IllegalArgumentException If the sort strategy is null.
      * @param sortStrategy The sorting strategy to be used.
      */
@@ -69,9 +69,9 @@ public class Sorter
 
     /**
      * Validates the input array and delegates the sorting task to the currently set {@link SortStrategy}.
-     * 
+     *
      * Requires a prior call to setStrategy().
-     * 
+     *
      * @param array The array to be sorted.
      * @return Returns a {@link BenchmarkMetric} with the metric value for the {@link ProfilingMode}. Returns 0 if the array is empty.
      * @throws IllegalArgumentException If the array is null.

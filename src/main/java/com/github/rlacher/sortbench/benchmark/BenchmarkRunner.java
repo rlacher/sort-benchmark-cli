@@ -67,6 +67,12 @@ public class BenchmarkRunner
     /** Sort context to execute and benchmark different sorting strategies. */
     private Sorter sorter;
 
+    /**
+     * Constructs a {@link BenchmarkRunner} that delegates sorting to the provided {@link Sorter}.
+     *
+     * @param sorter The {@link Sorter} instance to use.
+     * @throws IllegalArgumentException If {@code sorter} is {@code null}.
+     */
     public BenchmarkRunner(Sorter sorter)
     {
         if(sorter == null)

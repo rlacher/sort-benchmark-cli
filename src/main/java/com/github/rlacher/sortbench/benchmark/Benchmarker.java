@@ -35,19 +35,16 @@ import com.github.rlacher.sortbench.results.BenchmarkMetric;
  */
 public class Benchmarker
 {
-    /**
-     * Enum representing the profiling modes.
-     * 
-     * NONE: No profiling.
-     * MEMORY_USAGE: Memory usage profiling.
-     * DATA_WRITE_COUNT: Data modification profiling.
-     * EXECUTION_TIME: Execution time profiling.
-     */
+    /** Enum representing profiling modes for benchmarking. */
     public enum ProfilingMode
     {
+        /** No profiling (used for debugging, testing). */
         NONE,
+        /** Tracks memory consumption. */
         MEMORY_USAGE,
+        /** Tracks data modifications (e.g. swaps, shifts, inserts). */
         DATA_WRITE_COUNT,
+        /** Measures runtime. */
         EXECUTION_TIME
     }
 
