@@ -34,7 +34,7 @@ Explore the nuances of sorting algorithm efficiency through this interactive ben
     - [Sequence Diagram: Benchmark Run](#sequence-diagram-benchmark-run)
     - [Sequence Diagram: BenchmarkRunner.runIterations](#sequence-diagram-benchmarkrunnerruniterations)
 - [Test](#test)
-    - [Running Tests](#running-tests)
+    - [Running Unit Tests](#running-tests)
     - [Viewing Test Coverage](#viewing-test-coverage)
 - [Benchmark Results](#benchmark-results)
 - [Discussion](#discussion)
@@ -157,19 +157,19 @@ The benchmark framework's modular and extensible architecture promotes flexibili
 
 ### Class Diagram: Strategy pattern for Sorting Routines
 
-![Class Diagram Sorter Strategies](./docs/class-diagram-sorter-strategies.svg)
+![Class Diagram Sorter Strategies](./docs/uml/class-diagram-sorter-strategies.svg)
 
 This benchmark project leverages the Strategy pattern to establish a modular and extensible architecture. Consequently, new sorting algorithms can be integrated without requiring modifications to the core benchmarking logic. Performance profiling is conducted by a dedicated `Benchmarker` class, which is injected into individual `SortStrategy` implementations, promoting loose coupling and enhanced code maintainability.
 
 ### Sequence Diagram: Benchmark Run
 
-![Sequence Diagram Benchmark Run](./docs/sequence-diagram-benchmark-process.svg)
+![Sequence Diagram Benchmark Run](./docs/uml/sequence-diagram-benchmark-process.svg)
 
 The `BenchmarkRunner` orchestrates the repeated sorting process. It pre-generates `BenchmarkData` using the `BenchmarkDataFactory`, then repeatedly sorts this data using chosen `SortStrategy` implementations via the `Sorter`. The resulting benchmark results are then passed to a dedicated `ResultAggregator` for robust aggregation.
 
 ### Sequence Diagram: BenchmarkRunner.runIterations()
 
-![Sequence Diagram Run Iterations](./docs/sequence-diagram-runiterations.svg)
+![Sequence Diagram Run Iterations](./docs/uml/sequence-diagram-runiterations.svg)
 
 For each set of benchmark data, the `BenchmarkRunner` configures the `Sorter` with a strategy and then uses it to sort each data element, producing the raw benchmark metrics needed for the benchmark results.
 
@@ -181,7 +181,7 @@ This project features a robust suite of **309 unit tests**, built with JUnit and
 
 The current test suite achieves significant coverage, reaching **93% statement coverage** and **95% branch coverage**, demonstrating a strong commitment to code quality and comprehensive testing throughout the project.
 
-### Running Tests
+### Running Unit Tests
 
 1.  Clone the repository (if you haven't already).
 2.  Navigate to the project directory in your terminal or command prompt.
