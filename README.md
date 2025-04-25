@@ -14,28 +14,14 @@ Explore the nuances of sorting algorithm efficiency through this interactive ben
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Purpose](#purpose)
 - [Key Features](#key-features)
 - [Getting Started](#getting-started)
+- [API Documentation](#api-documentation)
 - [Benchmark Details](#benchmark-details)
-    - [GUI](#gui)
-    - [Input data characteristics](#input-data-characteristics)
-    - [Environment](#environment)
 - [Benchmark Methodology](#benchmark-methodology)
-    - [Benchmark Configuration](#benchmark-configuration)
-    - [Data Generation](#data-generation)
-    - [Algorithm Implementations](#algorithm-implementations)
-    - [Execution](#execution)
-    - [Measurement](#measurement)
-    - [Result Aggregation](#result-aggregation)
 - [Design](#design)
-    - [Class Diagram: Strategy pattern for Sorting Routines](#class-diagram-strategy-pattern-for-sorting-routines)
-    - [Sequence Diagram: Benchmark Run](#sequence-diagram-benchmark-run)
-    - [Sequence Diagram: BenchmarkRunner.runIterations](#sequence-diagram-benchmarkrunnerruniterations)
 - [Test](#test)
-    - [Running Unit Tests](#running-tests)
-    - [Viewing Test Coverage](#viewing-test-coverage)
 - [Benchmark Results](#benchmark-results)
 - [Discussion](#discussion)
 - [License](#license)
@@ -78,6 +64,10 @@ This project is designed for quick and easy setup. Through containerised deploym
     ```
 
 3. *Instructions on how to configure the analysis will follow*
+
+## API Documentation
+
+- [Javadoc](https://rlacher.github.io/sort-benchmark/api/) - Reference API for the sort-benchmark Java backend libraries.
 
 ## Benchmark Details
 
