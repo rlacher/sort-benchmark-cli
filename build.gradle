@@ -34,6 +34,7 @@ tasks.named('javadoc')
     options.encoding = 'UTF-8'
     options.windowTitle = title
     options.header = title
+    options.addStringOption('Xwerror', '-Xdoclint:all')
 }
 
 tasks.named('run')
