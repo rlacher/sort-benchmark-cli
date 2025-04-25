@@ -68,6 +68,9 @@ public class Main
     /** The number of JVM warmup iterations to skip. */
     private static final int WARMUP_ITERATIONS_TO_SKIP = 2;
 
+    /** Private constructor. As the entry point of the application, instantiation of {@link Main} is not intended. */
+    private Main() {}
+
     /**
      * The main method, which starts the sorting algorithm benchmarking process.
      * 

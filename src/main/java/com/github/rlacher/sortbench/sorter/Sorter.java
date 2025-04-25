@@ -51,6 +51,13 @@ public class Sorter
     private SortStrategy sortStrategy;
 
     /**
+     * Constructs a default instance of {@link Sorter}.
+     *
+     * This constructor performs no custom initialisation.
+     */
+    public Sorter() {}
+
+    /**
      * Sets the sorting strategy to be used.
      *
      * @throws IllegalArgumentException If the sort strategy is null.

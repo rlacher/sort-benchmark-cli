@@ -38,6 +38,13 @@ import com.github.rlacher.sortbench.results.BenchmarkResult;
 public class MedianAggregator implements Function<List<BenchmarkResult>, Double>
 {
     /**
+     * Constructs a default instance of {@link MedianAggregator}.
+     *
+     * This constructor performs no custom initialisation.
+     */
+    public MedianAggregator() {}
+
+    /**
      * Applies the aggregation logic to calculate the median of the benchmark result values.
      *
      * @param results The list of {@link BenchmarkResult} instances to aggregate. Must not be null.

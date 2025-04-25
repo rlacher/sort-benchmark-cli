@@ -31,6 +31,9 @@ import java.util.Map;
  */
 public class ConfigValidator
 {
+    /** Private constructor to prevent instantiation of utility class. */
+    private ConfigValidator() {}
+
     /**
      * Validates and retrieves a single configuration value from a map.
      *

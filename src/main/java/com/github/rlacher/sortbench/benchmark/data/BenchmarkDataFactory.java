@@ -33,6 +33,9 @@ public class BenchmarkDataFactory
     /** Random instance for use in generating benchmark data. */
     private static Random random = new Random();
 
+    /** Private constructor to prevent instantiation of utility class. */
+    private BenchmarkDataFactory() {}
+
     /**
      * Sets the random instance for benchmark data generation or testing purposes.
      *
