@@ -31,9 +31,9 @@ import com.github.rlacher.sortbench.strategies.SortStrategy;
 
 /**
  * Implements the heap sort algorithm as a sorting strategy.
- * 
- * This class implements the {@link SortStrategy} interface and provides a method
- * to perform heap sort on an array of integers.
+ *
+ * <p>This class implements the {@link SortStrategy} interface and provides a method
+ * to perform heap sort on an array of integers.</p>
  */
 public class HeapSortStrategy implements SortStrategy
 {
@@ -44,10 +44,10 @@ public class HeapSortStrategy implements SortStrategy
     private Benchmarker benchmarker;
 
     /**
-     * Constructor for the HeapSortStrategy class.
+     * Constructor for the {@link HeapSortStrategy} class.
      *
      * @param benchmarker The benchmarker to be used for profiling.
-     * @throws IllegalArgumentException If the benchmarker is null.
+     * @throws IllegalArgumentException If the benchmarker is {@code null}.
      */
     public HeapSortStrategy(Benchmarker benchmarker)
     {
@@ -61,7 +61,7 @@ public class HeapSortStrategy implements SortStrategy
     }
 
     /**
-     * Returns the unique name of the HeapSortStrategy
+     * Returns the unique name of the {@link HeapSortStrategy}.
      *
      * @return The unique name of the strategy.
      */
@@ -74,19 +74,18 @@ public class HeapSortStrategy implements SortStrategy
     /**
      * Sorts the provided array in ascending order using the heap sort algorithm.
      *
-     * Summary of heap sort algorithm:
+     * <p>Summary of heap sort algorithm: Heap Sort initially builds a max heap from the
+     * input array using {@link HeapSortStrategy#buildMaxHeap}. It then repeatedly extracts
+     * the maximum element (the root of the heap) and places it at the end of the array.
+     * After each extraction, the heap property is restored for the remaining elements
+     * through a {@link HeapSortStrategy#heapify} operation. This continues until the entire
+     * array is sorted in ascending order.</p>
      *
-     * Heap Sort initially builds a max heap from the input array using {@link HeapSortStrategy#buildMaxHeap}
-     * It then repeatedly extracts the maximum element (the root of the heap) and places it at the end
-     * of the array. After each extraction, the heap property is restored for the remaining elements
-     * through a {@link HeapSortStrategy#heapify} operation. This continues until the entire array
-     * is sorted in ascending order.
-     *
-     * Input array validation is assumed to be performed by the calling {@link Sorter} class.
+     * <p>Input array validation is assumed to be performed by the calling {@link Sorter} class.</p>
      *
      * @param array The array to be sorted.
      * @return A {@link BenchmarkMetric} containing performance information about the sorting process.
-     * @throws NullPointerException If array is null (should not happen).
+     * @throws NullPointerException If array is {@code null} (should not happen).
      */
     @Override
     public BenchmarkMetric sort(final int[] array)
@@ -110,9 +109,9 @@ public class HeapSortStrategy implements SortStrategy
     /**
      * Builds a max heap (binary heap where the value of each node is greater than
      * or equal to the value of its children) in-place within the given array.
-     * 
+     *
      * @param array The array to be transformed into a max heap.
-     * @throws NullPointerException If array is null.
+     * @throws NullPointerException If array is {@code null}.
      */
     private void buildMaxHeap(final int[] array)
     {
@@ -127,13 +126,13 @@ public class HeapSortStrategy implements SortStrategy
     /**
      * Maintains the max heap property for a subtree rooted at a given index.
      *
-     * Swaps the root with its largest child if the child is larger, then recursively
-     * heapifies the affected subtree to maintain the max heap property.
+     * <p>Swaps the root with its largest child if the child is larger, then recursively
+     * heapifies the affected subtree to maintain the max heap property.</p>
      *
      * @param array The array representing the heap.
      * @param heapSize The number of elements in the heap portion of {@code array}.
      * @param root The index of the subtree root to heapify.
-     * @throws NullPointerException If array is null.
+     * @throws NullPointerException If array is {@code null}.
      */
     private void heapify(final int[] array, final int heapSize, final int root)
     {

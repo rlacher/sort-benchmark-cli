@@ -30,13 +30,13 @@ import com.github.rlacher.sortbench.strategies.SortStrategy;
 
 /**
  * Context class for sorting algorithms, utilising the Strategy design pattern.
+ *
+ * <p>This class encapsulates the sorting logic, delegating the actual sorting operation to a {@link SortStrategy}.
+ * This allows for dynamic switching of sorting algorithms at runtime.</p>
+ *
+ * <p>For simplicity at this project scale, the Sorter class directly acts as the Strategy pattern's context, rather than using a separate interface.</p>
  * 
- * This class encapsulates the sorting logic, delegating the actual sorting operation to a {@link SortStrategy}.
- * This allows for dynamic switching of sorting algorithms at runtime.
- * 
- * For simplicity at this project scale, the Sorter class directly acts as the Strategy pattern's context, rather than using a separate interface.
- * 
- * The sorter centralises argument validation to ensure data integrity.
+ * <p>The sorter centralises argument validation to ensure data integrity.</p>
  */
 public class Sorter
 {
@@ -53,14 +53,14 @@ public class Sorter
     /**
      * Constructs a default instance of {@link Sorter}.
      *
-     * This constructor performs no custom initialisation.
+     * <p>This constructor performs no custom initialisation.</p>
      */
     public Sorter() {}
 
     /**
      * Sets the sorting strategy to be used.
      *
-     * @throws IllegalArgumentException If the sort strategy is null.
+     * @throws IllegalArgumentException If the sort strategy is {@code null}.
      * @param sortStrategy The sorting strategy to be used.
      */
     public void setStrategy(SortStrategy sortStrategy)
@@ -77,12 +77,12 @@ public class Sorter
     /**
      * Validates the input array and delegates the sorting task to the currently set {@link SortStrategy}.
      *
-     * Requires a prior call to setStrategy().
+     * <p>Requires a prior call to {@link Sorter#setStrategy}.</p>
      *
      * @param array The array to be sorted.
      * @return Returns a {@link BenchmarkMetric} with the metric value for the {@link ProfilingMode}. Returns 0 if the array is empty.
-     * @throws IllegalArgumentException If the array is null.
-     * @throws IllegalStateException If the sort strategy is null.
+     * @throws IllegalArgumentException If the array is {@code null}.
+     * @throws IllegalStateException If the sort strategy is {@code null}.
      */
     public BenchmarkMetric sort(final int[] array)
     {

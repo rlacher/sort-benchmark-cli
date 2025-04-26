@@ -155,8 +155,9 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>The validated and cast configuration value.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - IllegalArgumentException If any input is invalid (null <code>config</code>, null/blank <code>key</code>, null <code>expectedType</code>),
- or if the <code>key</code> is missing/null in <code>config</code>, or if the value is not of <code>expectedType</code>.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If any input is invalid: (<code>null</code> <code>config</code>,
+ <code>null</code>/blank <code>key</code>, <code>null</code> <code>expectedType</code>), or if the <code>key</code>
+ is missing/<code>null</code> in <code>config</code>, or if the value is not of <code>expectedType</code>.</dd>
 </dl>
 </section>
 </li>
@@ -177,9 +178,10 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>The validated and cast list of configuration values.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If <code>config</code> is null, <code>key</code> is null or blank, <code>expectedElementType</code> is null,
- the <code>key</code> is missing in <code>config</code>, the value for <code>key</code> is null or not a <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link"><code>List</code></a>,
- or the list contains null elements or elements not of <code>expectedElementType</code>.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If <code>config</code> is <code>null</code>, <code>key</code> is <code>null</code> or blank,
+ <code>expectedElementType</code> is <code>null</code>, the <code>key</code> is missing in <code>config</code>, the value for
+ <code>key</code> is <code>null</code> or not a <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link"><code>List</code></a>, or the list contains <code>null</code> elements or elements
+ not of <code>expectedElementType</code>.</dd>
 </dl>
 </section>
 </li>

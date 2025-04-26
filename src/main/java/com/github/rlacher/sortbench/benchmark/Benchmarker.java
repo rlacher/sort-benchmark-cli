@@ -65,21 +65,23 @@ public class Benchmarker
 
     /**
      * Maximum memory usage in kilobytes for memory profiling.
-     * This value is updated during the profiling process.
+     *
+     * <p>This value is updated during the profiling process.</p>
      */
     private long maxMemoryKb;
 
     /**
      * Data write count for data operation profiling.
-     * This value is updated during the sorting process.
+     *
+     * <p>This value is updated during the sorting process.</p>
      */
     private long dataWriteCount;
 
     /**
      * MemoryMXBean instance for memory profiling.
-     * 
-     * This bean provides information about the memory system of the Java virtual machine.
-     * The scope of this benchmark is limited to heap memory analysis. Stack memory usage is not measured for simplicity.
+     *
+     * <p>This bean provides information about the memory system of the Java virtual machine. The scope of this
+     * benchmark is limited to heap memory analysis. Stack memory usage is not measured for simplicity.</p>
      */
     private MemoryMXBean memoryBean;
 
@@ -92,7 +94,7 @@ public class Benchmarker
      * Constructor for the Benchmarker class parameterised with a profiling mode.
      * 
      * @param profilingMode The profiling mode to be used.
-     * @throws IllegalArgumentException If the profiling mode is null.
+     * @throws IllegalArgumentException If the profiling mode is {@code null}.
      */
     public Benchmarker(final ProfilingMode profilingMode)
     {
@@ -109,7 +111,8 @@ public class Benchmarker
 
     /**
      * Initiates profiling, resetting any prior metric data, based on the selected profiling mode.
-     * Must be followed by stopProfiling() to complete metric collection.
+     *
+     * <p>Must be followed by {@link Benchmarker#stopProfiling} to complete metric collection.</p>
      *
      * @throws IllegalStateException If profiling is already active.
      */
@@ -141,7 +144,8 @@ public class Benchmarker
 
     /**
      * Stops the profiling process based on the selected profiling mode.
-     * Must follow a startProfiling() call to collect metrics.
+     *
+     * <p>Must follow a {@link Benchmarker#startProfiling} call to collect metrics.</p>
      * 
      * @throws IllegalStateException If profiling is not in progress.
      */
@@ -169,10 +173,10 @@ public class Benchmarker
     /**
      * Measures the memory usage during the sorting process.
      *
-     * This method should only be called when memory profiling is active.
-     * The scope of this benchmark is limited to heap memory analysis. Stack memory usage is not measured for simplicity.
-     * 
-     * @throws IllegalStateException if profiling is not currently active.
+     * <p>This method should only be called when memory profiling is active. The scope of this
+     * benchmark is limited to heap memory analysis. Stack memory usage is not measured for simplicity.</p>
+     *
+     * @throws IllegalStateException If profiling is not currently active.
      */
     public void measureMemory()
     {
@@ -191,8 +195,8 @@ public class Benchmarker
     /**
      * Reports a swap operation during the sorting process.
      *
-     * A swap refers to the exchange of two elements in the array being sorted (also known as invertion).
-     * This method increases the data write counter by 2.
+     * <p>A swap refers to the exchange of two elements in the array being sorted (also known as invertion).
+     * This method increases the data write counter by 2.</p>
      */
     public void reportSwap()
     {
@@ -202,8 +206,8 @@ public class Benchmarker
     /**
      * Reports a shift operation during the sorting process.
      *
-     * A shift refers to movement of an element to the right within the array.
-     * This method increments the data write counter by 1.
+     * <p>A shift refers to movement of an element to the right within the array.
+     * This method increments the data write counter by 1.</p>
      */
     public void reportShift()
     {
@@ -213,8 +217,8 @@ public class Benchmarker
     /**
      * Reports an insert operation during the sorting process.
      *
-     * An insert writes a specified value at a specified location within the array.
-     * This method increments the data write counter by 1.
+     * <p>An insert writes a specified value at a specified location within the array.
+     * This method increments the data write counter by 1.</p>
      */
     public void reportInsert()
     {
@@ -224,7 +228,7 @@ public class Benchmarker
     /**
      * Reports a write operation during the sorting process.
      *
-     * This method increments the data write counter by 1.
+     * <p>This method increments the data write counter by 1.</p>
      */
     public void reportWrite()
     {
@@ -233,14 +237,14 @@ public class Benchmarker
 
     /**
      * Reports write operations during the sorting process.
-     * 
-     * This method increments the data write counter by the specified amount
+     *
+     * <p>This method increments the data write counter by the specified amount
      * only when profiling is active and the profiling mode is set to
-     * DATA_WRITE_COUNT.
-     * 
+     * {@code DATA_WRITE_COUNT}.</p>
+     *
      * @param count The number of write operations performed.
-     * @throws IllegalArgumentException if count is negative.
-     * @throws IllegalStateException if profiling is not currently active.
+     * @throws IllegalArgumentException If count is negative.
+     * @throws IllegalStateException If profiling is not currently active.
      */
     public void reportWrites(final int count)
     {
@@ -261,7 +265,7 @@ public class Benchmarker
 
     /**
      * Resets the benchmarker to its initial state.
-     * 
+     *
      * @throws IllegalStateException if profiling is currently active.
      */
     public void reset()
@@ -280,7 +284,7 @@ public class Benchmarker
 
     /**
      * Returns the benchmark metric based on the profiling mode.
-     * 
+     *
      * @return The benchmark iteration metric containing the profiling mode and the corresponding metric value.
      * @throws IllegalStateException If the profiling is still in progress or the profiling mode is not set (should not happen).
      */

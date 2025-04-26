@@ -29,8 +29,8 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 /**
  * Represents the aggregated result of a benchmark run, derived from multiple {@link BenchmarkResult} instances.
  *
- * This class encapsulates the aggregated benchmark result produced by the {@link ResultAggregator},
- * associating it with a specific {@link BenchmarkContext} and {@link ProfilingMode}.
+ * <p>This class encapsulates the aggregated benchmark result produced by the {@link ResultAggregator},
+ * associating it with a specific {@link BenchmarkContext} and {@link ProfilingMode}.</p>
  */
 public final class AggregatedResult implements Comparable<AggregatedResult>
 {
@@ -49,11 +49,11 @@ public final class AggregatedResult implements Comparable<AggregatedResult>
     /**
      * Constructs a new AggregatedResult object.
      *
-     * @param context The benchmark context. Must not be null.
-     * @param profilingMode The profiling mode. Must not be null.
+     * @param context The benchmark context. Must not be {@code null}.
+     * @param profilingMode The profiling mode. Must not be {@code null}.
      * @param aggregate The aggregated metric value. Must not be negative.
      * @param iterations The number of iterations. Must not be negative.
-     * @throws IllegalArgumentException If context or profilingMode are null, or aggregate or iterations are negative.
+     * @throws IllegalArgumentException If context or profilingMode are {@code null}, or aggregate or iterations are negative.
      */
     public AggregatedResult(final BenchmarkContext context, final ProfilingMode profilingMode, final double aggregate, final int iterations)
     {
@@ -86,7 +86,7 @@ public final class AggregatedResult implements Comparable<AggregatedResult>
      * @param other The aggregated result to be compared.
      * @return A negative integer, zero, or a positive integer as this object
      * is less than, equal to, or greater than the specified object.
-     * @throws IllegalArgumentException if the specified object is null.
+     * @throws IllegalArgumentException if the specified object is {@code null}.
      */
     @Override
     public int compareTo(AggregatedResult other)

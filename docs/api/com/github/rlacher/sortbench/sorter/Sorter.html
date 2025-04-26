@@ -93,13 +93,13 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Sorter</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">Context class for sorting algorithms, utilising the Strategy design pattern.
+
+ <p>This class encapsulates the sorting logic, delegating the actual sorting operation to a <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies"><code>SortStrategy</code></a>.
+ This allows for dynamic switching of sorting algorithms at runtime.</p>
+
+ <p>For simplicity at this project scale, the Sorter class directly acts as the Strategy pattern's context, rather than using a separate interface.</p>
  
- This class encapsulates the sorting logic, delegating the actual sorting operation to a <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies"><code>SortStrategy</code></a>.
- This allows for dynamic switching of sorting algorithms at runtime.
- 
- For simplicity at this project scale, the Sorter class directly acts as the Strategy pattern's context, rather than using a separate interface.
- 
- The sorter centralises argument validation to ensure data integrity.</div>
+ <p>The sorter centralises argument validation to ensure data integrity.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -162,7 +162,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Sorter</span>()</div>
 <div class="block">Constructs a default instance of <a href="Sorter.html" title="class in com.github.rlacher.sortbench.sorter"><code>Sorter</code></a>.
 
- This constructor performs no custom initialisation.</div>
+ <p>This constructor performs no custom initialisation.</p></div>
 </section>
 </li>
 </ul>
@@ -182,7 +182,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>sortStrategy</code> - The sorting strategy to be used.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the sort strategy is null.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the sort strategy is <code>null</code>.</dd>
 </dl>
 </section>
 </li>
@@ -192,15 +192,15 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../results/BenchmarkMetric.html" title="class in com.github.rlacher.sortbench.results">BenchmarkMetric</a></span>&nbsp;<span class="element-name">sort</span><wbr><span class="parameters">(int[]&nbsp;array)</span></div>
 <div class="block">Validates the input array and delegates the sorting task to the currently set <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies"><code>SortStrategy</code></a>.
 
- Requires a prior call to setStrategy().</div>
+ <p>Requires a prior call to <a href="#setStrategy(com.github.rlacher.sortbench.strategies.SortStrategy)"><code>setStrategy(com.github.rlacher.sortbench.strategies.SortStrategy)</code></a>.</p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>array</code> - The array to be sorted.</dd>
 <dt>Returns:</dt>
 <dd>Returns a <a href="../results/BenchmarkMetric.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkMetric</code></a> with the metric value for the <a href="../benchmark/Benchmarker.ProfilingMode.html" title="enum class in com.github.rlacher.sortbench.benchmark"><code>Benchmarker.ProfilingMode</code></a>. Returns 0 if the array is empty.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the array is null.</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - If the sort strategy is null.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the array is <code>null</code>.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - If the sort strategy is <code>null</code>.</dd>
 </dl>
 </section>
 </li>

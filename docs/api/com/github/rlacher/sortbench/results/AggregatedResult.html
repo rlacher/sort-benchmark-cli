@@ -99,8 +99,8 @@ loadScripts(document, 'script');</script>
 implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="AggregatedResult.html" title="class in com.github.rlacher.sortbench.results">AggregatedResult</a>&gt;</span></div>
 <div class="block">Represents the aggregated result of a benchmark run, derived from multiple <a href="BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkResult</code></a> instances.
 
- This class encapsulates the aggregated benchmark result produced by the <a href="ResultAggregator.html" title="class in com.github.rlacher.sortbench.results"><code>ResultAggregator</code></a>,
- associating it with a specific <a href="BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkContext</code></a> and <a href="../benchmark/Benchmarker.ProfilingMode.html" title="enum class in com.github.rlacher.sortbench.benchmark"><code>Benchmarker.ProfilingMode</code></a>.</div>
+ <p>This class encapsulates the aggregated benchmark result produced by the <a href="ResultAggregator.html" title="class in com.github.rlacher.sortbench.results"><code>ResultAggregator</code></a>,
+ associating it with a specific <a href="BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkContext</code></a> and <a href="../benchmark/Benchmarker.ProfilingMode.html" title="enum class in com.github.rlacher.sortbench.benchmark"><code>Benchmarker.ProfilingMode</code></a>.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -200,12 +200,12 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="block">Constructs a new AggregatedResult object.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>context</code> - The benchmark context. Must not be null.</dd>
-<dd><code>profilingMode</code> - The profiling mode. Must not be null.</dd>
+<dd><code>context</code> - The benchmark context. Must not be <code>null</code>.</dd>
+<dd><code>profilingMode</code> - The profiling mode. Must not be <code>null</code>.</dd>
 <dd><code>aggregate</code> - The aggregated metric value. Must not be negative.</dd>
 <dd><code>iterations</code> - The number of iterations. Must not be negative.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If context or profilingMode are null, or aggregate or iterations are negative.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If context or profilingMode are <code>null</code>, or aggregate or iterations are negative.</dd>
 </dl>
 </section>
 </li>
@@ -231,7 +231,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <dd>A negative integer, zero, or a positive integer as this object
  is less than, equal to, or greater than the specified object.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if the specified object is null.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if the specified object is <code>null</code>.</dd>
 </dl>
 </section>
 </li>

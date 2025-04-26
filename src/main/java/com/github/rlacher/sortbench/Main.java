@@ -44,7 +44,7 @@ import com.github.rlacher.sortbench.sorter.Sorter;
 /**
  * The entry point for the sorting algorithm benchmarking application.
  * 
- * This class runs the sorting algorithms.
+ * <p>This class runs the sorting algorithms.</p>
  */
 public class Main
 {
@@ -54,14 +54,14 @@ public class Main
     /**
      * Default benchmark data sizes for the sorting algorithms.
      * 
-     * The data points are chose to hightlight constant factors in smaller arrays sizes and demonstrate scaling characteristics in larger arrays.
+     * <p>The data points are chose to hightlight constant factors in smaller arrays sizes and demonstrate scaling characteristics in larger arrays.</p>
      */
     private static final List<Integer> BENCHMARK_DATA_SIZES = List.of(100, 1000, 10000);
 
     /**
-     *  Default number of iterations for the benchmark.
+     * Default number of iterations for the benchmark.
      * 
-     *  This is used to determine how many times each sorting algorithm should run on input data with the same characteristics (length and type).
+     * <p>This is used to determine how many times each sorting algorithm should run on input data with the same characteristics (length and type).</p>
      */
     private static final int BENCHMARK_ITERATIONS = 5;
 
@@ -74,7 +74,7 @@ public class Main
     /**
      * The main method, which starts the sorting algorithm benchmarking process.
      * 
-     * This class initializes and runs a list of sorting algorithms against a predefined benchmark dataset.
+     * <p>This class initialises and runs a list of sorting algorithms against a predefined benchmark dataset.</p>
      *
      * @param args Command-line arguments (currently unused).
      */

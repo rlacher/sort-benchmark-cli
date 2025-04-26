@@ -99,9 +99,9 @@ loadScripts(document, 'script');</script>
 implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results">BenchmarkResult</a>&gt;,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</span></div>
 <div class="block">Aggregates a list of <a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkResult</code></a> instances to calculate the median value.
 
- This aggregator aims to provide a more robust and representative summary of
+ <p>This aggregator aims to provide a more robust and representative summary of
  benchmark results by using the median, which is less susceptible to outliers
- caused by factors like garbage collection or JVM optimisations.</div>
+ caused by factors like garbage collection or JVM optimisations.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -182,11 +182,11 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <dt>Specified by:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Function.html#apply(T)" title="class or interface in java.util.function" class="external-link">apply</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results">BenchmarkResult</a>&gt;,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</code></dd>
 <dt>Parameters:</dt>
-<dd><code>results</code> - The list of <a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkResult</code></a> instances to aggregate. Must not be null.</dd>
+<dd><code>results</code> - The list of <a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkResult</code></a> instances to aggregate. Must not be <code>null</code>.</dd>
 <dt>Returns:</dt>
 <dd>The median value of the benchmark results.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the provided list of benchmark results is null.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the provided list of benchmark results is <code>null</code>.</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the stream of values derived from the results is empty.</dd>
 </dl>
 </section>

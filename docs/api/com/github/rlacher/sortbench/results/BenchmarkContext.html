@@ -99,11 +99,11 @@ loadScripts(document, 'script');</script>
 implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results">BenchmarkContext</a>&gt;</span></div>
 <div class="block">Represents the contextual parameters of a benchmark run.
 
- This class encapsulates the data type, data length, and sorting algorithm
+ <p>This class encapsulates the data type, data length, and sorting algorithm
  used during a benchmark execution. Instances of this class are used to
- create <a href="BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkResult</code></a> and <a href="AggregatedResult.html" title="class in com.github.rlacher.sortbench.results"><code>AggregatedResult</code></a> objects.
+ create <a href="BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkResult</code></a> and <a href="AggregatedResult.html" title="class in com.github.rlacher.sortbench.results"><code>AggregatedResult</code></a> objects.</p>
 
- This class is immutable, ensuring that context parameters cannot be modified after creation.</div>
+ <p>This class is immutable, ensuring that context parameters cannot be modified after creation.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -137,7 +137,9 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#compareTo(com.github.rlacher.sortbench.results.BenchmarkContext)" class="member-name-link">compareTo</a><wbr>(<a href="BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results">BenchmarkContext</a>&nbsp;other)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Compares this <a href="BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkContext</code></a> for order: dataType, dataLength, sortStrategyName.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;obj)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -166,7 +168,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns a string representation of the BenchmarkContext object.</div>
+<div class="block">Returns a string representation of the <a href="BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkContext</code></a> object.</div>
 </div>
 </div>
 </div>
@@ -198,7 +200,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <dd><code>dataLength</code> - The length of the input data.</dd>
 <dd><code>sortStrategyName</code> - The name of the sorting strategy.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If dataType or sortStrategyName are null, or dataLength is negative.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If dataType or sortStrategyName are <code>null</code>, or dataLength is negative.</dd>
 </dl>
 </section>
 </li>
@@ -247,7 +249,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
-<div class="block">Returns a string representation of the BenchmarkContext object.</div>
+<div class="block">Returns a string representation of the <a href="BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkContext</code></a> object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
@@ -288,9 +290,16 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <section class="detail" id="compareTo(com.github.rlacher.sortbench.results.BenchmarkContext)">
 <h3>compareTo</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">compareTo</span><wbr><span class="parameters">(<a href="BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results">BenchmarkContext</a>&nbsp;other)</span></div>
+<div class="block">Compares this <a href="BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkContext</code></a> for order: dataType, dataLength, sortStrategyName.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Comparable.html#compareTo(T)" title="class or interface in java.lang" class="external-link">compareTo</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results">BenchmarkContext</a>&gt;</code></dd>
+<dt>Parameters:</dt>
+<dd><code>other</code> - The <a href="BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkContext</code></a> to be compared with.</dd>
+<dt>Returns:</dt>
+<dd>Negative, zero, or positive integer for less, equal, or greater.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If other is <code>null</code>.</dd>
 </dl>
 </section>
 </li>

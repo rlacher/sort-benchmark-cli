@@ -215,7 +215,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>profilingMode</code> - The profiling mode to be used.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the profiling mode is null.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the profiling mode is <code>null</code>.</dd>
 </dl>
 </section>
 </li>
@@ -232,7 +232,8 @@ loadScripts(document, 'script');</script>
 <h3>startProfiling</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">startProfiling</span>()</div>
 <div class="block">Initiates profiling, resetting any prior metric data, based on the selected profiling mode.
- Must be followed by stopProfiling() to complete metric collection.</div>
+
+ <p>Must be followed by <a href="#stopProfiling()"><code>stopProfiling()</code></a> to complete metric collection.</p></div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - If profiling is already active.</dd>
@@ -244,7 +245,8 @@ loadScripts(document, 'script');</script>
 <h3>stopProfiling</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">stopProfiling</span>()</div>
 <div class="block">Stops the profiling process based on the selected profiling mode.
- Must follow a startProfiling() call to collect metrics.</div>
+
+ <p>Must follow a <a href="#startProfiling()"><code>startProfiling()</code></a> call to collect metrics.</p></div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - If profiling is not in progress.</dd>
@@ -257,11 +259,11 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">measureMemory</span>()</div>
 <div class="block">Measures the memory usage during the sorting process.
 
- This method should only be called when memory profiling is active.
- The scope of this benchmark is limited to heap memory analysis. Stack memory usage is not measured for simplicity.</div>
+ <p>This method should only be called when memory profiling is active. The scope of this
+ benchmark is limited to heap memory analysis. Stack memory usage is not measured for simplicity.</p></div>
 <dl class="notes">
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - if profiling is not currently active.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - If profiling is not currently active.</dd>
 </dl>
 </section>
 </li>
@@ -271,8 +273,8 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reportSwap</span>()</div>
 <div class="block">Reports a swap operation during the sorting process.
 
- A swap refers to the exchange of two elements in the array being sorted (also known as invertion).
- This method increases the data write counter by 2.</div>
+ <p>A swap refers to the exchange of two elements in the array being sorted (also known as invertion).
+ This method increases the data write counter by 2.</p></div>
 </section>
 </li>
 <li>
@@ -281,8 +283,8 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reportShift</span>()</div>
 <div class="block">Reports a shift operation during the sorting process.
 
- A shift refers to movement of an element to the right within the array.
- This method increments the data write counter by 1.</div>
+ <p>A shift refers to movement of an element to the right within the array.
+ This method increments the data write counter by 1.</p></div>
 </section>
 </li>
 <li>
@@ -291,8 +293,8 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reportInsert</span>()</div>
 <div class="block">Reports an insert operation during the sorting process.
 
- An insert writes a specified value at a specified location within the array.
- This method increments the data write counter by 1.</div>
+ <p>An insert writes a specified value at a specified location within the array.
+ This method increments the data write counter by 1.</p></div>
 </section>
 </li>
 <li>
@@ -301,7 +303,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reportWrite</span>()</div>
 <div class="block">Reports a write operation during the sorting process.
 
- This method increments the data write counter by 1.</div>
+ <p>This method increments the data write counter by 1.</p></div>
 </section>
 </li>
 <li>
@@ -309,16 +311,16 @@ loadScripts(document, 'script');</script>
 <h3>reportWrites</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reportWrites</span><wbr><span class="parameters">(int&nbsp;count)</span></div>
 <div class="block">Reports write operations during the sorting process.
- 
- This method increments the data write counter by the specified amount
+
+ <p>This method increments the data write counter by the specified amount
  only when profiling is active and the profiling mode is set to
- DATA_WRITE_COUNT.</div>
+ <code>DATA_WRITE_COUNT</code>.</p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>count</code> - The number of write operations performed.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if count is negative.</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - if profiling is not currently active.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If count is negative.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - If profiling is not currently active.</dd>
 </dl>
 </section>
 </li>

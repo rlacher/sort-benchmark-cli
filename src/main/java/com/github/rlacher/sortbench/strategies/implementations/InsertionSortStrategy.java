@@ -31,9 +31,9 @@ import com.github.rlacher.sortbench.strategies.SortStrategy;
 
 /**
  * Implements the insertion sort algorithm as a sorting strategy.
- * 
- * This class implements the {@link SortStrategy} interface and provides a method
- * to perform insertion sort on an array of integers.
+ *
+ * <p>This class implements the {@link SortStrategy} interface and provides a method
+ * to perform insertion sort on an array of integers.</p>
  */
 public class InsertionSortStrategy implements SortStrategy
 {
@@ -44,10 +44,10 @@ public class InsertionSortStrategy implements SortStrategy
     private Benchmarker benchmarker;
 
     /**
-     * Constructor for the InsertionSortStrategy class.
-     * 
+     * Constructor for the {@link InsertionSortStrategy} class.
+     *
      * @param benchmarker The benchmarker to be used for profiling.
-     * @throws IllegalArgumentException If the benchmarker is null.
+     * @throws IllegalArgumentException If the benchmarker is {@code null}.
      */
     public InsertionSortStrategy(Benchmarker benchmarker)
     {
@@ -61,7 +61,7 @@ public class InsertionSortStrategy implements SortStrategy
     }
 
     /**
-    * Returns the unique name of the InsertionSortStrategy
+    * Returns the unique name of the {@link InsertionSortStrategy}.
     *
     * @return The unique name of the strategy.
     */
@@ -74,12 +74,12 @@ public class InsertionSortStrategy implements SortStrategy
     /**
      * Sorts the provided array in ascending order using the insertion sort algorithm.
      *
-     * Insertion sort builds a sorted subarray from the front.
-     * It iterates from the second element to the last, inserting each into its correct position within the sorted subarray.
-     * Elements are compared and shifted backwards until the correct position is found.
-     * 
-     * Input array validation is assumed to be performed by the calling {@link Sorter} class.
-     * 
+     * <p>Insertion sort builds a sorted subarray from the front. It iterates from the second
+     * element to the last, inserting each into its correct position within the sorted subarray.
+     * Elements are compared and shifted backwards until the correct position is found.</p>
+     *
+     * <p>Input array validation is assumed to be performed by the calling {@link Sorter} class.</p>
+     *
      * @param array The array to be sorted.
      * @return The sorted array.
      */
@@ -111,12 +111,12 @@ public class InsertionSortStrategy implements SortStrategy
     * Shifts a single element one position to the right within the array.
     * Part of insertion sort's placement phase.
     *
-    * No array boundary checks due to performance considerations.
+    * <p>No array boundary checks due to performance considerations.</p>
     *
     * @param array The array in which the shift occurs.
     * @param index The index of the element to be shifted.
-    * @throws NullPointerException if the array is null.
-    * @throws ArrayIndexOutOfBoundsException if the index is invalid.
+    * @throws NullPointerException If the array is {@code null}.
+    * @throws ArrayIndexOutOfBoundsException If the index is invalid.
     */
     private void shift(final int[] array, final int index)
     {
@@ -127,12 +127,12 @@ public class InsertionSortStrategy implements SortStrategy
     * Inserts an element into the array.
     * Part of insertion sort's placement phase.
     *
-    * No array boundary checks due to performance considerations.
+    * <p>No array boundary checks due to performance considerations.</p>
     *
     * @param array The array to modify.
     * @param index The insertion index.
     * @param value The value to insert.
-    * @throws NullPointerException if the array is null.
+    * @throws NullPointerException if the array is {@code null}.
     * @throws ArrayIndexOutOfBoundsException if the index is invalid.
     */
     private void insert(final int[] array, final int index, final int value)

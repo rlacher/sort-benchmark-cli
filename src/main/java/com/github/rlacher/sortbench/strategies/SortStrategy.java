@@ -48,8 +48,8 @@ public interface SortStrategy
     /**
      * Swaps two elements at the specified indices within the given array.
      *
-     * This method assumes a non-null array and valid indices for optimal performance,
-     * and therefore omits argument checks.
+     * <p>This method assumes a non-null array and valid indices for optimal performance,
+     * and therefore omits argument checks.</p>
      *
      * @param array The array in which the elements are to be swapped.
      * @param i The index of one element to be swapped.

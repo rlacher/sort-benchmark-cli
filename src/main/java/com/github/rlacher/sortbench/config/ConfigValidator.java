@@ -42,8 +42,9 @@ public class ConfigValidator
      * @param expectedType The expected class type of the configuration value.
      * @param <T> The type of the expected configuration value.
      * @return The validated and cast configuration value.
-     * @throws IllegalArgumentException IllegalArgumentException If any input is invalid (null {@code config}, null/blank {@code key}, null {@code expectedType}),
-     * or if the {@code key} is missing/null in {@code config}, or if the value is not of {@code expectedType}.
+     * @throws IllegalArgumentException If any input is invalid: ({@code null} {@code config},
+     * {@code null}/blank {@code key}, {@code null} {@code expectedType}), or if the {@code key}
+     * is missing/{@code null} in {@code config}, or if the value is not of {@code expectedType}.
      */
     public static <T> T validateAndGet(Map<String, Object> config, String key, Class<T> expectedType)
     {
@@ -89,9 +90,10 @@ public class ConfigValidator
      * @param expectedElementType The expected class type of each element in the list.
      * @param <T> The type of the elements in the expected list.
      * @return The validated and cast list of configuration values.
-     * @throws IllegalArgumentException If {@code config} is null, {@code key} is null or blank, {@code expectedElementType} is null,
-     * the {@code key} is missing in {@code config}, the value for {@code key} is null or not a {@link List},
-     * or the list contains null elements or elements not of {@code expectedElementType}.
+     * @throws IllegalArgumentException If {@code config} is {@code null}, {@code key} is {@code null} or blank,
+     * {@code expectedElementType} is {@code null}, the {@code key} is missing in {@code config}, the value for
+     * {@code key} is {@code null} or not a {@link List}, or the list contains {@code null} elements or elements
+     * not of {@code expectedElementType}.
      */
     public static <T> List<T> validateAndGetList(Map<String, Object> config, String key, Class<T> expectedElementType)
     {

@@ -227,11 +227,11 @@ loadScripts(document, 'script');</script>
  the <code>filterSupplier</code> and aggregator from the <code>aggregatorSupplier</code>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>results</code> - The list of benchmark results to process. Must neither be null nor empty.</dd>
+<dd><code>results</code> - The list of benchmark results to process. Must neither be <code>null</code> nor empty.</dd>
 <dt>Returns:</dt>
 <dd>A list of <a href="AggregatedResult.html" title="class in com.github.rlacher.sortbench.results"><code>AggregatedResult</code></a> containing the aggregated results.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the results list is null or empty, or if any two results within the list
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the results list is <code>null</code> or empty, or if any two results within the list
  have differing <a href="BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkContext</code></a> or <a href="../benchmark/Benchmarker.ProfilingMode.html" title="enum class in com.github.rlacher.sortbench.benchmark"><code>Benchmarker.ProfilingMode</code></a> values.</dd>
 </dl>
 </section>
@@ -248,7 +248,7 @@ loadScripts(document, 'script');</script>
 <dd>The aggregated result.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the results within the list have different contexts, or if no results match the internal filter.</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - If <code>resultsByContext</code> is null. This exception is unexpected
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - If <code>resultsByContext</code> is <code>null</code>. This exception is unexpected
  as the calling <a href="#process(java.util.List)"><code>process(java.util.List&lt;com.github.rlacher.sortbench.results.BenchmarkResult&gt;)</code></a> method ensures a non-null list.</dd>
 </dl>
 </section>

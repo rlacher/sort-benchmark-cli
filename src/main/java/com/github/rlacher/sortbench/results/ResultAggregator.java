@@ -93,9 +93,9 @@ public class ResultAggregator
      * Processes the given list of benchmark results, applying the filter from
      * the {@code filterSupplier} and aggregator from the {@code aggregatorSupplier}.
      * 
-     * @param results The list of benchmark results to process. Must neither be null nor empty.
+     * @param results The list of benchmark results to process. Must neither be {@code null} nor empty.
      * @return A list of {@link AggregatedResult} containing the aggregated results.
-     * @throws IllegalArgumentException If the results list is null or empty, or if any two results within the list
+     * @throws IllegalArgumentException If the results list is {@code null} or empty, or if any two results within the list
      * have differing {@link BenchmarkContext} or {@link ProfilingMode} values.
      */
     public List<AggregatedResult> process(List<BenchmarkResult> results)
@@ -137,7 +137,7 @@ public class ResultAggregator
      * @param resultsByContext The results to process.
      * @return The aggregated result.
      * @throws IllegalArgumentException If the results within the list have different contexts, or if no results match the internal filter.
-     * @throws NullPointerException If {@code resultsByContext} is null. This exception is unexpected
+     * @throws NullPointerException If {@code resultsByContext} is {@code null}. This exception is unexpected
      * as the calling {@link ResultAggregator#process} method ensures a non-null list.
      */
     protected AggregatedResult processResultsByContext(final List<BenchmarkResult> resultsByContext)

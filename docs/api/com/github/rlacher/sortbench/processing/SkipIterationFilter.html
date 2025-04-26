@@ -99,9 +99,9 @@ loadScripts(document, 'script');</script>
 implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results">BenchmarkResult</a>&gt;</span></div>
 <div class="block">Skips the initial number of iterations
 
- Provides a basic JVM warmup by ignoring the first few benchmark runs,
+ <p>Provides a basic JVM warmup by ignoring the first few benchmark runs,
  allowing time for JVM optimisation. The number of initial iterations
- to skip is configured via the <code>iterationsToSkip</code> constructor parameter.</div>
+ to skip is configured via the <code>iterationsToSkip</code> constructor parameter.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -134,7 +134,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#test(com.github.rlacher.sortbench.results.BenchmarkResult)" class="member-name-link">test</a><wbr>(<a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results">BenchmarkResult</a>&nbsp;result)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Evaluates if a benchmark result should be processed (i.e., not skipped).</div>
+<div class="block">Evaluates if a benchmark result should be processed (i.e.</div>
 </div>
 </div>
 </div>
@@ -181,18 +181,18 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <section class="detail" id="test(com.github.rlacher.sortbench.results.BenchmarkResult)">
 <h3>test</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">test</span><wbr><span class="parameters">(<a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results">BenchmarkResult</a>&nbsp;result)</span></div>
-<div class="block">Evaluates if a benchmark result should be processed (i.e., not skipped).
+<div class="block">Evaluates if a benchmark result should be processed (i.e. not skipped).
 
- Skips the first <code>iterationsToSkip</code> results.</div>
+ <p>Skips the first <code>iterationsToSkip</code> results.</p></div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html#test(T)" title="class or interface in java.util.function" class="external-link">test</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results">BenchmarkResult</a>&gt;</code></dd>
 <dt>Parameters:</dt>
-<dd><code>result</code> - The <a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkResult</code></a> instance to test. Must not be null.</dd>
+<dd><code>result</code> - The <a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkResult</code></a> instance to test. Must not be <code>null</code>.</dd>
 <dt>Returns:</dt>
 <dd><code>true</code> if the result should be processed, <code>false</code> if it should be skipped.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If <code>result</code> is null.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If <code>result</code> is <code>null</code>.</dd>
 </dl>
 </section>
 </li>

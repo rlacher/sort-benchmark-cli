@@ -93,9 +93,9 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">BenchmarkRunner</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">Executes and benchmarks sorting algorithms based on a provided configuration and returns raw benchmark results.
- 
- Each benchmark run focuses on a single profiling mode,
- though it may involve multiple sorting strategies, data sizes, and data types.</div>
+
+ <p>Each benchmark run focuses on a single profiling mode, though it may involve multiple sorting strategies,
+ data sizes, and data types.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -199,8 +199,8 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>A list of benchmark results.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If benchmark config is null, the configuration is otherwise invalid
- or if required list-based parameters are empty.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If benchmark config is <code>null</code>, the configuration
+ is otherwise invalid or if required list-based parameters are empty.</dd>
 </dl>
 </section>
 </li>
@@ -217,7 +217,7 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>A list of benchmark results.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the <code>strategies</code> or <code>benchmarkDataMap</code> is null or empty.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the <code>strategies</code> or <code>benchmarkDataMap</code> is <code>null</code> or empty.</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - If a required sorting strategy is not found for a benchmark context.</dd>
 </dl>
 </section>
@@ -230,9 +230,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;strategyNames,
  int&nbsp;iterations)</span></div>
 <div class="block">Generates benchmark data grouped by context to facilitate batch processing.
- 
- This improves JVM optimisation by enhancing data locality.
- Deep copies data for each strategy to ensure result comparability.</div>
+
+ <p>This improves JVM optimisation by enhancing data locality.
+ Deep copies data for each strategy to ensure result comparability.</p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>dataType</code> - The type of data to generate.</dd>
@@ -243,7 +243,7 @@ loadScripts(document, 'script');</script>
 <dd>A map of <a href="../results/BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkContext</code></a> to a list of benchmark data.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - If any of <code>dataType</code>, <code>sizes</code> or <code>strategyNames</code> are <code>null</code>.
- This is unexpected as the caller <a href="#run(java.util.Map)"><code>run(java.util.Map&lt;java.lang.String, java.lang.Object&gt;)</code></a> ensures these arguments are not null.</dd>
+ This is unexpected as the caller <a href="#run(java.util.Map)"><code>run(java.util.Map&lt;java.lang.String, java.lang.Object&gt;)</code></a> ensures these arguments are not <code>null</code>.</dd>
 </dl>
 </section>
 </li>
@@ -258,7 +258,7 @@ loadScripts(document, 'script');</script>
 <dd><code>strategyName</code> - The name of the sorting strategy.</dd>
 <dd><code>mode</code> - The profiling mode to use.</dd>
 <dt>Returns:</dt>
-<dd>An instance of the SortStrategy. Returns null in case of instantiation failure.</dd>
+<dd>An instance of the <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies"><code>SortStrategy</code></a>. Returns <code>null</code> in case of instantiation failure.</dd>
 </dl>
 </section>
 </li>

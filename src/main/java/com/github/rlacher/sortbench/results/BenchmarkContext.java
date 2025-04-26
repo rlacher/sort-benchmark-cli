@@ -29,11 +29,11 @@ import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 /**
 * Represents the contextual parameters of a benchmark run.
 *
-* This class encapsulates the data type, data length, and sorting algorithm
+* <p>This class encapsulates the data type, data length, and sorting algorithm
 * used during a benchmark execution. Instances of this class are used to
-* create {@link BenchmarkResult} and {@link AggregatedResult} objects.
+* create {@link BenchmarkResult} and {@link AggregatedResult} objects.</p>
 *
-* This class is immutable, ensuring that context parameters cannot be modified after creation.
+* <p>This class is immutable, ensuring that context parameters cannot be modified after creation.</p>
 */
 public final class BenchmarkContext implements Comparable<BenchmarkContext>
 {
@@ -52,7 +52,7 @@ public final class BenchmarkContext implements Comparable<BenchmarkContext>
     * @param dataType The type of input data.
     * @param dataLength The length of the input data.
     * @param sortStrategyName The name of the sorting strategy.
-    * @throws IllegalArgumentException If dataType or sortStrategyName are null, or dataLength is negative.
+    * @throws IllegalArgumentException If dataType or sortStrategyName are {@code null}, or dataLength is negative.
     */
     public BenchmarkContext(final BenchmarkData.DataType dataType, final int dataLength, final String sortStrategyName)
     {
@@ -105,7 +105,7 @@ public final class BenchmarkContext implements Comparable<BenchmarkContext>
     }
 
     /**
-    * Returns a string representation of the BenchmarkContext object.
+    * Returns a string representation of the {@link BenchmarkContext} object.
     *
     * @return A string representation of the object.
     */
@@ -149,14 +149,14 @@ public final class BenchmarkContext implements Comparable<BenchmarkContext>
         return Objects.hash(dataType, dataLength, sortStrategyName);
     }
 
-    @Override
     /**
-     * Compares this BenchmarkContext for order: dataType, dataLength, sortStrategyName.
+     * Compares this {@link BenchmarkContext} for order: dataType, dataLength, sortStrategyName.
      *
-     * @param other The BenchmarkContext to be compared with.
+     * @param other The {@link BenchmarkContext} to be compared with.
      * @return Negative, zero, or positive integer for less, equal, or greater.
-     * @throws IllegalArgumentException If other is null.
+     * @throws IllegalArgumentException If other is {@code null}.
      */
+    @Override
     public int compareTo(BenchmarkContext other)
     {
         if (other == null)

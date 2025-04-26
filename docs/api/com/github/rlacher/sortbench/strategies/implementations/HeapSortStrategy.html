@@ -98,9 +98,9 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="../SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a></span></div>
 <div class="block">Implements the heap sort algorithm as a sorting strategy.
- 
- This class implements the <a href="../SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies"><code>SortStrategy</code></a> interface and provides a method
- to perform heap sort on an array of integers.</div>
+
+ <p>This class implements the <a href="../SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies"><code>SortStrategy</code></a> interface and provides a method
+ to perform heap sort on an array of integers.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -114,7 +114,7 @@ implements <a href="../SortStrategy.html" title="interface in com.github.rlacher
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(com.github.rlacher.sortbench.benchmark.Benchmarker)" class="member-name-link">HeapSortStrategy</a><wbr>(<a href="../../benchmark/Benchmarker.html" title="class in com.github.rlacher.sortbench.benchmark">Benchmarker</a>&nbsp;benchmarker)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Constructor for the HeapSortStrategy class.</div>
+<div class="block">Constructor for the <a href="HeapSortStrategy.html" title="class in com.github.rlacher.sortbench.strategies.implementations"><code>HeapSortStrategy</code></a> class.</div>
 </div>
 </div>
 </section>
@@ -133,7 +133,7 @@ implements <a href="../SortStrategy.html" title="interface in com.github.rlacher
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#name()" class="member-name-link">name</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the unique name of the HeapSortStrategy</div>
+<div class="block">Returns the unique name of the <a href="HeapSortStrategy.html" title="class in com.github.rlacher.sortbench.strategies.implementations"><code>HeapSortStrategy</code></a>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../results/BenchmarkMetric.html" title="class in com.github.rlacher.sortbench.results">BenchmarkMetric</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sort(int%5B%5D)" class="member-name-link">sort</a><wbr>(int[]&nbsp;array)</code></div>
@@ -164,12 +164,12 @@ implements <a href="../SortStrategy.html" title="interface in com.github.rlacher
 <section class="detail" id="&lt;init&gt;(com.github.rlacher.sortbench.benchmark.Benchmarker)">
 <h3>HeapSortStrategy</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">HeapSortStrategy</span><wbr><span class="parameters">(<a href="../../benchmark/Benchmarker.html" title="class in com.github.rlacher.sortbench.benchmark">Benchmarker</a>&nbsp;benchmarker)</span></div>
-<div class="block">Constructor for the HeapSortStrategy class.</div>
+<div class="block">Constructor for the <a href="HeapSortStrategy.html" title="class in com.github.rlacher.sortbench.strategies.implementations"><code>HeapSortStrategy</code></a> class.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>benchmarker</code> - The benchmarker to be used for profiling.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the benchmarker is null.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the benchmarker is <code>null</code>.</dd>
 </dl>
 </section>
 </li>
@@ -185,7 +185,7 @@ implements <a href="../SortStrategy.html" title="interface in com.github.rlacher
 <section class="detail" id="name()">
 <h3>name</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">name</span>()</div>
-<div class="block">Returns the unique name of the HeapSortStrategy</div>
+<div class="block">Returns the unique name of the <a href="HeapSortStrategy.html" title="class in com.github.rlacher.sortbench.strategies.implementations"><code>HeapSortStrategy</code></a>.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../SortStrategy.html#name()">name</a></code>&nbsp;in interface&nbsp;<code><a href="../SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a></code></dd>
@@ -200,15 +200,14 @@ implements <a href="../SortStrategy.html" title="interface in com.github.rlacher
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../results/BenchmarkMetric.html" title="class in com.github.rlacher.sortbench.results">BenchmarkMetric</a></span>&nbsp;<span class="element-name">sort</span><wbr><span class="parameters">(int[]&nbsp;array)</span></div>
 <div class="block">Sorts the provided array in ascending order using the heap sort algorithm.
 
- Summary of heap sort algorithm:
+ <p>Summary of heap sort algorithm: Heap Sort initially builds a max heap from the
+ input array using <code>buildMaxHeap(int[])</code>. It then repeatedly extracts
+ the maximum element (the root of the heap) and places it at the end of the array.
+ After each extraction, the heap property is restored for the remaining elements
+ through a <code>heapify(int[], int, int)</code> operation. This continues until the entire
+ array is sorted in ascending order.</p>
 
- Heap Sort initially builds a max heap from the input array using <code>buildMaxHeap(int[])</code>
- It then repeatedly extracts the maximum element (the root of the heap) and places it at the end
- of the array. After each extraction, the heap property is restored for the remaining elements
- through a <code>heapify(int[], int, int)</code> operation. This continues until the entire array
- is sorted in ascending order.
-
- Input array validation is assumed to be performed by the calling <a href="../../sorter/Sorter.html" title="class in com.github.rlacher.sortbench.sorter"><code>Sorter</code></a> class.</div>
+ <p>Input array validation is assumed to be performed by the calling <a href="../../sorter/Sorter.html" title="class in com.github.rlacher.sortbench.sorter"><code>Sorter</code></a> class.</p></div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../SortStrategy.html#sort(int%5B%5D)">sort</a></code>&nbsp;in interface&nbsp;<code><a href="../SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a></code></dd>
@@ -217,7 +216,7 @@ implements <a href="../SortStrategy.html" title="interface in com.github.rlacher
 <dt>Returns:</dt>
 <dd>A <a href="../../results/BenchmarkMetric.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkMetric</code></a> containing performance information about the sorting process.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - If array is null (should not happen).</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - If array is <code>null</code> (should not happen).</dd>
 </dl>
 </section>
 </li>

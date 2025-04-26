@@ -99,8 +99,8 @@ loadScripts(document, 'script');</script>
 implements <a href="../SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a></span></div>
 <div class="block">Implements the bubble sort algorithm as a sorting strategy.
 
- This class implements the <a href="../SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies"><code>SortStrategy</code></a> interface and provides a method
- to perform bubble sort on an array of integers.</div>
+ <p>This class implements the <a href="../SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies"><code>SortStrategy</code></a> interface and provides a method
+ to perform bubble sort on an array of integers.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -114,7 +114,7 @@ implements <a href="../SortStrategy.html" title="interface in com.github.rlacher
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(com.github.rlacher.sortbench.benchmark.Benchmarker)" class="member-name-link">BubbleSortStrategy</a><wbr>(<a href="../../benchmark/Benchmarker.html" title="class in com.github.rlacher.sortbench.benchmark">Benchmarker</a>&nbsp;benchmarker)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Constructor for the BubbleSortStrategy class.</div>
+<div class="block">Constructor for the <a href="BubbleSortStrategy.html" title="class in com.github.rlacher.sortbench.strategies.implementations"><code>BubbleSortStrategy</code></a> class.</div>
 </div>
 </div>
 </section>
@@ -133,7 +133,7 @@ implements <a href="../SortStrategy.html" title="interface in com.github.rlacher
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#name()" class="member-name-link">name</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the unique name of the BubbleSortStrategy</div>
+<div class="block">Returns the unique name of the <a href="BubbleSortStrategy.html" title="class in com.github.rlacher.sortbench.strategies.implementations"><code>BubbleSortStrategy</code></a>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../results/BenchmarkMetric.html" title="class in com.github.rlacher.sortbench.results">BenchmarkMetric</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sort(int%5B%5D)" class="member-name-link">sort</a><wbr>(int[]&nbsp;array)</code></div>
@@ -164,12 +164,12 @@ implements <a href="../SortStrategy.html" title="interface in com.github.rlacher
 <section class="detail" id="&lt;init&gt;(com.github.rlacher.sortbench.benchmark.Benchmarker)">
 <h3>BubbleSortStrategy</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">BubbleSortStrategy</span><wbr><span class="parameters">(<a href="../../benchmark/Benchmarker.html" title="class in com.github.rlacher.sortbench.benchmark">Benchmarker</a>&nbsp;benchmarker)</span></div>
-<div class="block">Constructor for the BubbleSortStrategy class.</div>
+<div class="block">Constructor for the <a href="BubbleSortStrategy.html" title="class in com.github.rlacher.sortbench.strategies.implementations"><code>BubbleSortStrategy</code></a> class.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>benchmarker</code> - The benchmarker to be used for profiling.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the benchmarker is null.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If the benchmarker is <code>null</code>.</dd>
 </dl>
 </section>
 </li>
@@ -185,7 +185,7 @@ implements <a href="../SortStrategy.html" title="interface in com.github.rlacher
 <section class="detail" id="name()">
 <h3>name</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">name</span>()</div>
-<div class="block">Returns the unique name of the BubbleSortStrategy</div>
+<div class="block">Returns the unique name of the <a href="BubbleSortStrategy.html" title="class in com.github.rlacher.sortbench.strategies.implementations"><code>BubbleSortStrategy</code></a>.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../SortStrategy.html#name()">name</a></code>&nbsp;in interface&nbsp;<code><a href="../SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a></code></dd>
@@ -200,13 +200,11 @@ implements <a href="../SortStrategy.html" title="interface in com.github.rlacher
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../results/BenchmarkMetric.html" title="class in com.github.rlacher.sortbench.results">BenchmarkMetric</a></span>&nbsp;<span class="element-name">sort</span><wbr><span class="parameters">(int[]&nbsp;array)</span></div>
 <div class="block">Sorts the provided array in ascending order using the bubble sort algorithm.
 
- Summary of bubble sort algorithm:
+ <p>Summary of bubble sort algorithm: Bubble sort repeatedly compares adjacent elements,
+ swapping them if they are out of order. The process continues until no swaps are
+ needed in a complete pass, indicating a sorted array.</p>
 
- Bubble sort repeatedly compares adjacent elements, swapping them if they are
- out of order. The process continues until no swaps are needed in a complete pass,
- indicating a sorted array.
- 
- Input array validation is assumed to be performed by the calling <a href="../../sorter/Sorter.html" title="class in com.github.rlacher.sortbench.sorter"><code>Sorter</code></a> class.</div>
+ <p>Input array validation is assumed to be performed by the calling <a href="../../sorter/Sorter.html" title="class in com.github.rlacher.sortbench.sorter"><code>Sorter</code></a> class.</p></div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../SortStrategy.html#sort(int%5B%5D)">sort</a></code>&nbsp;in interface&nbsp;<code><a href="../SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a></code></dd>
