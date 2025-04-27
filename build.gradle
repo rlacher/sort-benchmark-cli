@@ -22,6 +22,21 @@ application
     mainClass = 'com.github.rlacher.sortbench.Main'
 }
 
+tasks.named('clean')
+{
+    delete "$projectDir/docs/api"
+}
+
+tasks.named('javadoc')
+{
+    destinationDir = file("$projectDir/docs/api")
+    title= "Sort Benchmark API"
+    options.encoding = 'UTF-8'
+    options.windowTitle = title
+    options.header = title
+    options.addStringOption('Xwerror', '-Xdoclint:all')
+}
+
 tasks.named('run')
 {
     standardInput = System.in

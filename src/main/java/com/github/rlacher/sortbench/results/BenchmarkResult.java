@@ -30,9 +30,9 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 /**
  * Represents the raw, per-iteration result of a benchmark run.
  *
- * This class encapsulates the profiling metrics and contextual information
+ * <p>This class encapsulates the profiling metrics and contextual information
  * collected during a single execution of a sorting algorithm.
- * Instances of this class are created by the {@link BenchmarkRunner}.
+ * Instances of this class are created by the {@link BenchmarkRunner}.</p>
  *
  * @see BenchmarkContext
  * @see AggregatedResult
@@ -51,10 +51,10 @@ public final class BenchmarkResult
     /**
      * Constructs a new BenchmarkResult object.
      *
-     * @param context The benchmark context. Must not be null.
-     * @param profilingMode The profiling mode. Must not be null.
+     * @param context The benchmark context. Must not be {@code null}.
+     * @param profilingMode The profiling mode. Must not be {@code null}.
      * @param value The benchmark metric value. Must not be negative.
-     * @throws IllegalArgumentException If context or profilingMode are null, or value is negative.
+     * @throws IllegalArgumentException If context or profilingMode are {@code null}, or value is negative.
      */
     public BenchmarkResult(final BenchmarkContext context, final ProfilingMode profilingMode, final double value)
     {

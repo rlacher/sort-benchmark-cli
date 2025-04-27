@@ -29,9 +29,9 @@ import com.github.rlacher.sortbench.results.BenchmarkResult;
 /**
  * Skips the initial number of iterations
  *
- * Provides a basic JVM warmup by ignoring the first few benchmark runs,
+ * <p>Provides a basic JVM warmup by ignoring the first few benchmark runs,
  * allowing time for JVM optimisation. The number of initial iterations
- * to skip is configured via the {@code iterationsToSkip} constructor parameter.
+ * to skip is configured via the {@code iterationsToSkip} constructor parameter.</p>
  */
 public class SkipIterationFilter implements Predicate<BenchmarkResult>
 {
@@ -43,7 +43,7 @@ public class SkipIterationFilter implements Predicate<BenchmarkResult>
 
     /**
      * Constructs a filter to skip a specified number of initial iterations.
-     * 
+     *
      * @param iterationsToSkip The number of initial iterations to skip.
      * @throws IllegalArgumentException If {@code iterationsToSkip} are negative.
      */
@@ -59,13 +59,13 @@ public class SkipIterationFilter implements Predicate<BenchmarkResult>
     }
 
     /**
-     * Evaluates if a benchmark result should be processed (i.e., not skipped).
+     * Evaluates if a benchmark result should be processed (i.e. not skipped).
      *
-     * Skips the first {@code iterationsToSkip} results.
+     * <p>Skips the first {@code iterationsToSkip} results.</p>
      *
-     * @param result The {@link BenchmarkResult} instance to test. Must not be null.
+     * @param result The {@link BenchmarkResult} instance to test. Must not be {@code null}.
      * @return {@code true} if the result should be processed, {@code false} if it should be skipped.
-     * @throws IllegalArgumentException If {@code result} is null.
+     * @throws IllegalArgumentException If {@code result} is {@code null}.
      */
     @Override
     public boolean test(BenchmarkResult result)

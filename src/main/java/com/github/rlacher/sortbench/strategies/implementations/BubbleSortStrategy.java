@@ -32,8 +32,8 @@ import com.github.rlacher.sortbench.strategies.SortStrategy;
 /**
  * Implements the bubble sort algorithm as a sorting strategy.
  *
- * This class implements the {@link SortStrategy} interface and provides a method
- * to perform bubble sort on an array of integers.
+ * <p>This class implements the {@link SortStrategy} interface and provides a method
+ * to perform bubble sort on an array of integers.</p>
  */
 public class BubbleSortStrategy implements SortStrategy
 {
@@ -44,10 +44,10 @@ public class BubbleSortStrategy implements SortStrategy
     private Benchmarker benchmarker;
 
     /**
-     * Constructor for the BubbleSortStrategy class.
+     * Constructor for the {@link BubbleSortStrategy} class.
      *
      * @param benchmarker The benchmarker to be used for profiling.
-     * @throws IllegalArgumentException If the benchmarker is null.
+     * @throws IllegalArgumentException If the benchmarker is {@code null}.
      */
     public BubbleSortStrategy(Benchmarker benchmarker)
     {
@@ -61,7 +61,7 @@ public class BubbleSortStrategy implements SortStrategy
     }
 
     /**
-     * Returns the unique name of the BubbleSortStrategy
+     * Returns the unique name of the {@link BubbleSortStrategy}.
      *
      * @return The unique name of the strategy.
      */
@@ -74,14 +74,12 @@ public class BubbleSortStrategy implements SortStrategy
     /**
      * Sorts the provided array in ascending order using the bubble sort algorithm.
      *
-     * Summary of bubble sort algorithm:
+     * <p>Summary of bubble sort algorithm: Bubble sort repeatedly compares adjacent elements,
+     * swapping them if they are out of order. The process continues until no swaps are
+     * needed in a complete pass, indicating a sorted array.</p>
      *
-     * Bubble sort repeatedly compares adjacent elements, swapping them if they are
-     * out of order. The process continues until no swaps are needed in a complete pass,
-     * indicating a sorted array.
-     * 
-     * Input array validation is assumed to be performed by the calling {@link Sorter} class.
-     * 
+     * <p>Input array validation is assumed to be performed by the calling {@link Sorter} class.</p>
+     *
      * @param array The array to be sorted.
      * @return The sorted array.
      */

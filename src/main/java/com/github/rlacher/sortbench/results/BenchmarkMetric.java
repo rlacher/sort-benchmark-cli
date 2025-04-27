@@ -30,10 +30,9 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 /**
  * Represents a raw profiling measurement from a single benchmark iteration.
  *
- * The meaning of this metric value is determined by the {@link ProfilingMode} used.
+ * <p>The meaning of this metric value is determined by the {@link ProfilingMode} used.
  * This object is the direct result of a sorting operation,
- * instantiated by the {@link Benchmarker}.
- * 
+ * instantiated by the {@link Benchmarker}.</p>
  */
 public final class BenchmarkMetric
 {
@@ -49,7 +48,7 @@ public final class BenchmarkMetric
 
 
     /**
-     * Constructs a new BenchmarkMetric object.
+     * Constructs a new {@link BenchmarkMetric} object.
      *
      * @param mode The profiling mode used during the benchmark iteration.
      * @param value The metric of the benchmark iteration.
@@ -93,6 +92,9 @@ public final class BenchmarkMetric
 
     /**
      * Checks if two BenchmarkMetric objects are equal based on their profiling mode and metric value.
+     *
+     * @param obj The object with which to compare.
+     * @return {@code true} if this object is the same as the obj argument; {@code false} otherwise.
      */
     @Override
     public boolean equals(Object obj)
@@ -112,6 +114,8 @@ public final class BenchmarkMetric
 
     /**
      * Generates a hash code for the BenchmarkMetric object based on its profiling mode and value.
+     *
+     * @return A hash code value for this object.
      */
     @Override
     public int hashCode()

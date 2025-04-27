@@ -28,11 +28,15 @@ import java.util.stream.IntStream;
 
 /**
  * Represents benchmark data for sorting algorithms, encapsulating the data array and its type.
- * This class ensures immutability by creating copies of the input data.
+ *
+ * <p>This class ensures immutability by creating copies of the input data.</p>
  */
 public final class BenchmarkData
 {
+    /** The integer array to be sorted. */
     private final int[] data;
+
+    /** The type of data in the array (e.g. {@code RANDOM}, {@code SORTED}). */
     private final DataType type;
 
     /**
@@ -40,19 +44,23 @@ public final class BenchmarkData
      */
     public enum DataType
     {
+        /** Data exhibiting a partial ordering of its elements. */
         PARTIALLY_SORTED,
+        /** Data with elements arranged in a random order. */
         RANDOM,
+        /** Data with elements arranged in reverse sorted order. */
         REVERSED,
+        /** Data that is already fully sorted. */
         SORTED;
 
         /**
          * Convert a string representation into a {@link DataType} enum instance.
          *
-         * This method is case-insensitive and ignores leading/trailing whitespace.
+         * <p>This method is case-insensitive and ignores leading/trailing whitespace.</p>
          *
          * @param value The string representation of the data type (e.g. "random", "SORTED").
          * @return The corresponding {@link DataType} enum instance.
-         * @throws IllegalArgumentException If {@code value} is null, blank or does not match any of the enum constant names.
+         * @throws IllegalArgumentException If {@code value} is {@code null}, blank or does not match any of the enum constant names.
          */
         public static DataType fromString(String value)
         {
@@ -72,11 +80,11 @@ public final class BenchmarkData
     /**
      * Constructor for creating a BenchmarkData object.
      *
-     * This constructor creates a copy of the data array to avoid external modification.
+     * <p>This constructor creates a copy of the data array to avoid external modification.</p>
      *
      * @param data The data array to be stored (a copy is created).
      * @param type The type of the data.
-     * @throws IllegalArgumentException If the data array is null.
+     * @throws IllegalArgumentException If the data array is {@code null}.
      */
     public BenchmarkData(final int[] data, final DataType type)
     {
@@ -90,10 +98,10 @@ public final class BenchmarkData
     }
 
     /**
-     * Copy constructor for creating a BenchmarkData object from another BenchmarkData object.
+     * Copy constructor for creating a {@link BenchmarkData} object from another {@link BenchmarkData} object.
      * 
-     * @param other The other BenchmarkData object to copy from.
-     * @throws IllegalArgumentException If the other BenchmarkData object or its data array is null.
+     * @param other The other {@link BenchmarkData} object to copy from.
+     * @throws IllegalArgumentException If the other {@link BenchmarkData} object or its data array is {@code null}.
      */
     public BenchmarkData(final BenchmarkData other)
     {
@@ -123,9 +131,9 @@ public final class BenchmarkData
     /**
      * Returns the length of the data array.
      *
-     * Benchmark data of various lengths are required for performance assessment of the sorting algorithms.
+     * <p>Benchmark data of various lengths are required for performance assessment of the sorting algorithms.</p>
      *
-     * @return  The length of the data array.
+     * @return The length of the data array.
      */
     public int getLength()
     {
@@ -134,8 +142,10 @@ public final class BenchmarkData
 
     /**
      * Returns the type of the data.
-     * 
-     * Benchmark data of various types help assess the performance of sorting algorithms.
+     *
+     * <p>Benchmark data of various types help assess the performance of sorting algorithms.</p>
+     *
+     * @return The type of the data array.
      */
     public DataType getType()
     {
@@ -143,9 +153,9 @@ public final class BenchmarkData
     }
 
     /**
-     * Returns a string representation of the BenchmarkData object.
-     * 
-     * @return A string representation of the BenchmarkData object.
+     * Returns a string representation of the {@link BenchmarkData} object.
+     *
+     * @return A string representation of the {@link BenchmarkData} object.
      */
     @Override
     public String toString()

@@ -33,11 +33,14 @@ public class BenchmarkDataFactory
     /** Random instance for use in generating benchmark data. */
     private static Random random = new Random();
 
+    /** Private constructor to prevent instantiation of utility class. */
+    private BenchmarkDataFactory() {}
+
     /**
      * Sets the random instance for benchmark data generation or testing purposes.
      *
      * @param random The random instance to be set.
-     * @throws IllegalArgumentException If the provided random instance is null.
+     * @throws IllegalArgumentException If the provided random instance is {@code null}.
      */
     public static void setRandom(final Random random)
     {
@@ -52,8 +55,8 @@ public class BenchmarkDataFactory
     /**
      * Creates benchmark data of the specified type and length.
      *
-     * This is the single entry point for generating benchmark data using this factory.
-     * All requests for benchmark data should be made through this method.
+     * <p>This is the single entry point for generating benchmark data using this factory.
+     * All requests for benchmark data should be made through this method.</p>
      *
      * @param dataType The type of benchmark data to create.
      * @param dataLength The desired length of the benchmark data. Must be a positive integer.
@@ -94,8 +97,8 @@ public class BenchmarkDataFactory
     /**
      * Creates sorted benchmark data of a specified length.
      *
-     * {@code dataLength} is guaranteed to be positive as validation is performed
-     * by the calling method, {@link BenchmarkDataFactory#createData}.
+     * <p>{@code dataLength} is guaranteed to be positive as validation is performed
+     * by the calling method, {@link BenchmarkDataFactory#createData}.</p>
      *
      * @param dataLength The length of the data array to be created.
      * @return A {@link BenchmarkData} object containing sorted data.
@@ -109,8 +112,8 @@ public class BenchmarkDataFactory
     /**
      * Creates reversely sorted benchmark data of a specified length.
      *
-     * {@code dataLength} is guaranteed to be positive as validation is performed
-     * by the calling method, {@link BenchmarkDataFactory#createData}.
+     * <p>{@code dataLength} is guaranteed to be positive as validation is performed
+     * by the calling method, {@link BenchmarkDataFactory#createData}.</p>
      *
      * @param dataLength The length of the data array to be created.
      * @return A {@link BenchmarkData} object containing sorted data.
@@ -126,11 +129,11 @@ public class BenchmarkDataFactory
     /**
      * Creates random benchmark data of a specified length.
      *
-     * {@code dataLength} is guaranteed to be positive as validation is performed
-     * by the calling method, {@link BenchmarkDataFactory#createData}.
+     * <p>{@code dataLength} is guaranteed to be positive as validation is performed
+     * by the calling method, {@link BenchmarkDataFactory#createData}.</p>
      *
-     * This method uses the shared random number generator field ({@code random})
-     * which can be externally set via the {@link #setRandom(Random)} method.
+     * <p>This method uses the shared random number generator field ({@code random})
+     * which can be externally set via the {@link #setRandom(Random)} method.</p>
      *
      * @param dataLength The length of the data array to be created.
      * @return A {@link BenchmarkData} object containing sorted data.
@@ -146,11 +149,11 @@ public class BenchmarkDataFactory
     /**
      * Creates partially sorted benchmark data of a specified length.
      *
-     * {@code dataLength} is guaranteed to be positive as validation is performed
-     * by the calling method, {@link BenchmarkDataFactory#createData}.
+     * <p>{@code dataLength} is guaranteed to be positive as validation is performed
+     * by the calling method, {@link BenchmarkDataFactory#createData}.</p>
      *
-     * This method uses the shared random number generator field ({@code random})
-     * which can be externally set via the {@link #setRandom(Random)} method.
+     * <p>This method uses the shared random number generator field ({@code random})
+     * which can be externally set via the {@link #setRandom(Random)} method.</p>
      *
      * @param dataLength The length of the data array to be created.
      * @return A {@link BenchmarkData} object containing sorted data.

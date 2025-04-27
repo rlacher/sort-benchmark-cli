@@ -1,0 +1,9 @@
+com.github.rlacher.sortbench
+com.github.rlacher.sortbench.benchmark
+com.github.rlacher.sortbench.benchmark.data
+com.github.rlacher.sortbench.config
+com.github.rlacher.sortbench.processing
+com.github.rlacher.sortbench.results
+com.github.rlacher.sortbench.sorter
+com.github.rlacher.sortbench.strategies
+com.github.rlacher.sortbench.strategies.implementations

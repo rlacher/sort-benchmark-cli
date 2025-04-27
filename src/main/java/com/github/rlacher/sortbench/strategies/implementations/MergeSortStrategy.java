@@ -32,8 +32,8 @@ import com.github.rlacher.sortbench.strategies.SortStrategy;
 /**
  * Implements the merge sort algorithm as a sorting strategy.
  *
- * This class implements the {@link SortStrategy} interface and provides a method
- * to perform merge sort on an array of integers.
+ * <p>This class implements the {@link SortStrategy} interface and provides a method
+ * to perform merge sort on an array of integers.</p>
  */
 public class MergeSortStrategy implements SortStrategy
 {
@@ -44,10 +44,10 @@ public class MergeSortStrategy implements SortStrategy
     private Benchmarker benchmarker;
 
     /**
-     * Constructor for the MergeSortStrategy class.
+     * Constructor for the {@link MergeSortStrategy} class.
      *
      * @param benchmarker The benchmarker to be used for profiling.
-     * @throws IllegalArgumentException If the benchmarker is null.
+     * @throws IllegalArgumentException If the benchmarker is {@code null}.
      */
 
     public MergeSortStrategy(Benchmarker benchmarker)
@@ -62,7 +62,7 @@ public class MergeSortStrategy implements SortStrategy
     }
 
     /**
-    * Returns the unique name of the MergeSortStrategy
+    * Returns the unique name of the {@link MergeSortStrategy}.
     *
     * @return The unique name of the strategy.
     */
@@ -75,11 +75,11 @@ public class MergeSortStrategy implements SortStrategy
     /**
      * Sorts the provided array in ascending order using the merge sort algorithm.
      *
-     * Merge sort is a divide-and-conquer algorithm that recursively divides the array
+     * <p>Merge sort is a divide-and-conquer algorithm that recursively divides the array
      * into single-element subarrays. These subarrays are then merged pairwise to
-     * produce the sorted result.
+     * produce the sorted result.</p>
      *
-     * Input array validation is assumed to be performed by the calling {@link Sorter} class.
+     * <p>Input array validation is assumed to be performed by the calling {@link Sorter} class.</p>
      *
      * @param array The array to be sorted.
      * @return The sorted array.
@@ -103,7 +103,7 @@ public class MergeSortStrategy implements SortStrategy
     /**
      * Recursively sorts the array using merge sort.
      *
-     * Divides the array and merges sorted subarrays using {@link #twoWayMerge(int[], int, int, int)}.
+     * <p>Divides the array and merges sorted subarrays using {@link #twoWayMerge(int[], int, int, int)}.</p>
      *
      * @param array The array to sort.
      * @param left Start index (inclusive).
@@ -130,7 +130,7 @@ public class MergeSortStrategy implements SortStrategy
      * @param leftStart Start index (inclusive) of the left subarray.
      * @param rightStartEnd End index (exclusive) of the left and start (inclusive) of the right subarray.
      * @param rightEndExcl End index (exclusive) of the right subarray.
-     * @throws NullPointerException if the array is null.
+     * @throws NullPointerException if the array is {@code null}.
      */
     private void twoWayMerge(final int[] array,
                               final int leftStart,

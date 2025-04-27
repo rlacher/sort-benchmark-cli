@@ -43,9 +43,9 @@ import com.github.rlacher.sortbench.strategies.implementations.*;
 
 /**
  * Executes and benchmarks sorting algorithms based on a provided configuration and returns raw benchmark results.
- * 
- * Each benchmark run focuses on a single profiling mode,
- * though it may involve multiple sorting strategies, data sizes, and data types.
+ *
+ * <p>Each benchmark run focuses on a single profiling mode, though it may involve multiple sorting strategies,
+ * data sizes, and data types.</p>
  */
 public class BenchmarkRunner
 {
@@ -67,6 +67,12 @@ public class BenchmarkRunner
     /** Sort context to execute and benchmark different sorting strategies. */
     private Sorter sorter;
 
+    /**
+     * Constructs a {@link BenchmarkRunner} that delegates sorting to the provided {@link Sorter}.
+     *
+     * @param sorter The {@link Sorter} instance to use.
+     * @throws IllegalArgumentException If {@code sorter} is {@code null}.
+     */
     public BenchmarkRunner(Sorter sorter)
     {
         if(sorter == null)
@@ -82,8 +88,8 @@ public class BenchmarkRunner
      *
      * @param benchmarkConfig A map containing benchmark configuration parameters.
      * @return A list of benchmark results.
-     * @throws IllegalArgumentException If benchmark config is null, the configuration is otherwise invalid
-     * or if required list-based parameters are empty.
+     * @throws IllegalArgumentException If benchmark config is {@code null}, the configuration
+     * is otherwise invalid or if required list-based parameters are empty.
      */
     public List<BenchmarkResult> run(Map<String, Object> benchmarkConfig)
     {
@@ -118,7 +124,7 @@ public class BenchmarkRunner
      * @param strategies A map of sorting strategy names to instances.
      * @param benchmarkDataMap The map of {@link BenchmarkContext} to lists of benchmark data.
      * @return A list of benchmark results.
-     * @throws IllegalArgumentException If the {@code strategies} or {@code benchmarkDataMap} is null or empty.
+     * @throws IllegalArgumentException If the {@code strategies} or {@code benchmarkDataMap} is {@code null} or empty.
      * @throws IllegalStateException If a required sorting strategy is not found for a benchmark context.
      */
     protected List<BenchmarkResult> runIterations(final Map<String, SortStrategy> strategies, final Map<BenchmarkContext, List<BenchmarkData>> benchmarkDataMap)
@@ -163,9 +169,9 @@ public class BenchmarkRunner
 
     /**
      * Generates benchmark data grouped by context to facilitate batch processing.
-     * 
-     * This improves JVM optimisation by enhancing data locality.
-     * Deep copies data for each strategy to ensure result comparability.
+     *
+     * <p>This improves JVM optimisation by enhancing data locality.
+     * Deep copies data for each strategy to ensure result comparability.</p>
      *
      * @param dataType The type of data to generate.
      * @param sizes A list of integer data sizes.
@@ -173,7 +179,7 @@ public class BenchmarkRunner
      * @param iterations The number of data arrangements per size and data type.
      * @return A map of {@link BenchmarkContext} to a list of benchmark data.
      * @throws NullPointerException If any of {@code dataType}, {@code sizes} or {@code strategyNames} are {@code null}.
-     * This is unexpected as the caller {@link BenchmarkRunner#run} ensures these arguments are not null.
+     * This is unexpected as the caller {@link BenchmarkRunner#run} ensures these arguments are not {@code null}.
      */
     protected Map<BenchmarkContext, List<BenchmarkData>> generateBenchmarkData(BenchmarkData.DataType dataType, final List<Integer> sizes, final List<String> strategyNames, final int iterations)
     {
@@ -201,10 +207,10 @@ public class BenchmarkRunner
 
     /**
      * Creates an instance of a SortStrategy based on the provided strategy name and profiling mode.
-     * 
+     *
      * @param strategyName The name of the sorting strategy.
      * @param mode The profiling mode to use.
-     * @return An instance of the SortStrategy. Returns null in case of instantiation failure.
+     * @return An instance of the {@link SortStrategy}. Returns {@code null} in case of instantiation failure.
      */
     protected SortStrategy getStrategyInstance(String strategyName, ProfilingMode mode)
     {

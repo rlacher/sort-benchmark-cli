@@ -30,8 +30,8 @@ import com.github.rlacher.sortbench.strategies.SortStrategy;
 /**
  * Implements the quick sort algorithm as a sorting strategy.
  *
- * This class implements the {@link SortStrategy} interface and provides a method
- * to perform quick sort on an array of integers.
+ * <p>This class implements the {@link SortStrategy} interface and provides a method
+ * to perform quick sort on an array of integers.</p>
  */
 public class QuickSortStrategy implements SortStrategy
 {
@@ -42,10 +42,10 @@ public class QuickSortStrategy implements SortStrategy
     private Benchmarker benchmarker;
 
     /**
-     * Constructor for the QuickSortStrategy class.
+     * Constructor for the {@link QuickSortStrategy} class.
      *
      * @param benchmarker The benchmarker to be used for profiling.
-     * @throws IllegalArgumentException If the benchmarker is null.
+     * @throws IllegalArgumentException If the benchmarker is {@code null}.
      */
     public QuickSortStrategy(Benchmarker benchmarker)
     {
@@ -59,7 +59,7 @@ public class QuickSortStrategy implements SortStrategy
     }
 
     /**
-     * Returns the unique name of the QuickSortStrategy
+     * Returns the unique name of the {@link QuickSortStrategy}.
      *
      * @return The unique name of the strategy.
      */
@@ -72,18 +72,17 @@ public class QuickSortStrategy implements SortStrategy
     /**
      * Sorts the provided array in ascending order using the quick sort algorithm.
      *
-     * Summary of quick sort algorithm:
+     * <p>Summary of quick sort algorithm: Quicksort, using the first element as the
+     * pivot, partitions the array such that elements smaller than the pivot are on the
+     * left and equal or larger elements are on the right. The pivot is then swapped to
+     * its correct sorted position between these partitions. The algorithm recursively
+     * sorts the left and right subarrays until they contain zero or one element.</p>
      *
-     * Quicksort, using the first element as the pivot, partitions the array such that elements smaller
-     * than the pivot are on the left and equal or larger elements are on the right. The pivot is then swapped to
-     * its correct sorted position between these partitions. The algorithm recursively sorts the left
-     * and right subarrays until they contain zero or one element.
-     *
-     * Input array validation is assumed to be performed by the calling {@link Sorter} class.
+     * <p>Input array validation is assumed to be performed by the calling {@link Sorter} class.</p>
      *
      * @param array The array to be sorted.
      * @return A {@link BenchmarkMetric} containing performance information about the sorting process.
-     * @throws NullPointerException If array is null (though this should be prevented by the caller).
+     * @throws NullPointerException If array is {@code null} (though this should be prevented by the caller).
      */
     @Override
     public BenchmarkMetric sort(final int[] array)
@@ -114,17 +113,18 @@ public class QuickSortStrategy implements SortStrategy
     }
     /**
      * Partitions a subarray around the pivot element (the first element of the subarray).
-     * Elements smaller than the pivot are moved to the left, and elements greater than or equal to
-     * the pivot are moved to the right.
      *
-     * This partitioning employs a two-pointer approach, with pointers moving from the left and right of the subarray.
-     * Only call with subarrays of size > 1. Subroutine of {@link QuickSortStrategy#quickSort}.
+     * <p>Elements smaller than the pivot are moved to the left, and elements greater than or equal to
+     * the pivot are moved to the right.</p>
+     *
+     * <p>This partitioning employs a two-pointer approach, with pointers moving from the left and right of the subarray.
+     * Only call with subarrays of size > 1. Subroutine of {@link QuickSortStrategy#quickSort}.</p>
      *
      * @param array The array to be partitioned.
      * @param start The start index (inclusive) of the subarray to partition.
      * @param end The end index (exclusive) of the subarray to partition.
      * @return The final index of the pivot element after partitioning.
-     * @throws NullPointerException If the input array is null.
+     * @throws NullPointerException If the input array is {@code null}.
      * @throws ArrayIndexOutOfBoundsException If {@code start} or {@code end} indices are invalid for the array.
      */
     private int partition(final int[] array, final int start, final int end)

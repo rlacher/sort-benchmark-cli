@@ -31,18 +31,25 @@ import com.github.rlacher.sortbench.results.BenchmarkResult;
 /**
  * Aggregates a list of {@link BenchmarkResult} instances to calculate the median value.
  *
- * This aggregator aims to provide a more robust and representative summary of
+ * <p>This aggregator aims to provide a more robust and representative summary of
  * benchmark results by using the median, which is less susceptible to outliers
- * caused by factors like garbage collection or JVM optimisations.
+ * caused by factors like garbage collection or JVM optimisations.</p>
  */
 public class MedianAggregator implements Function<List<BenchmarkResult>, Double>
 {
     /**
+     * Constructs a default instance of {@link MedianAggregator}.
+     *
+     * This constructor performs no custom initialisation.
+     */
+    public MedianAggregator() {}
+
+    /**
      * Applies the aggregation logic to calculate the median of the benchmark result values.
      *
-     * @param results The list of {@link BenchmarkResult} instances to aggregate. Must not be null.
+     * @param results The list of {@link BenchmarkResult} instances to aggregate. Must not be {@code null}.
      * @return The median value of the benchmark results.
-     * @throws IllegalArgumentException If the provided list of benchmark results is null.
+     * @throws IllegalArgumentException If the provided list of benchmark results is {@code null}.
      * @throws IllegalArgumentException If the stream of values derived from the results is empty.
      */
     @Override
