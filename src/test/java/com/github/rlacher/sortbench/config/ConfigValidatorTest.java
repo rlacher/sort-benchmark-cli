@@ -27,10 +27,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ConfigValidatorTest
 {
@@ -48,6 +51,7 @@ public class ConfigValidatorTest
         config.put("mixedListKey", Arrays.asList("hello", 42));
         config.put("nullListKey", null);
         config.put("listWithNullElementKey", Arrays.asList("a", null, "c"));
+        config.put("stringSetKey", new HashSet<String>(Arrays.asList("one", "two", "three")));
     }
 
     @Test
@@ -112,78 +116,82 @@ public class ConfigValidatorTest
     }
 
     @Test
-    void validateAndGetList_validKeyAndType_returnsCorrectList()
+    void validateAndGetCollection_validKeyAndType_returnsCorrectCollection()
     {
         List<String> expectedStringList = Arrays.asList("one", "two", "three");
-        assertEquals(expectedStringList, ConfigValidator.validateAndGetList(config, "stringListKey", String.class),
-                     "validateAndGetList() should return the correct string list");
+        assertEquals(expectedStringList, new ArrayList<>(ConfigValidator.validateAndGetCollection(config, "stringListKey", String.class)),
+                     "validateAndGetCollection() should return the correct string list when input is a list.");
+
+        Set<String> expectedStringSet = new HashSet<>(Arrays.asList("one", "two", "three"));
+        assertEquals(expectedStringSet, new HashSet<>(ConfigValidator.validateAndGetCollection(config, "stringSetKey", String.class)),
+        "validateAndGetCollection() should return the correct string set when input is a set.");
 
         List<Integer> expectedIntegerList = Arrays.asList(1, 2, 3);
-        assertEquals(expectedIntegerList, ConfigValidator.validateAndGetList(config, "integerListKey", Integer.class),
-                     "validateAndGetList() should return the correct integer list");
+        assertEquals(expectedIntegerList, new ArrayList<>(ConfigValidator.validateAndGetCollection(config, "integerListKey", Integer.class)),
+                     "validateAndGetCollection() should return the correct integer list when input is a list.");
     }
 
     @Test
-    void validateAndGetList_nullConfig_throwsIllegalArgumentException()
+    void validateAndGetCollection_nullConfig_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetList(null, "stringListKey", String.class),
-                     "validateAndGetList() with a null config should throw an IllegalArgumentException");
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetCollection(null, "stringListKey", String.class),
+                     "validateAndGetCollection() with a null config should throw an IllegalArgumentException");
     }
 
     @Test
-    void validateAndGetList_nullKey_throwsIllegalArgumentException()
+    void validateAndGetCollection_nullKey_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetList(config, null, String.class),
-                     "validateAndGetList() with a null key should throw an IllegalArgumentException");
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetCollection(config, null, String.class),
+                     "validateAndGetCollection() with a null key should throw an IllegalArgumentException");
     }
 
     @Test
-    void validateAndGetList_blankKey_throwsIllegalArgumentException()
+    void validateAndGetCollection_blankKey_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetList(config, "  ", String.class),
-                     "validateAndGetList() with a blank key should throw an IllegalArgumentException");
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetCollection(config, "  ", String.class),
+                     "validateAndGetCollection() with a blank key should throw an IllegalArgumentException");
     }
 
     @Test
-    void validateAndGetList_nullExpectedElementType_throwsIllegalArgumentException()
+    void validateAndGetCollection_nullExpectedElementType_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetList(config, "stringListKey", null),
-                     "validateAndGetList() with a null expected element type should throw an IllegalArgumentException");
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetCollection(config, "stringListKey", null),
+                     "validateAndGetCollection() with a null expected element type should throw an IllegalArgumentException");
     }
 
     @Test
-    void validateAndGetList_missingKey_throwsIllegalArgumentException()
+    void validateAndGetCollection_missingKey_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetList(config, "missingListKey", String.class),
-                     "validateAndGetList() with a missing key should throw an IllegalArgumentException");
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetCollection(config, "missingListKey", String.class),
+                     "validateAndGetCollection() with a missing key should throw an IllegalArgumentException");
     }
 
     @Test
-    void validateAndGetList_nullValue_throwsIllegalArgumentException()
+    void validateAndGetCollection_nullValue_throwsIllegalArgumentException()
     {
         config.put("nullListKey", null);
-        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetList(config, "nullListKey", String.class),
-                     "validateAndGetList() with a null value should throw an IllegalArgumentException");
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetCollection(config, "nullListKey", String.class),
+                     "validateAndGetCollection() with a null value should throw an IllegalArgumentException");
     }
 
     @Test
-    void validateAndGetList_incorrectListType_throwsIllegalArgumentException()
+    void validateAndGetCollection_incorrectCollectionType_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetList(config, "integerKey", String.class),
-                     "validateAndGetList() with a non-list value should throw an IllegalArgumentException");
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetCollection(config, "integerKey", String.class),
+                     "validateAndGetCollection() with a non-collection value should throw an IllegalArgumentException");
     }
 
     @Test
-    void validateAndGetList_listWithNullElement_throwsIllegalArgumentException()
+    void validateAndGetCollection_listWithNullElement_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetList(config, "listWithNullElementKey", String.class),
-                     "validateAndGetList() with a list containing a null element should throw an IllegalArgumentException");
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetCollection(config, "listWithNullElementKey", String.class),
+                     "validateAndGetCollection() with a list containing a null element should throw an IllegalArgumentException");
     }
 
     @Test
-    void validateAndGetList_listWithIncorrectElementType_throwsIllegalArgumentException()
+    void validateAndGetCollection_listWithIncorrectElementType_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetList(config, "mixedListKey", String.class),
-                     "validateAndGetList() with a list containing elements of incorrect type should throw an IllegalArgumentException");
+        assertThrows(IllegalArgumentException.class, () -> ConfigValidator.validateAndGetCollection(config, "mixedListKey", String.class),
+                     "validateAndGetCollection() with a list containing elements of incorrect type should throw an IllegalArgumentException");
     }
 }

@@ -23,7 +23,7 @@
 package com.github.rlacher.sortbench.config;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -83,19 +83,19 @@ public class ConfigValidator
     }
 
     /**
-     * Validates and retrieves a list of configuration values from a map.
+     * Validates and retrieves a collection of configuration values from a map.
      *
      * @param config The map containing the configuration.
-     * @param key The key of the configuration list to retrieve.
-     * @param expectedElementType The expected class type of each element in the list.
-     * @param <T> The type of the elements in the expected list.
-     * @return The validated and cast list of configuration values.
+     * @param key The key of the configuration collection to retrieve.
+     * @param expectedElementType The expected class type of each element in the collection.
+     * @param <T> The type of the elements in the expected collection.
+     * @return The validated and cast collection of configuration values.
      * @throws IllegalArgumentException If {@code config} is {@code null}, {@code key} is {@code null} or blank,
      * {@code expectedElementType} is {@code null}, the {@code key} is missing in {@code config}, the value for
-     * {@code key} is {@code null} or not a {@link List}, or the list contains {@code null} elements or elements
+     * {@code key} is {@code null} or not a {@link Collection}, or the collection contains {@code null} elements or elements
      * not of {@code expectedElementType}.
      */
-    public static <T> List<T> validateAndGetList(Map<String, Object> config, String key, Class<T> expectedElementType)
+    public static <T> Collection<T> validateAndGetCollection(Map<String, Object> config, String key, Class<T> expectedElementType)
     {
         if(config == null)
         {
@@ -118,33 +118,33 @@ public class ConfigValidator
 
         if (rawObject == null)
         {
-            throw new IllegalArgumentException(String.format("Configuration list is missing key: '%s'", key));
+            throw new IllegalArgumentException(String.format("Config is missing key: '%s'", key));
         }
 
-        if(!(rawObject instanceof List<?>))
+        if(!(rawObject instanceof Collection<?>))
         {
-            throw new IllegalArgumentException(String.format("Configuration key '%s' must be of list type, but found: %s",
+            throw new IllegalArgumentException(String.format("Configuration key '%s' must be of collection type, but found: %s",
                                                             key, rawObject.getClass().getSimpleName()));
         }
 
-        // Cast to verified list type
-        List<?> rawList = (List<?>) rawObject;
-        List<T>  validatedList = new ArrayList<>();
-        for(Object element : rawList)
+        // Cast to verified collection type
+        Collection<?> rawCollection = (Collection<?>) rawObject;
+        Collection<T>  validatedCollection = new ArrayList<>();
+        for(Object element : rawCollection)
         {
             if(element == null)
             {
-                throw new IllegalArgumentException(String.format("Configuration list '%s' contains a null element.", key));
+                throw new IllegalArgumentException(String.format("Collection '%s' contains a null element.", key));
             }
             if(!expectedElementType.isInstance(element))
             {
-                throw new IllegalArgumentException(String.format("Elements in configuration list '%s' must be of type %s, but found incorrect type %s",
+                throw new IllegalArgumentException(String.format("Elements in collection '%s' must be of type %s, but found incorrect type %s",
                                                                 key, expectedElementType.getSimpleName(), element.getClass().getSimpleName()));
             }
 
-            validatedList.add(expectedElementType.cast(element));
+            validatedCollection.add(expectedElementType.cast(element));
         }
 
-        return validatedList;
+        return validatedCollection;
     }
 }

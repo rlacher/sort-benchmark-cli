@@ -25,6 +25,7 @@ package com.github.rlacher.sortbench;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -108,7 +109,7 @@ public class Main
         Map<String, Object> config = new HashMap<>();
         config.put("input_sizes", BENCHMARK_DATA_SIZES);
         config.put("iterations", BENCHMARK_ITERATIONS);
-        config.put("strategies", List.of("BubbleSort", "HeapSort", "InsertionSort", "MergeSort", "QuickSort"));
+        config.put("strategies", Set.of("bubblesort", "HEAPSORT", "InsertionSort", "MergeSort", "QuickSort"));
         config.put("data_type", BenchmarkData.DataType.RANDOM.toString());
         config.put("profiling_mode", ProfilingMode.EXECUTION_TIME);
         return config;
