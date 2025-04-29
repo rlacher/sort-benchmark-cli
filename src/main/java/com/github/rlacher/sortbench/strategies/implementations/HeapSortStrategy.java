@@ -61,17 +61,6 @@ public class HeapSortStrategy implements SortStrategy
     }
 
     /**
-     * Returns the unique name of the {@link HeapSortStrategy}.
-     *
-     * @return The unique name of the strategy.
-     */
-    @Override
-    public String name()
-    {
-        return "HeapSort";
-    }
-
-    /**
      * Sorts the provided array in ascending order using the heap sort algorithm.
      *
      * <p>Summary of heap sort algorithm: Heap Sort initially builds a max heap from the

@@ -26,13 +26,25 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.github.rlacher.sortbench.benchmark.Benchmarker;
+import com.github.rlacher.sortbench.strategies.SortStrategy;
  
  // Unit tests for the MergeSortStrategy class.
  public class MergeSortStrategyTest
  {
+    private Benchmarker mockBenchmarker;
+    private SortStrategy mergeSortStrategy;
+
+    @BeforeEach
+    void setUp()
+    {
+        mockBenchmarker = mock(Benchmarker.class);
+        mergeSortStrategy = new MergeSortStrategy(mockBenchmarker);
+    }
+
      @Test
      void constructor_nullArgument_throwsIllegalArgumentException()
      {
@@ -42,10 +54,8 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker;
      @Test
      void sort_oneElementArray_noDataWrite()
      {
-        Benchmarker mockBenchmarker = mock(Benchmarker.class);
-
         int[] array = {};
-        new MergeSortStrategy(mockBenchmarker).sort(array);
+        mergeSortStrategy.sort(array);
 
         verify(mockBenchmarker, never()).reportWrite();
         verify(mockBenchmarker, never()).reportWrites(anyInt());
@@ -54,10 +64,8 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker;
     @Test
     void sort_sortedArray_reportsDataWrites()
     {
-        Benchmarker mockBenchmarker = mock(Benchmarker.class);
-
         int[] array = { 1, 2 };
-        new MergeSortStrategy(mockBenchmarker).sort(array);
+        mergeSortStrategy.sort(array);
 
         verify(mockBenchmarker).reportWrites(2);
     }

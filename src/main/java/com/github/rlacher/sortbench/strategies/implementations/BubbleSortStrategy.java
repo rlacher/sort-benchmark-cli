@@ -61,17 +61,6 @@ public class BubbleSortStrategy implements SortStrategy
     }
 
     /**
-     * Returns the unique name of the {@link BubbleSortStrategy}.
-     *
-     * @return The unique name of the strategy.
-     */
-    @Override
-    public String name()
-    {
-        return "BubbleSort";
-    }
-
-    /**
      * Sorts the provided array in ascending order using the bubble sort algorithm.
      *
      * <p>Summary of bubble sort algorithm: Bubble sort repeatedly compares adjacent elements,

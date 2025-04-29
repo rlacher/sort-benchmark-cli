@@ -61,17 +61,6 @@ public class InsertionSortStrategy implements SortStrategy
     }
 
     /**
-    * Returns the unique name of the {@link InsertionSortStrategy}.
-    *
-    * @return The unique name of the strategy.
-    */
-   @Override
-   public String name()
-   {
-       return "InsertionSort";
-   }
-
-    /**
      * Sorts the provided array in ascending order using the insertion sort algorithm.
      *
      * <p>Insertion sort builds a sorted subarray from the front. It iterates from the second

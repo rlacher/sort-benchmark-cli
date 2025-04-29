@@ -59,17 +59,6 @@ public class QuickSortStrategy implements SortStrategy
     }
 
     /**
-     * Returns the unique name of the {@link QuickSortStrategy}.
-     *
-     * @return The unique name of the strategy.
-     */
-    @Override
-    public String name()
-    {
-        return "QuickSort";
-    }
-
-    /**
      * Sorts the provided array in ascending order using the quick sort algorithm.
      *
      * <p>Summary of quick sort algorithm: Quicksort, using the first element as the

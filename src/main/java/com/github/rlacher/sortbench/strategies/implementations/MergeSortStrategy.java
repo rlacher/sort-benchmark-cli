@@ -62,17 +62,6 @@ public class MergeSortStrategy implements SortStrategy
     }
 
     /**
-    * Returns the unique name of the {@link MergeSortStrategy}.
-    *
-    * @return The unique name of the strategy.
-    */
-    @Override
-    public String name()
-    {
-        return "MergeSort";
-    }
-
-    /**
      * Sorts the provided array in ascending order using the merge sort algorithm.
      *
      * <p>Merge sort is a divide-and-conquer algorithm that recursively divides the array

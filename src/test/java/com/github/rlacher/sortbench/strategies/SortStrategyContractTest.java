@@ -27,11 +27,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
 import com.github.rlacher.sortbench.benchmark.Benchmarker;
+import com.github.rlacher.sortbench.results.BenchmarkMetric;
 import com.github.rlacher.sortbench.strategies.implementations.*;
 
 /*
@@ -54,6 +56,41 @@ public class SortStrategyContractTest
             new MergeSortStrategy(mockBenchmarker),
             new QuickSortStrategy(mockBenchmarker)
         );
+    }
+
+    @Test
+    void name_nonCompliantClassName_throwsIllegalStateException()
+    {
+        SortStrategy nonCompliantStrategy = new SortStrategy()
+        {
+            @Override
+            public BenchmarkMetric sort(final int[] array)
+            {
+                throw new UnsupportedOperationException("Not implemented for testing.");
+            }
+        };
+
+        assertThrows(IllegalStateException.class, nonCompliantStrategy::name, "name() should throw IllegalStateException if class name does not end with \"Strategy\".");
+    }
+
+    @Test
+    void name_compliantClassName_returnsCorrectlyStrippedName()
+    {
+        class ExampleSortStrategy implements SortStrategy
+        {
+            @Override
+            public BenchmarkMetric sort(final int[] array)
+            {
+                throw new UnsupportedOperationException("Not implemented for testing.");
+            }
+        }
+
+        SortStrategy exampleSortStrategy = new ExampleSortStrategy();
+
+        String expectedName = "ExampleSort";
+        String actualName = exampleSortStrategy.name();
+
+        assertEquals(expectedName, actualName, String.format("Calling name() should return \"%s\", but returned \"%s\"", expectedName, actualName));
     }
 
     @ParameterizedTest

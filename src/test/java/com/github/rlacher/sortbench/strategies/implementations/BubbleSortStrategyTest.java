@@ -25,14 +25,25 @@ package com.github.rlacher.sortbench.strategies.implementations;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
+import com.github.rlacher.sortbench.strategies.SortStrategy;
 import com.github.rlacher.sortbench.benchmark.Benchmarker;
 
 // Unit tests for the BubbleSortStrategy class.
 public class BubbleSortStrategyTest
 {
+    private Benchmarker mockBenchmarker;
+    private SortStrategy bubbleSortStrategy;
+
+    @BeforeEach
+    void setUp()
+    {
+        mockBenchmarker = mock(Benchmarker.class);
+        bubbleSortStrategy = new BubbleSortStrategy(mockBenchmarker);
+    }
+
     @Test
     void constructor_nullArgument_throwsIllegalArgumentException()
     {
@@ -42,21 +53,16 @@ public class BubbleSortStrategyTest
     @Test
     void sort_twoElementsOutOfOrder_reportsSwap()
     {
-        Benchmarker mockBenchmarker = mock(Benchmarker.class);
-
         int[] array = { 2, 1 };
-        new BubbleSortStrategy(mockBenchmarker).sort(array);
-
+        bubbleSortStrategy.sort(array);
         verify(mockBenchmarker, atLeastOnce()).reportSwap();
     }
 
     @Test
     void sort_emptyArray_noSwap()
     {
-        Benchmarker mockBenchmarker = mock(Benchmarker.class);
-
         int[] array = {};
-        new BubbleSortStrategy(mockBenchmarker).sort(array);
+        bubbleSortStrategy.sort(array);
 
         verify(mockBenchmarker, never()).reportSwap();
     }
@@ -64,11 +70,8 @@ public class BubbleSortStrategyTest
     @Test
     void sort_oneElementArray_noSwap()
     {
-        Benchmarker mockBenchmarker = mock(Benchmarker.class);
-
         int[] array = { 1 };
-        new BubbleSortStrategy(mockBenchmarker).sort(array);
-
+        bubbleSortStrategy.sort(array);
         verify(mockBenchmarker, never()).reportSwap();
     }
 }
