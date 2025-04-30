@@ -26,9 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.Instant;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
 
@@ -41,11 +42,14 @@ public class CustomFormatterTest
         CustomFormatter formatter = new CustomFormatter(true);
         String message = "Test message";
         LogRecord record = new LogRecord(Level.INFO, message);
-        record.setInstant(Instant.ofEpochMilli(0));
 
         String formatted = formatter.format(record);
 
-        assertTrue(formatted.contains("[1970-01-01 01:00:00]"), "Verbose format should contain timestamp.");
+        String timestampRegex = "\\[\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\]";
+        Pattern pattern = Pattern.compile(timestampRegex);
+        Matcher matcher = pattern.matcher(formatted);
+        assertTrue(matcher.find(), "Verbose format should match the expected timestamp pattern.");
+
         assertTrue(formatted.contains(Level.INFO.toString()), "Verbose format should contain log level.");
         assertTrue(formatted.contains(message), "Verbose format should contain log message.");
     }

@@ -224,7 +224,7 @@ public class BenchmarkRunner
      * @return An instance of the {@link SortStrategy}. Returns {@code null} in case of instantiation failure.
      * @throws IllegalArgumentException If {@code strategyName} does not match any known sort strategy.
      * @throws IllegalStateException If {@code strategyName} matches multiple known sort strategies (case-insensitively),
-     * or if an error occurs during the instantiation of the {@link}
+     * or if an error occurs during the instantiation of the {@link SortStrategy}.
      */
     protected SortStrategy getStrategyInstance(String strategyName, ProfilingMode mode)
     {
