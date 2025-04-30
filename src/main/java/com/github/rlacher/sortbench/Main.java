@@ -42,6 +42,12 @@ import com.github.rlacher.sortbench.results.AggregatedResult;
 import com.github.rlacher.sortbench.results.BenchmarkResult;
 import com.github.rlacher.sortbench.results.ResultAggregator;
 import com.github.rlacher.sortbench.sorter.Sorter;
+import com.github.rlacher.sortbench.strategies.SortStrategy;
+import com.github.rlacher.sortbench.strategies.implementations.BubbleSortStrategy;
+import com.github.rlacher.sortbench.strategies.implementations.HeapSortStrategy;
+import com.github.rlacher.sortbench.strategies.implementations.InsertionSortStrategy;
+import com.github.rlacher.sortbench.strategies.implementations.MergeSortStrategy;
+import com.github.rlacher.sortbench.strategies.implementations.QuickSortStrategy;
 
 
 /**
@@ -74,6 +80,16 @@ public class Main
     /** Enables verbose log messages. */
     private static final boolean VERBOSE_MODE = true;
 
+    /** Map of available sort strategies (name to class type). */
+    private static final Map<String, Class<? extends SortStrategy>> AVAILABLE_STRATEGIES = Map.of
+    (
+        "BubbleSort", BubbleSortStrategy.class,
+        "HeapSort", HeapSortStrategy.class,
+        "InsertionSort", InsertionSortStrategy.class,
+        "MergeSort", MergeSortStrategy.class,
+        "QuickSort", QuickSortStrategy.class
+    );
+
     /** Private constructor. As the entry point of the application, instantiation of {@link Main} is not intended. */
     private Main() {}
 
@@ -89,9 +105,9 @@ public class Main
         LoggingUtil.setFormatter(new CustomFormatter(VERBOSE_MODE));
 
         Sorter sorter = new Sorter();
-        BenchmarkRunner runner = new BenchmarkRunner(sorter);
+        BenchmarkRunner runner = new BenchmarkRunner(sorter, AVAILABLE_STRATEGIES);
         Map<String, Object> config = buildBenchmarkConfig();
-        logger.info(String.format("Benchmark config: %s", config));
+        logger.fine(String.format("Benchmark config: %s", config));
 
         List<BenchmarkResult> results = runner.run(config);
 

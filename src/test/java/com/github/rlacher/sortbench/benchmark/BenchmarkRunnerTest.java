@@ -24,6 +24,7 @@ package com.github.rlacher.sortbench.benchmark;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
@@ -31,12 +32,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.github.rlacher.sortbench.sorter.Sorter;
+import com.github.rlacher.sortbench.strategies.SortStrategy;
+import com.github.rlacher.sortbench.strategies.implementations.MergeSortStrategy;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData.DataType;
@@ -45,29 +49,44 @@ import com.github.rlacher.sortbench.results.BenchmarkMetric;
 import com.github.rlacher.sortbench.results.BenchmarkResult;
 
 // Unit tests for the BenchmarkRunner class.
-class BenchmarkRunnerTest {
-
+class BenchmarkRunnerTest
+{
     private Sorter mockSorter;
     private BenchmarkRunner benchmarkRunner;
     private Map<String, Object> validConfig;
+    private Map<String, Class<? extends SortStrategy>> validStrategyMap;
 
     @BeforeEach
     void setUp()
     {
         mockSorter = Mockito.mock(Sorter.class);
-        benchmarkRunner = new BenchmarkRunner(mockSorter);
+        validStrategyMap = Map.of("MergeSort", MergeSortStrategy.class);
+        benchmarkRunner = new BenchmarkRunner(mockSorter, validStrategyMap);
         validConfig = new HashMap<>();
         validConfig.put("input_sizes", Arrays.asList(10));
         validConfig.put("iterations", 1);
-        validConfig.put("strategies", Arrays.asList("MergeSort"));
+        validConfig.put("strategies", Set.of("MergeSort"));
         validConfig.put("profiling_mode", ProfilingMode.EXECUTION_TIME);
         validConfig.put("data_type", BenchmarkData.DataType.RANDOM.toString());
     }
 
-   @Test
+    @Test
     void constructor_nullSorter_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> new BenchmarkRunner(null), "Constructor should throw IllegalArgumentException when sorter is null");
+        assertThrows(IllegalArgumentException.class, () -> new BenchmarkRunner(null, validStrategyMap), "Constructor should throw IllegalArgumentException when sorter is null");
+    }
+
+    @Test
+    void constructor_nullStrategyMap_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> new BenchmarkRunner(mockSorter, null), "Constructor should throw IllegalArgumentException when strategy map is null");
+    }
+
+    @Test
+    void constructor_emptyMap_throwsIllegalStateException()
+    {
+        HashMap<String, Class<? extends SortStrategy>> emptyMap = new HashMap<>();
+        assertThrows(IllegalStateException.class, () -> new BenchmarkRunner(mockSorter, emptyMap), "Constructor should throw IllegalArgumentException when strategy map is null");
     }
 
     @Test
@@ -151,12 +170,50 @@ class BenchmarkRunnerTest {
         Map<BenchmarkContext, List<BenchmarkData>> invalidStrategyMap = new HashMap<>();
         invalidStrategyMap.put(invalidStrategyContext, new ArrayList<BenchmarkData>());
 
-        BenchmarkRunner spiedRunner = spy(new BenchmarkRunner(mockSorter));
+        BenchmarkRunner spiedRunner = spy(new BenchmarkRunner(mockSorter, validStrategyMap));
         doReturn(invalidStrategyMap)
             .when(spiedRunner)
             .generateBenchmarkData(any(DataType.class), any(), any(), anyInt());
 
         assertThrows(IllegalStateException.class, () -> spiedRunner.run(validConfig),
         "Running with benchmark data containing an invalid strategy should throw an IllegalStateException.");
+    }
+
+    @Test
+    void run_nonInstantiableStrategy_throwsIllegalStateException()
+    {
+        class FailingSortStrategy implements SortStrategy
+        {
+            public FailingSortStrategy(Benchmarker benchmarker)
+            {
+                throw new RuntimeException("Intentionally failing instantiation for testing purposes.");
+            }
+
+            @Override
+            public BenchmarkMetric sort(final int[] array)
+            {
+                return new BenchmarkMetric(ProfilingMode.NONE, 0);
+            }
+        };
+
+        String failingStrategyName = FailingSortStrategy.class.getSimpleName();
+        Map<String, Class<? extends SortStrategy>> failingMap = Map.of(failingStrategyName, FailingSortStrategy.class);
+        validConfig.replace("strategies", Set.of(failingStrategyName));
+
+        benchmarkRunner = new BenchmarkRunner(mockSorter, failingMap);
+        assertThrows(IllegalStateException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalStateException if a strategy is not instantiable.");
+    }
+
+    @Test
+    void run_duplicateStrategies_throwsIllegalStateException()
+    {
+        Map<String, Class<? extends SortStrategy>> duplicatesMap = Map.of
+        (
+            "mergesort", MergeSortStrategy.class,
+            "MERGESORT", MergeSortStrategy.class
+        );
+
+        benchmarkRunner = new BenchmarkRunner(mockSorter, duplicatesMap);
+        assertThrows(IllegalStateException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalStateException if a strategy name is ambiguous.");
     }
 }

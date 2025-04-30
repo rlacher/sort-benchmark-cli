@@ -41,7 +41,6 @@ import com.github.rlacher.sortbench.results.BenchmarkResult;
 import com.github.rlacher.sortbench.results.BenchmarkContext;
 import com.github.rlacher.sortbench.sorter.Sorter;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
-import com.github.rlacher.sortbench.strategies.implementations.*;
 
 /**
  * Executes and benchmarks sorting algorithms based on a provided configuration and returns raw benchmark results.
@@ -54,35 +53,40 @@ public class BenchmarkRunner
     /** Logger for logging messages. */
     private static final Logger logger = Logger.getLogger(BenchmarkRunner.class.getName());
 
-    /** Maps sort strategy names (e.g. "BubbleSort") to their {@link SortStrategy} classes for dynamic instantiation. */
-    private static final Map<String, Class<? extends SortStrategy>> strategyMap = new HashMap<>();
-
-    static
-    {
-        strategyMap.put("BubbleSort", BubbleSortStrategy.class);
-        strategyMap.put("HeapSort", HeapSortStrategy.class);
-        strategyMap.put("InsertionSort", InsertionSortStrategy.class);
-        strategyMap.put("MergeSort", MergeSortStrategy.class);
-        strategyMap.put("QuickSort", QuickSortStrategy.class);
-    }
-
     /** Sort context to execute and benchmark different sorting strategies. */
     private Sorter sorter;
+
+    /** Maps sort strategy names (e.g. "BubbleSort") to their {@link SortStrategy} classes for dynamic instantiation. */
+    private final Map<String, Class<? extends SortStrategy>> strategyMap;
 
     /**
      * Constructs a {@link BenchmarkRunner} that delegates sorting to the provided {@link Sorter}.
      *
      * @param sorter The {@link Sorter} instance to use.
-     * @throws IllegalArgumentException If {@code sorter} is {@code null}.
+     * @param strategyMap A mapping from strategy names (e.g., "InsertionSort") to their respective
+     * {@link SortStrategy} class types. Must not be null and must contain at least one entry.
+     * @throws IllegalArgumentException If {@code sorter} or {@code strategyMap} are {@code null}.
+     * @throws IllegalStateException If {@code strategyMap} is empty, indicating no available sorting strategies.
      */
-    public BenchmarkRunner(Sorter sorter)
+    public BenchmarkRunner(Sorter sorter, Map<String, Class<? extends SortStrategy>> strategyMap)
     {
         if(sorter == null)
         {
             throw new IllegalArgumentException("Sorter must not be null");
         }
 
+        if(strategyMap == null)
+        {
+            throw new IllegalArgumentException("Strategy map must not be null");
+        }
+
+        if(strategyMap.isEmpty())
+        {
+            throw new IllegalStateException("Strategy map must have at least one entry.");
+        }
+
         this.sorter = sorter;
+        this.strategyMap = strategyMap;
     }
 
     /**
@@ -219,7 +223,8 @@ public class BenchmarkRunner
      * @param mode The profiling mode to use.
      * @return An instance of the {@link SortStrategy}. Returns {@code null} in case of instantiation failure.
      * @throws IllegalArgumentException If {@code strategyName} does not match any known sort strategy.
-     * @throws IllegalStateException If {@code strategyName} matches multiple known sort strategies (case-insensitively).
+     * @throws IllegalStateException If {@code strategyName} matches multiple known sort strategies (case-insensitively),
+     * or if an error occurs during the instantiation of the {@link}
      */
     protected SortStrategy getStrategyInstance(String strategyName, ProfilingMode mode)
     {
@@ -252,7 +257,7 @@ public class BenchmarkRunner
         }
         catch(ReflectiveOperationException exception)
         {
-            logger.warning(String.format("Exception instantiating strategy name '%s' (type: %s, message: %s)", strategyName, exception.getClass().getSimpleName(), exception.getMessage()));
+            throw new IllegalStateException(String.format("Could not instantiate strategy '%s' (type: %s).", strategyName, strategyClass.getSimpleName()), exception);
         }
 
         return strategy;
