@@ -34,6 +34,8 @@ import java.util.logging.Logger;
 import com.github.rlacher.sortbench.benchmark.BenchmarkRunner;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
+import com.github.rlacher.sortbench.logging.CustomFormatter;
+import com.github.rlacher.sortbench.logging.LoggingUtil;
 import com.github.rlacher.sortbench.processing.MedianAggregator;
 import com.github.rlacher.sortbench.processing.SkipIterationFilter;
 import com.github.rlacher.sortbench.results.AggregatedResult;
@@ -69,6 +71,9 @@ public class Main
     /** The number of JVM warmup iterations to skip. */
     private static final int WARMUP_ITERATIONS_TO_SKIP = 2;
 
+    /** Enables verbose log messages. */
+    private static final boolean VERBOSE_MODE = true;
+
     /** Private constructor. As the entry point of the application, instantiation of {@link Main} is not intended. */
     private Main() {}
 
@@ -81,6 +86,8 @@ public class Main
      */
     public static void main(String[] args)
     {
+        LoggingUtil.setFormatter(new CustomFormatter(VERBOSE_MODE));
+
         Sorter sorter = new Sorter();
         BenchmarkRunner runner = new BenchmarkRunner(sorter);
         Map<String, Object> config = buildBenchmarkConfig();
