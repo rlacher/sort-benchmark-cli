@@ -196,7 +196,7 @@ docker run renelacher/sort-benchmark-cli --algorithms heapsort,mergesort,quickso
 ```
 
 Output:
-```bash
+```text
 Benchmark results (invariant parameters above table):
 Data Type: RANDOM
 Data Size: 5,000
@@ -219,7 +219,7 @@ docker run renelacher/sort-benchmark-cli --algorithms quicksort --datatypes RAND
 ```
 
 Output:
-```bash
+```text
 Benchmark results (invariant parameters above table):
 Algorithm: QuickSort
 Data Size: 5,000
@@ -243,7 +243,7 @@ docker run renelacher/sort-benchmark-cli --algorithms bubblesort,insertionsort -
 ```
 
 Output:
-```bash
+```text
 Benchmark results (invariant parameters above table):
 Data Type: RANDOM
 Data Size: 5,000
@@ -265,7 +265,7 @@ docker run renelacher/sort-benchmark-cli --algorithms insertionsort,mergesort --
 ```
 
 Output:
-```bash
+```text
 Benchmark results (invariant parameters above table):
 Data Type: RANDOM
 Profiling Mode: EXECUTION_TIME
