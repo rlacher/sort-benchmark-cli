@@ -67,7 +67,7 @@ class BenchmarkRunnerTest
         validConfig.put("iterations", 1);
         validConfig.put("strategies", Set.of("MergeSort"));
         validConfig.put("profiling_mode", ProfilingMode.EXECUTION_TIME);
-        validConfig.put("data_type", BenchmarkData.DataType.RANDOM.toString());
+        validConfig.put("data_types", Set.of(BenchmarkData.DataType.RANDOM.toString()));
     }
 
     @Test
@@ -110,17 +110,31 @@ class BenchmarkRunnerTest
     }
 
     @Test
-    void run_undefinedDataType_throwsIllegalArgumentException()
+    void run_undefinedDataTypes_throwsIllegalArgumentException()
     {
-        validConfig.remove("data_type");
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when data type is undefined");
+        validConfig.remove("data_types");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when data types are undefined");
+    }
+
+    @Test
+    void run_emptyDataTypes_throwsIllegalArgumentException()
+    {
+        validConfig.replace("data_types", Set.of());
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when data types are empty");
     }
 
     @Test
     void run_nonStringDataType_throwsIllegalArgumentException()
     {
-        validConfig.replace("data_type", 3);
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when data type is not of type String");
+        validConfig.replace("data_types", Set.of(3));
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when a data type is not a String");
+    }
+
+    @Test
+    void run_unknownDataType_throwsIllegalArgumentException()
+    {
+        validConfig.replace("data_types", Set.of("UnknownDataType"));
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when a data type is unknown");
     }
 
     @Test
@@ -173,7 +187,7 @@ class BenchmarkRunnerTest
         BenchmarkRunner spiedRunner = spy(new BenchmarkRunner(mockSorter, validStrategyMap));
         doReturn(invalidStrategyMap)
             .when(spiedRunner)
-            .generateBenchmarkData(any(DataType.class), any(), any(), anyInt());
+            .generateBenchmarkData(anySet(), any(), any(), anyInt());
 
         assertThrows(IllegalStateException.class, () -> spiedRunner.run(validConfig),
         "Running with benchmark data containing an invalid strategy should throw an IllegalStateException.");

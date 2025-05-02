@@ -118,11 +118,18 @@ public class BenchmarkRunner
             strategies.put(strategyInstance.name(), strategyInstance);
         });
 
-        final String dataTypeString = ConfigValidator.validateAndGet(benchmarkConfig, "data_type", String.class);
-        final BenchmarkData.DataType dataType = BenchmarkData.DataType.fromString(dataTypeString);
+        final Set<String> dataTypeStrings = new HashSet<>(ConfigValidator.validateAndGetCollection(benchmarkConfig, "data_types", String.class));
+        final Set<BenchmarkData.DataType> dataTypes = dataTypeStrings.stream()
+            .map(s -> BenchmarkData.DataType.fromString(s))
+            .collect(Collectors.toSet());
+
+        if(dataTypes.isEmpty())
+        {
+            throw new IllegalArgumentException("Data types must not be empty");
+        }
 
         // Initialise benchmarkData with data arrangements that all sort strategies will run on.
-        Map<BenchmarkContext, List<BenchmarkData>> benchmarkDataMap = generateBenchmarkData(dataType, inputSizes, strategies.keySet(), iterations);
+        Map<BenchmarkContext, List<BenchmarkData>> benchmarkDataMap = generateBenchmarkData(dataTypes, inputSizes, strategies.keySet(), iterations);
 
         List<BenchmarkResult> benchmarkResults = runIterations(strategies, benchmarkDataMap);
 
@@ -184,34 +191,37 @@ public class BenchmarkRunner
      * <p>This improves JVM optimisation by enhancing data locality.
      * Deep copies data for each strategy to ensure result comparability.</p>
      *
-     * @param dataType The type of data to generate.
-     * @param sizes A set of integer data sizes.
+     * @param dataTypes A set of data types for which to generate data.
+     * @param sizes A set of integer data sizes for which to generate data.
      * @param strategyNames A set of sorting strategy names.
      * @param iterations The number of data arrangements per size and data type.
      * @return A map of {@link BenchmarkContext} to a list of benchmark data.
-     * @throws NullPointerException If any of {@code dataType}, {@code sizes} or {@code strategyNames} are {@code null}.
+     * @throws NullPointerException If any of {@code dataTypes}, {@code sizes} or {@code strategyNames} are {@code null}.
      * This is unexpected as the caller {@link BenchmarkRunner#run} ensures these arguments are not {@code null}.
      */
-    protected Map<BenchmarkContext, List<BenchmarkData>> generateBenchmarkData(BenchmarkData.DataType dataType, final List<Integer> sizes, final Set<String> strategyNames, final int iterations)
+    protected Map<BenchmarkContext, List<BenchmarkData>> generateBenchmarkData(final Set<BenchmarkData.DataType> dataTypes, final List<Integer> sizes, final Set<String> strategyNames, final int iterations)
     {
         Map<BenchmarkContext, List<BenchmarkData>> generatedData = new HashMap<>();
 
-        for(int dataSize: sizes)
+        for(BenchmarkData.DataType dataType : dataTypes)
         {
-            List<BenchmarkData> initialDataList = Stream.generate(() -> BenchmarkDataFactory.createData(dataType, dataSize))
-                .limit(iterations)
-                .collect(Collectors.toList());
-
-            for(String strategyName : strategyNames)
+            for(int dataSize: sizes)
             {
-                List<BenchmarkData> dataListCopy = initialDataList.stream()
-                    .map(dataArrangement -> new BenchmarkData(dataArrangement))
+                List<BenchmarkData> initialDataList = Stream.generate(() -> BenchmarkDataFactory.createData(dataType, dataSize))
+                    .limit(iterations)
                     .collect(Collectors.toList());
 
-                BenchmarkContext context = new BenchmarkContext(dataType, dataSize, strategyName);
-                generatedData.put(context, dataListCopy);
-            };
-        };
+                for(String strategyName : strategyNames)
+                {
+                    List<BenchmarkData> dataListCopy = initialDataList.stream()
+                        .map(dataArrangement -> new BenchmarkData(dataArrangement))
+                        .collect(Collectors.toList());
+
+                    BenchmarkContext context = new BenchmarkContext(dataType, dataSize, strategyName);
+                    generatedData.put(context, dataListCopy);
+                }
+            }
+        }
 
         return generatedData;
     }

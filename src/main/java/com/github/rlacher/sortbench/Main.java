@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 
 import com.github.rlacher.sortbench.benchmark.BenchmarkRunner;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
-import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
+import com.github.rlacher.sortbench.benchmark.data.BenchmarkData.DataType;
 import com.github.rlacher.sortbench.logging.CustomFormatter;
 import com.github.rlacher.sortbench.logging.LoggingUtil;
 import com.github.rlacher.sortbench.processing.MedianAggregator;
@@ -131,7 +131,7 @@ public class Main
         config.put("input_sizes", BENCHMARK_DATA_SIZES);
         config.put("iterations", BENCHMARK_ITERATIONS);
         config.put("strategies", Set.of("bubblesort", "HEAPSORT", "InsertionSort", "MergeSort", "QuickSort"));
-        config.put("data_type", BenchmarkData.DataType.RANDOM.toString());
+        config.put("data_types", Set.of(DataType.RANDOM.toString()));
         config.put("profiling_mode", ProfilingMode.EXECUTION_TIME);
         return config;
     }
