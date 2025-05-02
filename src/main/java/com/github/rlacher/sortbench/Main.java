@@ -48,6 +48,7 @@ import com.github.rlacher.sortbench.strategies.implementations.HeapSortStrategy;
 import com.github.rlacher.sortbench.strategies.implementations.InsertionSortStrategy;
 import com.github.rlacher.sortbench.strategies.implementations.MergeSortStrategy;
 import com.github.rlacher.sortbench.strategies.implementations.QuickSortStrategy;
+import com.github.rlacher.sortbench.util.AsciiTableFormatter;
 
 
 /**
@@ -65,7 +66,7 @@ public class Main
      * 
      * <p>The data points are chose to hightlight constant factors in smaller arrays sizes and demonstrate scaling characteristics in larger arrays.</p>
      */
-    private static final List<Integer> BENCHMARK_DATA_SIZES = List.of(100, 1000, 10000);
+    private static final List<Integer> BENCHMARK_DATA_SIZES = List.of(5_000, 10_000, 20_000);
 
     /**
      * Default number of iterations for the benchmark.
@@ -115,11 +116,8 @@ public class Main
         Supplier<Function<List<BenchmarkResult>, Double>> medianAggregatorSupplier = () -> new MedianAggregator();
         ResultAggregator resultAggregator = new ResultAggregator(skipIterationFilterSupplier, medianAggregatorSupplier);
         List<AggregatedResult> aggregatedResults = resultAggregator.process(results);
-
-        for(var aggregatedResult : aggregatedResults)
-        {
-            logger.info(String.format("Aggregated result: %s", aggregatedResult));
-        }
+        AsciiTableFormatter tableFormatter = new AsciiTableFormatter();
+        logger.info(tableFormatter.format(aggregatedResults));
     }
 
     /**
