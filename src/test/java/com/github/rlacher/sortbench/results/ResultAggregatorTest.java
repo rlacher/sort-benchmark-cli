@@ -23,7 +23,6 @@
 package com.github.rlacher.sortbench.results;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
 import java.util.List;
 import java.util.function.Function;

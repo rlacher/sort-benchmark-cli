@@ -23,11 +23,11 @@
 package com.github.rlacher.sortbench.benchmark;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.*;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +41,7 @@ import org.mockito.Mockito;
 import com.github.rlacher.sortbench.sorter.Sorter;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
 import com.github.rlacher.sortbench.strategies.implementations.MergeSortStrategy;
+import com.github.rlacher.sortbench.strategies.implementations.QuickSortStrategy;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData.DataType;
@@ -48,149 +49,128 @@ import com.github.rlacher.sortbench.results.BenchmarkContext;
 import com.github.rlacher.sortbench.results.BenchmarkMetric;
 import com.github.rlacher.sortbench.results.BenchmarkResult;
 
-// Unit tests for the BenchmarkRunner class.
+// Unit and integration tests for the BenchmarkRunner class.
 class BenchmarkRunnerTest
 {
     private Sorter mockSorter;
     private BenchmarkRunner benchmarkRunner;
-    private Map<String, Object> validConfig;
-    private Map<String, Class<? extends SortStrategy>> validStrategyMap;
+    private Map<String, Class<? extends SortStrategy>> selectedStrategies;
+    private Set<BenchmarkData.DataType> dataTypes;
+    private List<Integer> inputSizes;
+    private int iterations;
+    private ProfilingMode profilingMode;
 
     @BeforeEach
     void setUp()
     {
         mockSorter = Mockito.mock(Sorter.class);
-        validStrategyMap = Map.of("MergeSort", MergeSortStrategy.class);
-        benchmarkRunner = new BenchmarkRunner(mockSorter, validStrategyMap);
-        validConfig = new HashMap<>();
-        validConfig.put("input_sizes", Arrays.asList(10));
-        validConfig.put("iterations", 1);
-        validConfig.put("strategies", Set.of("MergeSort"));
-        validConfig.put("profiling_mode", ProfilingMode.EXECUTION_TIME);
-        validConfig.put("data_types", Set.of(BenchmarkData.DataType.RANDOM.toString()));
+        benchmarkRunner = new BenchmarkRunner(mockSorter);
+        selectedStrategies = Map.of("MergeSort", MergeSortStrategy.class);
+        dataTypes = Set.of(BenchmarkData.DataType.RANDOM);
+        inputSizes = List.of(10);
+        iterations = 1;
+        profilingMode = ProfilingMode.EXECUTION_TIME;
     }
 
     @Test
     void constructor_nullSorter_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> new BenchmarkRunner(null, validStrategyMap), "Constructor should throw IllegalArgumentException when sorter is null");
+        assertThrows(IllegalArgumentException.class, () -> new BenchmarkRunner(null), "Constructor should throw IllegalArgumentException when sorter is null");
     }
 
     @Test
-    void constructor_nullStrategyMap_throwsIllegalArgumentException()
+    void run_nullStrategies_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> new BenchmarkRunner(mockSorter, null), "Constructor should throw IllegalArgumentException when strategy map is null");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(null, dataTypes, inputSizes, iterations, profilingMode),
+            "run() should throw IllegalArgumentException when selectedStrategies is null");
     }
 
     @Test
-    void constructor_emptyMap_throwsIllegalStateException()
+    void run_nullDataTypes_throwsIllegalArgumentException()
     {
-        HashMap<String, Class<? extends SortStrategy>> emptyMap = new HashMap<>();
-        assertThrows(IllegalStateException.class, () -> new BenchmarkRunner(mockSorter, emptyMap), "Constructor should throw IllegalArgumentException when strategy map is null");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(selectedStrategies, null, inputSizes, iterations, profilingMode),
+                "run() should throw IllegalArgumentException when dataTypes is null");
     }
 
     @Test
-    void run_nullConfig_throwsIllegalArgumentException()
+    void run_nullInputSizes_throwsIllegalArgumentException()
     {
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(null), "run() should throw IllegalArgumentException when config is null");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(selectedStrategies, dataTypes, null, iterations, profilingMode),
+                "run() should throw IllegalArgumentException when inputSizes is null");
     }
 
     @Test
-    void run_invalidInputSizes_throwsIllegalArgumentException()
+    void run_nullProfilingMode_throwsIllegalArgumentException()
     {
-        validConfig.put("input_sizes", Arrays.asList("invalid"));
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when input_sizes is invalid");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(selectedStrategies, dataTypes, inputSizes, iterations, null),
+                "run() should throw IllegalArgumentException when profilingMode is null");
     }
 
     @Test
-    void run_invalidStrategies_throwsIllegalArgumentException()
+    void run_nullKeyStrategy_throwsIllegalArgumentException()
     {
-        validConfig.put("strategies", Arrays.asList(123));
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when strategies is invalid");
+        Map<String, Class<? extends SortStrategy>> nullKeyStrategies = new HashMap<>();
+        nullKeyStrategies.put(null, MergeSortStrategy.class);
+        
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(nullKeyStrategies, dataTypes, inputSizes, iterations, profilingMode),
+            "run() should throw IllegalArgumentException when selectedStrategies contains a null value");
     }
 
     @Test
-    void run_undefinedDataTypes_throwsIllegalArgumentException()
+    void run_nullValueStrategy_throwsIllegalArgumentException()
     {
-        validConfig.remove("data_types");
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when data types are undefined");
-    }
+        Map<String, Class<? extends SortStrategy>> nullValueStrategies = new HashMap<>();
+        nullValueStrategies.put("MergeSort", null);
 
-    @Test
-    void run_emptyDataTypes_throwsIllegalArgumentException()
-    {
-        validConfig.replace("data_types", Set.of());
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when data types are empty");
-    }
-
-    @Test
-    void run_nonStringDataType_throwsIllegalArgumentException()
-    {
-        validConfig.replace("data_types", Set.of(3));
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when a data type is not a String");
-    }
-
-    @Test
-    void run_unknownDataType_throwsIllegalArgumentException()
-    {
-        validConfig.replace("data_types", Set.of("UnknownDataType"));
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalArgumentException when a data type is unknown");
-    }
-
-    @Test
-    void run_validConfig_returnsBenchmarkResults()
-    {
-        BenchmarkMetric mockMetric = mock(BenchmarkMetric.class);
-        when(mockSorter.sort(any(int[].class))).thenReturn(mockMetric);
-        when(mockMetric.getProfilingMode()).thenReturn((ProfilingMode)validConfig.get("profiling_mode"));
-
-        List<BenchmarkResult> results = benchmarkRunner.run(validConfig);
-        assertNotNull(results, "run() should return a non-null list of BenchmarkResults");
-        assertFalse(results.isEmpty(), "run() should return a non-empty list of BenchmarkResults");
-    }
-
-    @Test
-    void run_unknownStrategy_throwsIllegalArgumentException()
-    {
-        Map<String, Object> unknownStrategyConfig = new HashMap<>(validConfig);
-        // Valid string in validation but unknown strategy name
-        unknownStrategyConfig.put("strategies", List.of("UnknownSort"));
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(unknownStrategyConfig), "getStrategyInstance() should throw IllegalArgumentException for an invalid strategy name");
-    }
-
-    @Test
-    void run_emptyInputSizes_throwsIllegalArgumentException()
-    {
-        Map<String, Object> emptySizesConfig = new HashMap<>(validConfig);
-        emptySizesConfig.put("input_sizes", List.of());
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(emptySizesConfig), 
-        "Running with empty input sizes should result in an IllegalArgumentException.");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(nullValueStrategies, dataTypes, inputSizes, iterations, profilingMode),
+            "run() should throw IllegalArgumentException when selectedStrategies contains a null value");
     }
 
     @Test
     void run_emptyStrategies_throwsIllegalArgumentException()
     {
-        Map<String, Object> emptyStrategiesConfig = new HashMap<>(validConfig);
-        emptyStrategiesConfig.put("strategies", List.of());
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(emptyStrategiesConfig), 
-        "Running with empty strategies should result in an IllegalArgumentException.");
+        final Map<String, Class<? extends SortStrategy>> emptyStrategies = Collections.emptyMap();
+
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(emptyStrategies, dataTypes, inputSizes, iterations, profilingMode),
+            "run() should throw IllegalArgumentException when selectedStrategies is empty");
     }
 
     @Test
-    void run_benchmarkDataWithInvalidStrategy_throwsIllegalStateException()
+    void run_zeroIterations_throwsIllegalArgumentException()
     {
-        BenchmarkContext invalidStrategyContext = new BenchmarkContext(DataType.SORTED, 10, "InvalidStrategyName");
+        final int zeroIterations = 0;
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(selectedStrategies, dataTypes, inputSizes, zeroIterations, profilingMode),
+            "run() should throw IllegalArgumentException when iterations is 0");
+    }
 
-        Map<BenchmarkContext, List<BenchmarkData>> invalidStrategyMap = new HashMap<>();
-        invalidStrategyMap.put(invalidStrategyContext, new ArrayList<BenchmarkData>());
+    @Test
+    void run_negativeIterations_throwsIllegalArgumentException()
+    {
+        final int negativeIterations = -1;
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(selectedStrategies, dataTypes, inputSizes, negativeIterations, profilingMode),
+            "run() should throw IllegalArgumentException when iterations is negative");
+    }
 
-        BenchmarkRunner spiedRunner = spy(new BenchmarkRunner(mockSorter, validStrategyMap));
-        doReturn(invalidStrategyMap)
-            .when(spiedRunner)
-            .generateBenchmarkData(anySet(), any(), any(), anyInt());
+    @Test
+    void run_negativeInputSize_throwsIllegalArgumentException()
+    {
+        final List<Integer> negativeInputSizes = List.of(-10);
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(selectedStrategies, dataTypes, negativeInputSizes, iterations, profilingMode), 
+            "run() should throw IllegalArgumentException when any input size in inputSizes is negative");
+    }
 
-        assertThrows(IllegalStateException.class, () -> spiedRunner.run(validConfig),
-        "Running with benchmark data containing an invalid strategy should throw an IllegalStateException.");
+    @Test
+    void run_emptyDataTypes_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(selectedStrategies, Collections.emptySet(), inputSizes, iterations, profilingMode),
+            "run() should throw IllegalArgumentException when dataTypes is empty");
+    }
+
+    @Test
+    void run_emptyInputSizes_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(selectedStrategies, dataTypes, Collections.emptyList(), iterations, profilingMode),
+            "run() should throw IllegalArgumentException when inputSizes is empty");
     }
 
     @Test
@@ -209,25 +189,62 @@ class BenchmarkRunnerTest
                 return new BenchmarkMetric(ProfilingMode.NONE, 0);
             }
         };
+        final Map<String, Class<? extends SortStrategy>> failingStrategies = Map.of("FailingSort", FailingSortStrategy.class);
 
-        String failingStrategyName = FailingSortStrategy.class.getSimpleName();
-        Map<String, Class<? extends SortStrategy>> failingMap = Map.of(failingStrategyName, FailingSortStrategy.class);
-        validConfig.replace("strategies", Set.of(failingStrategyName));
-
-        benchmarkRunner = new BenchmarkRunner(mockSorter, failingMap);
-        assertThrows(IllegalStateException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalStateException if a strategy is not instantiable.");
+        assertThrows(IllegalStateException.class, () -> benchmarkRunner.run(failingStrategies, dataTypes, inputSizes, iterations, profilingMode),
+            "run() should throw IllegalStateException if a strategy is not instantiable.");
     }
 
     @Test
-    void run_duplicateStrategies_throwsIllegalStateException()
+    void run_benchmarkDataWithInvalidStrategy_throwsIllegalStateException()
     {
-        Map<String, Class<? extends SortStrategy>> duplicatesMap = Map.of
+        final BenchmarkContext invalidStrategyContext = new BenchmarkContext(DataType.SORTED, 10, "InvalidStrategyName");
+
+        Map<BenchmarkContext, List<BenchmarkData>> invalidStrategyMap = new HashMap<>();
+        invalidStrategyMap.put(invalidStrategyContext, new ArrayList<BenchmarkData>());
+
+        BenchmarkRunner spiedRunner = spy(new BenchmarkRunner(mockSorter));
+        doReturn(invalidStrategyMap)
+            .when(spiedRunner)
+            .generateBenchmarkData(anySet(), anySet(), anyList(), anyInt());
+
+        assertThrows(IllegalStateException.class, () -> spiedRunner.run(selectedStrategies, dataTypes, inputSizes, iterations, profilingMode),
+        "Running with benchmark data containing an invalid strategy should throw an IllegalStateException.");
+    }
+
+    @Test
+    void run_duplicateKeys_throwsIllegalArgumentException()
+    {
+        final Map<String, Class<? extends SortStrategy>> duplicateStrategies = Map.of
         (
-            "mergesort", MergeSortStrategy.class,
-            "MERGESORT", MergeSortStrategy.class
+            "SAMEKEYSORT", MergeSortStrategy.class,
+            "samekeysort", QuickSortStrategy.class
         );
 
-        benchmarkRunner = new BenchmarkRunner(mockSorter, duplicatesMap);
-        assertThrows(IllegalStateException.class, () -> benchmarkRunner.run(validConfig), "run() should throw IllegalStateException if a strategy name is ambiguous.");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(duplicateStrategies, dataTypes, inputSizes, iterations, profilingMode),
+            "run() should throw IllegalArgumentException when duplicate keys are provided (e.g. \"mergesort\" and \"MERGESORT\")");
+    }
+
+    @Test
+    void run_duplicateStrategies_throwsIllegalArgumentException()
+    {
+        final Map<String, Class<? extends SortStrategy>> duplicateStrategies = Map.of
+        (
+            "FirstSameMergeSort", MergeSortStrategy.class,
+            "SecondSameMergeSort", MergeSortStrategy.class
+        );
+
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(duplicateStrategies, dataTypes, inputSizes, iterations, profilingMode),
+            "run() should throw IllegalArgumentException when duplicate strategy classes are provided associated with different keys");
+    }
+
+    @Test
+    void run_validParameters_returnsBenchmarkResults()
+    {
+        when(mockSorter.sort(any())).thenReturn(new BenchmarkMetric(ProfilingMode.EXECUTION_TIME, 0));
+
+        List<BenchmarkResult> benchmarkResults = benchmarkRunner.run(selectedStrategies, dataTypes, inputSizes, iterations, profilingMode);
+        final int expectedSize = selectedStrategies.size() * dataTypes.size() * inputSizes.size() * iterations;
+        assertEquals(expectedSize, benchmarkResults.size(), "run() should return the correct number of benchmark results");
     }
 }

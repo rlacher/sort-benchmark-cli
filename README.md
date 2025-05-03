@@ -46,19 +46,21 @@ This tool offers developers and enthusiasts a reproducible and efficient way to 
 Get up and running quickly using containerised deployment. You can start benchmarking with a single command, no need to clone or build locally.
 
 ```bash
-docker run renelacher/sort-benchmark-cli --algorithms quicksort --datatypes RANDOM --datasizes 1000 --runs 5
+docker run renelacher/sort-benchmark-cli --algorithm quicksort --type RANDOM --size 1000 --iterations 5
 ```
 
-The CLI requires these four arguments:
+The CLI accepts these five arguments:
 
-| Argument       | Description                                                                  |
-|----------------|------------------------------------------------------------------------------|
-| `--algorithms` | The sorting algorithms to execute (e.g. `quicksort`).                        |
-| `--datatypes`  | The types of data to generate for benchmarking (e.g. `RANDOM`, `SORTED`).    |
-| `--datasizes`  | The number of elements in the generated data arrays.                         |
-| `--runs`       | How many times to run the benchmark with the specified algorithms and sizes. |
+| Argument             | Description                                                                  |
+|----------------------|------------------------------------------------------------------------------|
+| `-a`, `--algorithms` | The sorting algorithms to execute (e.g. `quicksort`).                        |
+| `-t`, `--types`      | The types of data to generate for benchmarking (e.g. `RANDOM`, `SORTED`).    |
+| `-s`, `--sizes`      | The number of elements in the generated data arrays.                         |
+| `-i`, `--iterations` | How many times to run the benchmark with the specified algorithms and sizes. |
+| `--verbose`          | Increase verbosity of log output.                                            |
 
-The CLI currently uses the default profiling mode: `EXECUTION_TIME`.
+Both singular (`--algorithm`) and plural (`--algorithms`) forms of command options are supported.
+The CLI currently uses the default profiling mode: `EXECUTION_TIME` (see [Measurement](#measurement)).
 
 ## API Documentation
 
@@ -164,9 +166,9 @@ For each set of benchmark data, the `BenchmarkRunner` configures the `Sorter` wi
 
 ## Test
 
-This project features a robust suite of **329 unit tests**, built with JUnit and Mockito, to ensure the reliability and correctness of both the benchmarking framework and sorting routines. The testing strategy rigorously applies principles such as boundary condition analysis, equivalence class partitioning, exception handling verification, and thorough data flow validation across components.
+This project features a robust suite of **322 unit and integration tests**, built with JUnit and Mockito, to ensure the reliability and correctness of both the benchmarking framework and sorting routines. The testing strategy rigorously applies principles such as boundary condition analysis, equivalence class partitioning, exception handling verification, and thorough data flow validation across components.
 
-The current test suite achieves significant coverage, reaching **94% statement coverage** and **94% branch coverage**, demonstrating a strong commitment to code quality and comprehensive testing throughout the project.
+The current test suite achieves significant coverage, reaching **94% statement coverage** and **93% branch coverage**, demonstrating a strong commitment to code quality and comprehensive testing throughout the project.
 
 ### Running Unit Tests
 
@@ -192,7 +194,7 @@ This showcases the performance difference between O(n log n) algorithms.
 Command:
 
 ```bash
-docker run renelacher/sort-benchmark-cli --algorithms heapsort,mergesort,quicksort --datatypes RANDOM --datasizes 5000 --runs 5
+docker run renelacher/sort-benchmark-cli --algorithms heapsort mergesort quicksort --type RANDOM --size 5000 --iterations 5
 ```
 
 Output:
@@ -215,7 +217,7 @@ Iterations: 5
 This illustrates how Quick Sort's performance degrades with first-element pivot selection on already sorted data, contrasted with random data.
 
 ```bash
-docker run renelacher/sort-benchmark-cli --algorithms quicksort --datatypes RANDOM,SORTED --datasizes 5000 --runs 5
+docker run renelacher/sort-benchmark-cli --algorithm quicksort --types RANDOM SORTED --size 5000 --iterations 5
 ```
 
 Output:
@@ -239,7 +241,7 @@ This compares the performance of an inefficient (Bubble Sort) and a more efficie
 Command:
 
 ```bash
-docker run renelacher/sort-benchmark-cli --algorithms bubblesort,insertionsort --datatypes RANDOM --datasizes 5000 --runs 5
+docker run renelacher/sort-benchmark-cli --algorithms bubblesort insertionsort --type RANDOM --size 5000 --iterations 5
 ```
 
 Output:
@@ -261,7 +263,7 @@ Iterations: 5
 This highlights the different scaling characteristics of Insertion Sort (`O(n²)`) and Merge Sort (`O(n log n)`) as input size grows. By making the data size ten times larger (from `10,000` to `100,000`) and running 30 iterations to allow for tiered JVM optimisation, the benchmark reveals that Insertion Sort's execution time multiplies by approximately 97 times, significantly more than Merge Sort's roughly 11 times growth.
 
 ```bash
-docker run renelacher/sort-benchmark-cli --algorithms insertionsort,mergesort --datatypes RANDOM --datasizes 10000,100000 --runs 30
+docker run renelacher/sort-benchmark-cli --algorithms insertionsort mergesort --type RANDOM --sizes 10000 100000 --iterations 30
 ```
 
 Output:

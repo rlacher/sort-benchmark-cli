@@ -26,14 +26,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+
 import com.github.rlacher.sortbench.benchmark.BenchmarkRunner;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData.DataType;
+import com.github.rlacher.sortbench.config.ConfigRetriever;
 import com.github.rlacher.sortbench.logging.CustomFormatter;
 import com.github.rlacher.sortbench.logging.LoggingUtil;
 import com.github.rlacher.sortbench.processing.MedianAggregator;
@@ -50,36 +56,47 @@ import com.github.rlacher.sortbench.strategies.implementations.MergeSortStrategy
 import com.github.rlacher.sortbench.strategies.implementations.QuickSortStrategy;
 import com.github.rlacher.sortbench.util.AsciiTableFormatter;
 
-
 /**
  * The entry point for the sorting algorithm benchmarking application.
  * 
  * <p>This class runs the sorting algorithms.</p>
  */
-public class Main
+@Command(
+    name = "sort-benchmark-cli",
+    version = "v1.0.0-cli-docker",
+    mixinStandardHelpOptions = true,
+    description = "Benchmark sorting algorithms from the command line."
+)
+public class MainCommand implements Callable<Integer>
 {
     /** Logger for logging messages. */
-    private static final Logger logger = Logger.getLogger(Main.class.getName());
+    private static final Logger logger = Logger.getLogger(MainCommand.class.getName());
 
-    /**
-     * Default benchmark data sizes for the sorting algorithms.
-     * 
-     * <p>The data points are chose to hightlight constant factors in smaller arrays sizes and demonstrate scaling characteristics in larger arrays.</p>
-     */
-    private static final List<Integer> BENCHMARK_DATA_SIZES = List.of(5_000, 10_000, 20_000);
+    /** Sorting algorithms to benchmark (command line option). */
+    @Option(names = {"-a", "--algorithms", "--algorithm"}, description = "Sorting algorithms to benchmark.", arity="1..5", defaultValue = "all")
+    private Set<String> algorithms;
 
-    /**
-     * Default number of iterations for the benchmark.
-     * 
-     * <p>This is used to determine how many times each sorting algorithm should run on input data with the same characteristics (length and type).</p>
-     */
-    private static final int BENCHMARK_ITERATIONS = 5;
+    /** Set of data types to be used for the benchmark (command line option). */
+    @Option(names = {"-t", "--types", "--type"}, description = "Type of the data to be sorted.", arity="1..4", defaultValue = "RANDOM")
+    private Set<DataType> dataTypes;
+
+    /** Number of iterations each sort algorithm runs on data of the same length and type (command line option). */
+    @Option(names = {"-i", "--iterations"}, description = "Number of iterations for the benchmark.", defaultValue = "5")
+    private int iterations;
+
+    /** Input data sizes for the sort algorithms (command line option). */
+    @Option(names = {"-s", "--sizes", "--size"}, description = "Input data sizes for the benchmark.", arity="1..n", required = true)
+    private List<Integer> inputSizes;
+
+    /** Verbosity flag (command-line option). */
+    @Option(names = {"--verbose"}, description = "Enable verbose mode.", defaultValue = "false")
+    private boolean verboseMode;
+
+    /** Default profiling mode for the benchmark. */
+    private static final ProfilingMode DEFAULT_PROFILING_MODE = ProfilingMode.EXECUTION_TIME;
 
     /** The number of JVM warmup iterations to skip. */
     private static final int WARMUP_ITERATIONS_TO_SKIP = 2;
-
-    /** Enables verbose log messages. */
-    private static final boolean VERBOSE_MODE = true;
 
     /** Map of available sort strategies (name to class type). */
     private static final Map<String, Class<? extends SortStrategy>> AVAILABLE_STRATEGIES = Map.of
@@ -91,48 +108,66 @@ public class Main
         "QuickSort", QuickSortStrategy.class
     );
 
-    /** Private constructor. As the entry point of the application, instantiation of {@link Main} is not intended. */
-    private Main() {}
+    /** Private constructor. As the entry point of the application, instantiation of {@link MainCommand} is not intended. */
+    private MainCommand() {}
 
     /**
-     * The main method, which starts the sorting algorithm benchmarking process.
+     * Initialises and runs the sorting algorithm benchmarking process.
      * 
-     * <p>This class initialises and runs a list of sorting algorithms against a predefined benchmark dataset.</p>
+     * <p>This method is called when the command line interface (CLI) is executed. It sets up the logging format,
+     * validates the input parameters, and runs the benchmark. It uses the {@link Sorter} class to run the benchmark
+     * and the {@link BenchmarkRunner} class to orchestrate the benchmarking process. It also uses the{@link ResultAggregator}
+     * class to process the benchmark results and the {@link AsciiTableFormatter} class to format the output.</p>
      *
-     * @param args Command-line arguments (currently unused).
+     * @return Exits with code 0 if successful (non-zero exit codes indicate errors).
      */
-    public static void main(String[] args)
+    @Override
+    public Integer call() throws Exception
     {
-        LoggingUtil.setFormatter(new CustomFormatter(VERBOSE_MODE));
+        LoggingUtil.setFormatter(new CustomFormatter(verboseMode));
 
         Sorter sorter = new Sorter();
-        BenchmarkRunner runner = new BenchmarkRunner(sorter, AVAILABLE_STRATEGIES);
-        Map<String, Object> config = buildBenchmarkConfig();
-        logger.fine(String.format("Benchmark config: %s", config));
+        BenchmarkRunner runner = new BenchmarkRunner(sorter);
 
-        List<BenchmarkResult> results = runner.run(config);
+        final boolean throwIfNotFound = true;
+        final Map<String, Class<? extends SortStrategy>> selectedStrategies =
+            (algorithms.size() == 1 && algorithms.iterator().next().equalsIgnoreCase("all"))
+            ? AVAILABLE_STRATEGIES
+            : new HashMap<>(ConfigRetriever.validateAndFilterMap(
+                AVAILABLE_STRATEGIES,
+                algorithms,
+                throwIfNotFound
+            ));
+
+        List<BenchmarkResult> results = runner.run(
+            selectedStrategies,
+            dataTypes,
+            inputSizes,
+            iterations,
+            DEFAULT_PROFILING_MODE
+        );
 
         Supplier<Predicate<BenchmarkResult>> skipIterationFilterSupplier = () -> new SkipIterationFilter(WARMUP_ITERATIONS_TO_SKIP);
         Supplier<Function<List<BenchmarkResult>, Double>> medianAggregatorSupplier = () -> new MedianAggregator();
         ResultAggregator resultAggregator = new ResultAggregator(skipIterationFilterSupplier, medianAggregatorSupplier);
         List<AggregatedResult> aggregatedResults = resultAggregator.process(results);
+
         AsciiTableFormatter tableFormatter = new AsciiTableFormatter();
         logger.info(tableFormatter.format(aggregatedResults));
+
+        return 0;
     }
 
     /**
-     * Returns a default benchmark configuration.
-     * 
-     * @return A map containing the default benchmark configuration.
+     * The main method, which starts the sorting algorithm benchmarking process.
+     *
+     * <p>This method merely executes the command line interface (CLI) using the {@link CommandLine} class and processes its exit code.</p>
+     *
+     * @param args Command-line arguments.
      */
-    private static Map<String, Object> buildBenchmarkConfig()
+    public static void main(String[] args)
     {
-        Map<String, Object> config = new HashMap<>();
-        config.put("input_sizes", BENCHMARK_DATA_SIZES);
-        config.put("iterations", BENCHMARK_ITERATIONS);
-        config.put("strategies", Set.of("bubblesort", "HEAPSORT", "InsertionSort", "MergeSort", "QuickSort"));
-        config.put("data_types", Set.of(DataType.RANDOM.toString()));
-        config.put("profiling_mode", ProfilingMode.EXECUTION_TIME);
-        return config;
+        int exitCode = new CommandLine(new MainCommand()).execute(args);
+        System.exit(exitCode);
     }
 }
