@@ -74,7 +74,7 @@ public class MainCommand implements Callable<Integer>
 
     /** Sorting algorithms to benchmark (command line option). */
     @Option(names = {"-a", "--algorithms", "--algorithm"}, description = "Sorting algorithms to benchmark.", arity="1..5", defaultValue = "all")
-    private Set<String> algorithms;
+    private Set<String> algorithmNames;
 
     /** Set of data types to be used for the benchmark (command line option). */
     @Option(names = {"-t", "--types", "--type"}, description = "Type of the data to be sorted.", arity="1..4", defaultValue = "RANDOM")
@@ -131,11 +131,11 @@ public class MainCommand implements Callable<Integer>
 
         final boolean throwIfNotFound = true;
         final Map<String, Class<? extends SortStrategy>> selectedStrategies =
-            (algorithms.size() == 1 && algorithms.iterator().next().equalsIgnoreCase("all"))
+            (algorithmNames.size() == 1 && algorithmNames.iterator().next().equalsIgnoreCase("all"))
             ? AVAILABLE_STRATEGIES
             : new HashMap<>(ConfigRetriever.validateAndFilterMap(
                 AVAILABLE_STRATEGIES,
-                algorithms,
+                algorithmNames,
                 throwIfNotFound
             ));
 

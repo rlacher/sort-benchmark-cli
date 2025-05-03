@@ -18,10 +18,10 @@ classDiagram
     class ConcreteSortStrategy {
         -Benchmarker benchmarker
         +ConcreteSortStrategy(Benchmarker)
-        +name() String
         +sort(int[]) BenchmarkMetric
     }
 
+    note for ConcreteSortStrategy "May have private sorting helpers."
     Sorter "1" *-- "1" SortStrategy
     SortStrategy <|.. ConcreteSortStrategy
 

@@ -1,27 +1,30 @@
 %%{init: {'theme':'neutral'}}%%
 sequenceDiagram
-    participant Main
+    participant MainCommand
     participant BenchmarkRunner
     participant BenchmarkDataFactory
-    participant ConfigValidator
+    participant ConfigRetriever
     participant ResultAggregator
+    participant AsciiTableFormatter
 
-    Main->>BenchmarkRunner: run(benchmarkConfig)
+    note over MainCommand: CLI arguments parsed,<br/>ready to use.
+    MainCommand->>ConfigRetriever: validateAndFilterMap(AVAILABLE_ALGORITHMS, algorithmNames)
+    ConfigRetriever-->>MainCommand: selectedAlgorithms
+    MainCommand->>BenchmarkRunner: run(selectedAlgorithms, dataTypes, ..)
     activate BenchmarkRunner
-    loop for each configEntry in benchmarkConfig
-        BenchmarkRunner->>ConfigValidator: validateAndGet(configEntry)
-        ConfigValidator-->>BenchmarkRunner: configEntry (validated)
-    end
     BenchmarkRunner->>BenchmarkDataFactory: createData(dataType, dataSize)
     activate BenchmarkDataFactory
     BenchmarkDataFactory-->>BenchmarkRunner: benchmarkDataMap
     deactivate BenchmarkDataFactory
     BenchmarkRunner->>BenchmarkRunner: runIterations(strategies, benchmarkDataMap)
-    BenchmarkRunner-->>Main: benchmarkResults
+    BenchmarkRunner-->>MainCommand: benchmarkResults
     deactivate BenchmarkRunner
-    Main->>ResultAggregator: process(benchmarkResults)
+    MainCommand->>ResultAggregator: process(benchmarkResults)
     activate ResultAggregator
-    ResultAggregator-->>Main: aggregatedResults
+    ResultAggregator-->>MainCommand: aggregatedResults
     deactivate ResultAggregator
-
-    Main->>Main: Output aggregatedResults
+    MainCommand->>AsciiTableFormatter: format(aggregatedResults)
+    activate AsciiTableFormatter
+    AsciiTableFormatter-->>MainCommand: formattedResultTable
+    deactivate AsciiTableFormatter
+    MainCommand->>MainCommand: Output formattedResultTable
