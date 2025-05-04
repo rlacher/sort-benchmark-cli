@@ -242,6 +242,9 @@ public class BenchmarkRunner
                     .limit(iterations)
                     .collect(Collectors.toList());
 
+                logger.finer(String.format("Generated %d data arrangements of type %s and size %d", iterations, dataType, dataSize));
+                initialDataList.forEach(data -> logger.finest(String.format("Data arrangement: %s", data.toString())));
+
                 for(String strategyName : strategyNames)
                 {
                     List<BenchmarkData> dataListCopy = initialDataList.stream()
