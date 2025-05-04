@@ -28,22 +28,25 @@ import static org.mockito.Mockito.*;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-// Unit tests for the LoggingUtil class.
+// Unit and integration tests for the LoggingUtil class.
 public class LoggingUtilTest
 {
     private Formatter mockFormatter;
+    private Level mockLevel;
     private final Logger rootLogger = Logger.getLogger("");
 
     @BeforeEach
     void setUp()
     {
         mockFormatter = mock(Formatter.class);
+        mockLevel = mock(Level.class);
     }
 
     @AfterEach
@@ -86,5 +89,37 @@ public class LoggingUtilTest
 
         assertEquals(mockFormatter, handler1.getFormatter(), "The provided formatter should be set on the first handler");
         assertEquals(mockFormatter, handler2.getFormatter(), "The provided formatter should be set on the second handler");
+    }
+
+    @Test
+    void setLevel_nullLevel_throwsIllegalArgumentException()
+    {
+        assertThrows(IllegalArgumentException.class, () -> LoggingUtil.setLevel(null),
+            "Setting a null level should throw IllegalArgumentException");
+    }
+
+    @Test
+    void setLevel_validLevel_appliesToRootLoggerHandlers()
+    {
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        rootLogger.addHandler(consoleHandler);
+
+        LoggingUtil.setLevel(mockLevel);
+
+        assertEquals(mockLevel, consoleHandler.getLevel(), "The provided level should be set on the console handler");
+    }
+
+    @Test
+    void setLevel_multipleHandlers_appliesToAll()
+    {
+        ConsoleHandler handler1 = new ConsoleHandler();
+        ConsoleHandler handler2 = new ConsoleHandler();
+        rootLogger.addHandler(handler1);
+        rootLogger.addHandler(handler2);
+
+        LoggingUtil.setLevel(mockLevel);
+
+        assertEquals(mockLevel, handler1.getLevel(), "The provided level should be set on the first handler");
+        assertEquals(mockLevel, handler2.getLevel(), "The provided level should be set on the second handler");
     }
 }

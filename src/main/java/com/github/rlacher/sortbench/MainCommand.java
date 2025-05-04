@@ -30,6 +30,7 @@ import java.util.concurrent.Callable;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import picocli.CommandLine;
@@ -125,6 +126,7 @@ public class MainCommand implements Callable<Integer>
     public Integer call() throws Exception
     {
         LoggingUtil.setFormatter(new CustomFormatter(verboseMode));
+        LoggingUtil.setLevel(verboseMode ? Level.ALL : Level.INFO);
 
         Sorter sorter = new Sorter();
         BenchmarkRunner runner = new BenchmarkRunner(sorter);

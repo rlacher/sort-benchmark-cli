@@ -24,6 +24,7 @@ package com.github.rlacher.sortbench.logging;
 
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /** Logging-related utility class. */
@@ -51,5 +52,27 @@ public class LoggingUtil
         {
             handler.setFormatter(formatter);
         }
+    }
+
+    /**
+     * Sets the logging level for all handlers associated with the root logger.
+     *
+     * @param level The {@link Level} to set.
+     * @throws IllegalArgumentException If {@code level} is {@code null}.
+     */
+    public static void setLevel(final Level level)
+    {
+        if(level == null)
+        {
+            throw new IllegalArgumentException("Level must not be null.");
+        }
+
+        Logger rootLogger = Logger.getLogger("");
+
+        for (Handler handler : rootLogger.getHandlers())
+        {
+            handler.setLevel(level);
+        }
+        rootLogger.setLevel(level);
     }
 }
