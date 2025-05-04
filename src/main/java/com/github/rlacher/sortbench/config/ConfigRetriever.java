@@ -44,6 +44,7 @@ public final class ConfigRetriever
      *
      * <p>If a key is not found, it will be ignored unless {@code throwIfNotFound} is {@code true}.</p>
      *
+     * @param <T> The type of the configuration values.
      * @param config The map containing the configuration.
      * @param keys A set of keys to look for in the configuration map (case-insensitive).
      * @param throwIfNotFound If {@code true}, an exception is thrown if a key in {@code keys} is not found in the config.
