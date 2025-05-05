@@ -23,7 +23,9 @@
 package com.github.rlacher.sortbench.benchmark;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.*;
 
@@ -113,7 +115,7 @@ class BenchmarkRunnerTest
         nullKeyStrategies.put(null, MergeSortStrategy.class);
         
         assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(nullKeyStrategies, dataTypes, inputSizes, iterations, profilingMode),
-            "run() should throw IllegalArgumentException when selectedStrategies contains a null value");
+            "run() should throw IllegalArgumentException when selectedStrategies contains a null key");
     }
 
     @Test
@@ -215,27 +217,27 @@ class BenchmarkRunnerTest
     @Test
     void run_duplicateKeys_throwsIllegalArgumentException()
     {
-        final Map<String, Class<? extends SortStrategy>> duplicateStrategies = Map.of
+        final Map<String, Class<? extends SortStrategy>> strategiesKeyDuplicates = Map.of
         (
             "SAMEKEYSORT", MergeSortStrategy.class,
             "samekeysort", QuickSortStrategy.class
         );
 
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(duplicateStrategies, dataTypes, inputSizes, iterations, profilingMode),
-            "run() should throw IllegalArgumentException when duplicate keys are provided (e.g. \"mergesort\" and \"MERGESORT\")");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(strategiesKeyDuplicates, dataTypes, inputSizes, iterations, profilingMode),
+            "Duplicate strategy keys should throw IllegalArgumentException");
     }
 
     @Test
-    void run_duplicateStrategies_throwsIllegalArgumentException()
+    void run_duplicateValues_throwsIllegalArgumentException()
     {
-        final Map<String, Class<? extends SortStrategy>> duplicateStrategies = Map.of
+        final Map<String, Class<? extends SortStrategy>> strategiesValueDuplicates = Map.of
         (
-            "FirstSameMergeSort", MergeSortStrategy.class,
-            "SecondSameMergeSort", MergeSortStrategy.class
+            "FirstMergeSort", MergeSortStrategy.class,
+            "SecondMergeSort", MergeSortStrategy.class
         );
 
-        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(duplicateStrategies, dataTypes, inputSizes, iterations, profilingMode),
-            "run() should throw IllegalArgumentException when duplicate strategy classes are provided associated with different keys");
+        assertThrows(IllegalArgumentException.class, () -> benchmarkRunner.run(strategiesValueDuplicates, dataTypes, inputSizes, iterations, profilingMode),
+            "Duplicate strategy classes should throw IllegalArgumentException");
     }
 
     @Test

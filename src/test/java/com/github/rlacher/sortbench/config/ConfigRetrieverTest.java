@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -44,11 +45,19 @@ class ConfigRetrieverTest
     private Map<String, Object> config;
     private Set<String> keys;
 
+    private AutoCloseable openMocks;
+
     @BeforeEach
     void setUp()
     {
-        MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
         keys = Collections.emptySet();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception
+    {
+        openMocks.close();
     }
 
     @Test
