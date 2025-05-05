@@ -7,9 +7,9 @@ Repository topics: java, docker, benchmark, sorting, algorithm, cli.
 # Sorting Algorithm Benchmark
 
 <!-- Badge ordering: Status, legal, deployment -->
-[![Java CI Checks](https://github.com/rlacher/sort-benchmark-cli/actions/workflows/java-ci.yml/badge.svg)](https://github.com/rlacher/sort-benchmark-cli/actions/workflows/java-ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg)](https://opensource.org/licenses/MIT)
-[![Docker Hub Image](https://img.shields.io/docker/pulls/renelacher/sort-benchmark-cli)](https://hub.docker.com/r/renelacher/sort-benchmark-cli)
+[![java-ci](https://img.shields.io/github/actions/workflow/status/rlacher/sort-benchmark-cli/java-ci.yml?label=java-ci&style=flat)](https://github.com/rlacher/sort-benchmark-cli/actions/workflows/java-ci.yml)
+[![license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://opensource.org/licenses/MIT)
+[![docker pulls](https://img.shields.io/docker/pulls/renelacher/sort-benchmark-cli?label=docker-pulls)](https://hub.docker.com/r/renelacher/sort-benchmark-cli)
 
 Explore the nuances of sorting algorithm efficiency through this command-line interface (CLI) tool. Gain insights into the performance characteristics of popular sorting algorithms under controlled conditions within a containerised setup.
 
