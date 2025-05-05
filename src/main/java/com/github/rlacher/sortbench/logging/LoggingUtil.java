@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 public class LoggingUtil
 {
     /** Private constructor to prevent instantiation of utility class. */
+    @Deprecated
     private LoggingUtil() {}
 
     /**

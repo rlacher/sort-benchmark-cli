@@ -110,6 +110,7 @@ public class MainCommand implements Callable<Integer>
     );
 
     /** Private constructor. As the entry point of the application, instantiation of {@link MainCommand} is not intended. */
+    @Deprecated
     private MainCommand() {}
 
     /**
