@@ -219,7 +219,7 @@ public class BenchmarkRunner
      *
      * @param strategyNames A set of sorting strategy names.
      * @param dataTypes A set of data types for which to generate data.
-     * @param sizes A set of integer data sizes for which to generate data.
+     * @param sizes A list of integer data sizes for which to generate data.
      * @param iterations The number of data arrangements per size and data type.
      * @return A map of {@link BenchmarkContext} to a list of benchmark data. The map may be
      * empty if any of the input parameters are empty.
