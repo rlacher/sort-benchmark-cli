@@ -3,13 +3,10 @@ sequenceDiagram
     participant MainCommand
     participant BenchmarkRunner
     participant BenchmarkDataFactory
-    participant ConfigRetriever
     participant ResultAggregator
     participant AsciiTableFormatter
 
     note over MainCommand: CLI arguments parsed,<br/>ready to use.
-    MainCommand->>ConfigRetriever: validateAndFilterMap(AVAILABLE_ALGORITHMS, algorithmNames)
-    ConfigRetriever-->>MainCommand: selectedAlgorithms
     MainCommand->>BenchmarkRunner: run(selectedAlgorithms, dataTypes, ..)
     activate BenchmarkRunner
     BenchmarkRunner->>BenchmarkDataFactory: createData(dataType, dataSize)

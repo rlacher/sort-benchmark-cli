@@ -64,7 +64,7 @@ The CLI currently uses the default profiling mode: `EXECUTION_TIME` (see [Measur
 
 ## API Documentation
 
-[Javadoc](https://rlacher.github.io/sort-benchmark/api/) - Reference API for the sort-benchmark Java backend libraries.
+[Javadoc](https://rlacher.github.io/sort-benchmark-cli/api/) - Reference API for the sort-benchmark-cli Java libraries.
 
 ## Benchmark Details
 
@@ -144,21 +144,21 @@ To ensure robust result aggregation and account for JVM warm-up, the `ResultAggr
 
 The benchmark framework's modular and extensible architecture promotes flexibility and maintainability. It employs the Strategy pattern to allow easy addition and swapping of sorting algorithms, while a clear separation of concerns between data generation, benchmark execution, and result aggregation ensures a robust and adaptable benchmarking process, suitable for a wide range of performance evaluations.
 
-### Class Diagram: Strategy pattern for Sorting Routines
+### Class Diagram: Sorting Strategy Design
 
-![Class Diagram Sorter Strategies](./docs/uml/class-diagram-sorter-strategies.svg)
+![Class Diagram: Sorting Strategy Design](./docs/uml/class-diagram-sorting-strategy-design.svg)
 
 This benchmark project leverages the Strategy pattern to establish a modular and extensible architecture. Consequently, new sorting algorithms can be integrated without requiring modifications to the core benchmarking logic. Performance profiling is conducted by a dedicated `Benchmarker` class, which is injected into individual `SortStrategy` implementations, promoting loose coupling and enhanced code maintainability.
 
-### Sequence Diagram: Benchmark Run
+### Sequence Diagram: Benchmark Execution
 
-![Sequence Diagram Benchmark Run](./docs/uml/sequence-diagram-benchmark-process.svg)
+![Sequence Diagram: Benchmark Execution](./docs/uml/sequence-diagram-benchmark-execution.svg)
 
 The `BenchmarkRunner` orchestrates the repeated sorting process. It pre-generates `BenchmarkData` using the `BenchmarkDataFactory`, then repeatedly sorts this data using chosen `SortStrategy` implementations via the `Sorter`. The resulting benchmark results are then passed to a dedicated `ResultAggregator` for robust aggregation.
 
-### Sequence Diagram: BenchmarkRunner.runIterations()
+### Sequence Diagram: Iteration Workflow
 
-![Sequence Diagram Run Iterations](./docs/uml/sequence-diagram-runiterations.svg)
+![Sequence Diagram: Benchmark Iteration Workflow](./docs/uml/sequence-diagram-iteration-workflow.svg)
 
 For each set of benchmark data, the `BenchmarkRunner` configures the `Sorter` with a strategy and then uses it to sort each data element, producing the raw benchmark metrics needed for the benchmark results.
 
