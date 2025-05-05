@@ -7,7 +7,7 @@ Repository topics: java, docker, benchmark, sorting, algorithm, cli.
 # Sorting Algorithm Benchmark
 
 <!-- Badge ordering: Status, legal, deployment -->
-[![CI Checks](https://github.com/rlacher/sort-benchmark/actions/workflows/ci.yml/badge.svg)](https://github.com/rlacher/sort-benchmark/actions/workflows/ci.yml)
+[![Java CI Checks](https://github.com/rlacher/sort-benchmark-cli/actions/workflows/java-ci.yml/badge.svg)](https://github.com/rlacher/sort-benchmark-cli/actions/workflows/java-ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg)](https://opensource.org/licenses/MIT)
 [![Docker Hub Image](https://img.shields.io/docker/pulls/renelacher/sort-benchmark-cli)](https://hub.docker.com/r/renelacher/sort-benchmark-cli)
 
