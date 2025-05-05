@@ -29,16 +29,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.github.rlacher.sortbench.benchmark.Benchmarker;
+import com.github.rlacher.sortbench.strategies.SortStrategy;
 
 // Unit tests for the QuickSortStrategy class.
 public class QuickSortStrategyTest
 {
     private Benchmarker mockBenchmarker;
+    private SortStrategy quickSortStrategy;
 
     @BeforeEach
     void setUp()
     {
         mockBenchmarker = mock(Benchmarker.class);
+        quickSortStrategy = new QuickSortStrategy(mockBenchmarker);
     }
 
     @Test
@@ -50,7 +53,7 @@ public class QuickSortStrategyTest
     void sort_emptyArray_noSwap()
     {
         int[] array = {};
-        new QuickSortStrategy(mockBenchmarker).sort(array);
+        quickSortStrategy.sort(array);
 
         verify(mockBenchmarker, never()).reportSwap();
     }
@@ -59,15 +62,14 @@ public class QuickSortStrategyTest
     void sort_oneElement_noSwap()
     {
         int[] array = { 1 };
-        new QuickSortStrategy(mockBenchmarker).sort(array);
+        quickSortStrategy.sort(array);
         verify(mockBenchmarker, never()).reportSwap();
     }
 
     @Test
     void sort_twoElementsSorted_swapsWithSelf()
     {
-        QuickSortStrategy quickSorter = new QuickSortStrategy(mockBenchmarker);
-        QuickSortStrategy spiedSorter = spy(quickSorter);
+        SortStrategy spiedSorter = spy(quickSortStrategy);
         int[] array = { 1, 2 };
         spiedSorter.sort(array);
 
@@ -80,7 +82,7 @@ public class QuickSortStrategyTest
     void sort_twoElementsOutOfOrder_reportsSwap()
     {
         int[] array = { 2, 1 };
-        new QuickSortStrategy(mockBenchmarker).sort(array);
+        quickSortStrategy.sort(array);
 
         // Swap occurs for final pivot placement in partition()
         verify(mockBenchmarker, times(1)).reportSwap();

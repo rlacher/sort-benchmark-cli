@@ -1,4 +1,4 @@
-name: CI Checks
+name: Java Continuous Integration
 
 on:
   push:

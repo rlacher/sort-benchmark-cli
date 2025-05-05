@@ -33,11 +33,13 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker;
 public class HeapSortStrategyTest
 {
     private Benchmarker mockBenchmarker;
+    private HeapSortStrategy heapSortStrategy;
 
     @BeforeEach
     void setUp()
     {
         mockBenchmarker = mock(Benchmarker.class);
+        heapSortStrategy = new HeapSortStrategy(mockBenchmarker);
     }
 
     @Test
@@ -50,7 +52,7 @@ public class HeapSortStrategyTest
     void sort_twoElementsSorted_reportsTwoSwaps()
     {
         int[] array = { 1, 2 };
-        new HeapSortStrategy(mockBenchmarker).sort(array);
+        heapSortStrategy.sort(array);
  
         // Two swaps expected: one during heap construction, one to move root to the end.
         verify(mockBenchmarker, times(2)).reportSwap();
@@ -60,7 +62,7 @@ public class HeapSortStrategyTest
     void sort_twoElementsOutOfOrder_reportsOneSwap()
     {
         int[] array = { 2, 1 };
-        new HeapSortStrategy(mockBenchmarker).sort(array);
+        heapSortStrategy.sort(array);
  
         // One swap expected within the heapify process to move root to the end.
         verify(mockBenchmarker, times(1)).reportSwap();

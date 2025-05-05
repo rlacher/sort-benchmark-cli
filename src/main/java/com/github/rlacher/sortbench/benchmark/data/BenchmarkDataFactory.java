@@ -34,6 +34,7 @@ public class BenchmarkDataFactory
     private static Random random = new Random();
 
     /** Private constructor to prevent instantiation of utility class. */
+    @Deprecated
     private BenchmarkDataFactory() {}
 
     /**

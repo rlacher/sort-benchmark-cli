@@ -25,13 +25,25 @@ package com.github.rlacher.sortbench.strategies.implementations;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.github.rlacher.sortbench.benchmark.Benchmarker;
+import com.github.rlacher.sortbench.strategies.SortStrategy;
  
  // Unit tests for the InsertionSortStrategy class.
  public class InsertionSortStrategyTest
  {
+    private Benchmarker mockBenchmarker;
+    private SortStrategy insertionSortStrategy;
+
+    @BeforeEach
+    void setUp()
+    {
+        mockBenchmarker = mock(Benchmarker.class);
+        insertionSortStrategy = new InsertionSortStrategy(mockBenchmarker);
+    }
+
      @Test
      void constructor_nullArgument_throwsIllegalArgumentException()
      {
@@ -41,10 +53,8 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker;
     @Test
     void sort_twoElementsOutOfOrder_reportsShiftAndInsert()
     {
-        Benchmarker mockBenchmarker = mock(Benchmarker.class);
-
         int[] array = { 2, 1 };
-        new InsertionSortStrategy(mockBenchmarker).sort(array);
+        insertionSortStrategy.sort(array);
 
         verify(mockBenchmarker, times(1)).reportShift();
         verify(mockBenchmarker, times(1)).reportInsert();
@@ -53,10 +63,8 @@ import com.github.rlacher.sortbench.benchmark.Benchmarker;
     @Test
     void sort_emptyArray_noShiftNoInsert()
     {
-        Benchmarker mockBenchmarker = mock(Benchmarker.class);
-
         int[] array = {};
-        new InsertionSortStrategy(mockBenchmarker).sort(array);
+        insertionSortStrategy.sort(array);
 
         verify(mockBenchmarker, never()).reportShift();
         verify(mockBenchmarker, never()).reportInsert();
