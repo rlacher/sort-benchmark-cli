@@ -53,7 +53,7 @@ tasks.named('run')
 {
     standardInput = System.in
     jvmArgs '-Djava.util.logging.config.file=logging.properties'
-    args '-s', 5_000, 10_000, 20_000
+    args '--sizes', 5_000, 10_000, 20_000
 }
 
 tasks.named('test')
