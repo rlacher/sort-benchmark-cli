@@ -90,7 +90,7 @@ public class SortStrategyContractTest
         String expectedName = "ExampleSort";
         String actualName = exampleSortStrategy.name();
 
-        assertEquals(expectedName, actualName, String.format("Calling name() should return \"%s\", but returned \"%s\"", expectedName, actualName));
+        assertEquals(expectedName, actualName, String.format("Calling name() should return '%s', but returned '%s'", expectedName, actualName));
     }
 
     @ParameterizedTest

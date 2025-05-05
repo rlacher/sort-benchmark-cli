@@ -53,7 +53,7 @@ public interface SortStrategy
 
         if(!simpleClassName.endsWith(commonSuffix))
         {
-            throw new IllegalStateException(String.format("Sort strategy class name must end with \"%s\"", commonSuffix));
+            throw new IllegalStateException(String.format("Sort strategy class name must end with '%s'", commonSuffix));
         }
 
         return simpleClassName.substring(0, simpleClassName.length() - commonSuffix.length());
