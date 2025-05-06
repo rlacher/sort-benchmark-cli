@@ -130,14 +130,9 @@ implements <a href="../SortStrategy.html" title="interface in com.github.rlacher
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#name()" class="member-name-link">name</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../results/BenchmarkMetric.html" title="class in com.github.rlacher.sortbench.results">BenchmarkMetric</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sort(int%5B%5D)" class="member-name-link">sort</a><wbr>(int[]&nbsp;array)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the unique name of the <a href="MergeSortStrategy.html" title="class in com.github.rlacher.sortbench.strategies.implementations"><code>MergeSortStrategy</code></a>.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../results/BenchmarkMetric.html" title="class in com.github.rlacher.sortbench.results">BenchmarkMetric</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sort(int%5B%5D)" class="member-name-link">sort</a><wbr>(int[]&nbsp;array)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Sorts the provided array in ascending order using the merge sort algorithm.</div>
 </div>
 </div>
@@ -148,7 +143,7 @@ implements <a href="../SortStrategy.html" title="interface in com.github.rlacher
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-com.github.rlacher.sortbench.strategies.SortStrategy">Methods inherited from interface&nbsp;com.github.rlacher.sortbench.strategies.<a href="../SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a></h3>
-<code><a href="../SortStrategy.html#swap(int%5B%5D,int,int)">swap</a></code></div>
+<code><a href="../SortStrategy.html#name()">name</a>, <a href="../SortStrategy.html#swap(int%5B%5D,int,int)">swap</a></code></div>
 </section>
 </li>
 </ul>
@@ -181,19 +176,6 @@ implements <a href="../SortStrategy.html" title="interface in com.github.rlacher
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="name()">
-<h3>name</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">name</span>()</div>
-<div class="block">Returns the unique name of the <a href="MergeSortStrategy.html" title="class in com.github.rlacher.sortbench.strategies.implementations"><code>MergeSortStrategy</code></a>.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../SortStrategy.html#name()">name</a></code>&nbsp;in interface&nbsp;<code><a href="../SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a></code></dd>
-<dt>Returns:</dt>
-<dd>The unique name of the strategy.</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="sort(int[])">
 <h3>sort</h3>
