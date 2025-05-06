@@ -30,13 +30,6 @@ import com.github.rlacher.sortbench.results.BenchmarkMetric;
 public interface SortStrategy
 {
     /**
-     * Returns the name of the sorting strategy.
-     *
-     * @return The name of the sorting strategy.
-     */
-    String name();
-
-    /**
      * Sorts the given integer array and returns profiling metrics.
      *
      * @param array The array to be sorted. Must not be null.
@@ -44,6 +37,27 @@ public interface SortStrategy
      * @throws NullPointerException If the input array is null.
      */
     BenchmarkMetric sort(final int[] array);
+
+    /**
+     * Returns the name of the sorting strategy.
+     *
+     * <p>By convention, the name is derived directly from the sort strategy's class name.</p>
+     *
+     * @return The unique name of the sorting strategy (e.g. "MergeSort").
+     * @throws IllegalStateException If the class name does not end with "Strategy".
+     */
+    default String name()
+    {
+        String simpleClassName = this.getClass().getSimpleName();
+        String commonSuffix = "Strategy";
+
+        if(!simpleClassName.endsWith(commonSuffix))
+        {
+            throw new IllegalStateException(String.format("Sort strategy class name must end with '%s'", commonSuffix));
+        }
+
+        return simpleClassName.substring(0, simpleClassName.length() - commonSuffix.length());
+    }
 
     /**
      * Swaps two elements at the specified indices within the given array.

@@ -1,0 +1,27 @@
+%%{init: {'theme':'neutral'}}%%
+sequenceDiagram
+    participant MainCommand
+    participant BenchmarkRunner
+    participant BenchmarkDataFactory
+    participant ResultAggregator
+    participant AsciiTableFormatter
+
+    note over MainCommand: CLI arguments parsed,<br/>ready to use.
+    MainCommand->>BenchmarkRunner: run(selectedAlgorithms, dataTypes, ..)
+    activate BenchmarkRunner
+    BenchmarkRunner->>BenchmarkDataFactory: createData(dataType, dataSize)
+    activate BenchmarkDataFactory
+    BenchmarkDataFactory-->>BenchmarkRunner: benchmarkDataMap
+    deactivate BenchmarkDataFactory
+    BenchmarkRunner->>BenchmarkRunner: runIterations(strategies, benchmarkDataMap)
+    BenchmarkRunner-->>MainCommand: benchmarkResults
+    deactivate BenchmarkRunner
+    MainCommand->>ResultAggregator: process(benchmarkResults)
+    activate ResultAggregator
+    ResultAggregator-->>MainCommand: aggregatedResults
+    deactivate ResultAggregator
+    MainCommand->>AsciiTableFormatter: format(aggregatedResults)
+    activate AsciiTableFormatter
+    AsciiTableFormatter-->>MainCommand: formattedResultTable
+    deactivate AsciiTableFormatter
+    MainCommand->>MainCommand: Output formattedResultTable

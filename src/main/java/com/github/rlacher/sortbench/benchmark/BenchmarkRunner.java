@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,13 +34,11 @@ import java.util.stream.Stream;
 import com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkData;
 import com.github.rlacher.sortbench.benchmark.data.BenchmarkDataFactory;
-import com.github.rlacher.sortbench.config.ConfigValidator;
 import com.github.rlacher.sortbench.results.BenchmarkMetric;
 import com.github.rlacher.sortbench.results.BenchmarkResult;
 import com.github.rlacher.sortbench.results.BenchmarkContext;
 import com.github.rlacher.sortbench.sorter.Sorter;
 import com.github.rlacher.sortbench.strategies.SortStrategy;
-import com.github.rlacher.sortbench.strategies.implementations.*;
 
 /**
  * Executes and benchmarks sorting algorithms based on a provided configuration and returns raw benchmark results.
@@ -51,18 +50,6 @@ public class BenchmarkRunner
 {
     /** Logger for logging messages. */
     private static final Logger logger = Logger.getLogger(BenchmarkRunner.class.getName());
-
-    /** Maps sort strategy names (e.g. "BubbleSort") to their {@link SortStrategy} classes for dynamic instantiation. */
-    private static final Map<String, Class<? extends SortStrategy>> strategyMap = new HashMap<>();
-
-    static
-    {
-        strategyMap.put("BubbleSort", BubbleSortStrategy.class);
-        strategyMap.put("HeapSort", HeapSortStrategy.class);
-        strategyMap.put("InsertionSort", InsertionSortStrategy.class);
-        strategyMap.put("MergeSort", MergeSortStrategy.class);
-        strategyMap.put("QuickSort", QuickSortStrategy.class);
-    }
 
     /** Sort context to execute and benchmark different sorting strategies. */
     private Sorter sorter;
@@ -84,36 +71,93 @@ public class BenchmarkRunner
     }
 
     /**
-     * Runs benchmarks based on the provided configuration.
+     * Runs benchmarks based on the provided parameters.
      *
-     * @param benchmarkConfig A map containing benchmark configuration parameters.
-     * @return A list of benchmark results.
-     * @throws IllegalArgumentException If benchmark config is {@code null}, the configuration
-     * is otherwise invalid or if required list-based parameters are empty.
+     * @param selectedStrategies A mapping from strategy names (e.g., "InsertionSort") to their respective {@link SortStrategy}
+     * class types for dynamic instantiation.
+     * @param dataTypes A set of data types for which to generate benchmark data.
+     * @param inputSizes A list of input sizes for the benchmark data.
+     * @param iterations The number of iterations for each data arrangement.
+     * @param profilingMode The profiling mode to use for the benchmark.
+     * @return A list of benchmark results with size equal or greater than 1.
+     * @throws IllegalArgumentException If any of the input parameters are {@code null} or invalid:
+     * <ul>
+     * <li>{@code selectedStrategies} is {@code null}, empty, contains {@code null}
+     * keys or values, or duplicate keys (ignoring case) or values.</li>
+     * <li>{@code dataTypes} is {@code null} or empty.</li>
+     * <li>{@code inputSizes} is {@code null} or empty or contains non-positive
+     * integers.</li>
+     * <li>{@code iterations} is not positive.</li>
+     * <li>{@code profilingMode} is {@code null}.</li>
+     * </ul>
      */
-    public List<BenchmarkResult> run(Map<String, Object> benchmarkConfig)
+    public List<BenchmarkResult> run(
+        final Map<String, Class<? extends SortStrategy>> selectedStrategies,
+        final Set<BenchmarkData.DataType> dataTypes,
+        final List<Integer> inputSizes,
+        final int iterations,
+        final ProfilingMode profilingMode)
     {
-        if(benchmarkConfig == null)
+        if(selectedStrategies == null)
         {
-            throw new IllegalArgumentException("Benchmark config must not be null");
+            throw new IllegalArgumentException("Strategy map must not be null");
+        }
+        if(selectedStrategies.isEmpty())
+        {
+            throw new IllegalArgumentException("Strategy map must not be empty");
+        }
+        if(selectedStrategies.keySet().stream().anyMatch(key -> key == null))
+        {
+            throw new IllegalArgumentException("Strategy map must not contain null values.");
+        }
+        if(selectedStrategies.values().stream().anyMatch(value -> value == null))
+        {
+            throw new IllegalArgumentException("Strategy map must not contain null keys.");
+        }
+        if(selectedStrategies.keySet().stream().map(String::toLowerCase).distinct().count() != selectedStrategies.size())
+        {
+            throw new IllegalArgumentException("Strategy map must not contain duplicate keys (case-insensitive).");
+        }
+        if(selectedStrategies.values().stream().distinct().count() != selectedStrategies.size())
+        {
+            throw new IllegalArgumentException("Strategy map must not contain duplicate values.");
+        }
+        if(dataTypes == null)
+        {
+            throw new IllegalArgumentException("Data types set must not be null");
+        }
+        if(dataTypes.isEmpty())
+        {
+            throw new IllegalArgumentException("Data types set must not be empty");
+        }
+        if(inputSizes == null)
+        {
+            throw new IllegalArgumentException("Input sizes list must not be null");
+        }
+        if(inputSizes.isEmpty())
+        {
+            throw new IllegalArgumentException("Input sizes list must not be empty");
+        }
+        if(inputSizes.stream().anyMatch(size -> size <= 0))
+        {
+            throw new IllegalArgumentException("Input sizes must be positive integers.");
+        }
+        if(iterations <= 0)
+        {
+            throw new IllegalArgumentException("Iterations must be a positive integer.");
+        }
+        if(profilingMode == null)
+        {
+            throw new IllegalArgumentException("Profiling mode must not be null");
         }
 
-        final List<Integer> inputSizes = ConfigValidator.validateAndGetList(benchmarkConfig, "input_sizes", Integer.class);
-        final int iterations = ConfigValidator.validateAndGet(benchmarkConfig, "iterations", Integer.class);
-        final ProfilingMode profilingMode = ConfigValidator.validateAndGet(benchmarkConfig, "profiling_mode", ProfilingMode.class);
-
-        final List<String> strategyNames = ConfigValidator.validateAndGetList(benchmarkConfig, "strategies", String.class);
-        
-        final Map<String, SortStrategy> strategies = new HashMap<>(strategyNames.size());
-        strategyNames.stream().forEach(s -> strategies.put(s, getStrategyInstance(s, profilingMode)));
-
-        final String dataTypeString = ConfigValidator.validateAndGet(benchmarkConfig, "data_type", String.class);
-        final BenchmarkData.DataType dataType = BenchmarkData.DataType.fromString(dataTypeString);
-
         // Initialise benchmarkData with data arrangements that all sort strategies will run on.
-        Map<BenchmarkContext, List<BenchmarkData>> benchmarkDataMap = generateBenchmarkData(dataType, inputSizes, strategyNames, iterations);
+        Map<BenchmarkContext, List<BenchmarkData>> benchmarkDataMap = generateBenchmarkData(selectedStrategies.keySet(), dataTypes, inputSizes, iterations);
 
-        List<BenchmarkResult> benchmarkResults = runIterations(strategies, benchmarkDataMap);
+        final Map<String, SortStrategy> instantiatedStrategies = selectedStrategies.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> getStrategyInstance(entry.getValue(), profilingMode)));
+
+        List<BenchmarkResult> benchmarkResults = runIterations(instantiatedStrategies, benchmarkDataMap);
 
         return benchmarkResults;
     }
@@ -173,51 +217,63 @@ public class BenchmarkRunner
      * <p>This improves JVM optimisation by enhancing data locality.
      * Deep copies data for each strategy to ensure result comparability.</p>
      *
-     * @param dataType The type of data to generate.
-     * @param sizes A list of integer data sizes.
-     * @param strategyNames A list of sorting strategy names.
+     * @param strategyNames A set of sorting strategy names.
+     * @param dataTypes A set of data types for which to generate data.
+     * @param sizes A list of integer data sizes for which to generate data.
      * @param iterations The number of data arrangements per size and data type.
-     * @return A map of {@link BenchmarkContext} to a list of benchmark data.
-     * @throws NullPointerException If any of {@code dataType}, {@code sizes} or {@code strategyNames} are {@code null}.
+     * @return A map of {@link BenchmarkContext} to a list of benchmark data. The map may be
+     * empty if any of the input parameters are empty.
+     * @throws NullPointerException If any of {@code dataTypes}, {@code sizes} or {@code strategyNames} are {@code null}.
      * This is unexpected as the caller {@link BenchmarkRunner#run} ensures these arguments are not {@code null}.
      */
-    protected Map<BenchmarkContext, List<BenchmarkData>> generateBenchmarkData(BenchmarkData.DataType dataType, final List<Integer> sizes, final List<String> strategyNames, final int iterations)
+    protected Map<BenchmarkContext, List<BenchmarkData>> generateBenchmarkData(
+        final Set<String> strategyNames,
+        final Set<BenchmarkData.DataType> dataTypes,
+        final List<Integer> sizes,
+        final int iterations)
     {
         Map<BenchmarkContext, List<BenchmarkData>> generatedData = new HashMap<>();
 
-        for(int dataSize: sizes)
+        for(BenchmarkData.DataType dataType : dataTypes)
         {
-            List<BenchmarkData> initialDataList = Stream.generate(() -> BenchmarkDataFactory.createData(dataType, dataSize))
-                .limit(iterations)
-                .collect(Collectors.toList());
-
-            for(String strategyName : strategyNames)
+            for(int dataSize: sizes)
             {
-                List<BenchmarkData> dataListCopy = initialDataList.stream()
-                    .map(dataArrangement -> new BenchmarkData(dataArrangement))
+                List<BenchmarkData> initialDataList = Stream.generate(() -> BenchmarkDataFactory.createData(dataType, dataSize))
+                    .limit(iterations)
                     .collect(Collectors.toList());
 
-                BenchmarkContext context = new BenchmarkContext(dataType, dataSize, strategyName);
-                generatedData.put(context, dataListCopy);
-            };
-        };
+                logger.finer(String.format("Generated %d data arrangements of type %s and size %d", iterations, dataType, dataSize));
+                initialDataList.forEach(data -> logger.finest(String.format("Data arrangement: %s", data.toString())));
+
+                for(String strategyName : strategyNames)
+                {
+                    List<BenchmarkData> dataListCopy = initialDataList.stream()
+                        .map(dataArrangement -> new BenchmarkData(dataArrangement))
+                        .collect(Collectors.toList());
+
+                    BenchmarkContext context = new BenchmarkContext(dataType, dataSize, strategyName);
+                    generatedData.put(context, dataListCopy);
+                }
+            }
+        }
 
         return generatedData;
     }
 
     /**
-     * Creates an instance of a SortStrategy based on the provided strategy name and profiling mode.
+     * Creates an instance of a {@link SortStrategy} based on the provided strategy class and profiling mode.
      *
-     * @param strategyName The name of the sorting strategy.
+     * @param strategyClass The class type of the sorting strategy.
      * @param mode The profiling mode to use.
-     * @return An instance of the {@link SortStrategy}. Returns {@code null} in case of instantiation failure.
+     * @return An {@link SortStrategy} instance of type {@code strategyClass} configured with the provided profiling mode.
+     * @throws IllegalArgumentException If {@code strategyClass} is {@code null}.
+     * @throws IllegalStateException If instantiation fails for the {@link SortStrategy}.
      */
-    protected SortStrategy getStrategyInstance(String strategyName, ProfilingMode mode)
+    protected SortStrategy getStrategyInstance(Class<? extends SortStrategy> strategyClass, final ProfilingMode mode)
     {
-        Class<? extends SortStrategy> strategyClass = strategyMap.get(strategyName);
         if (strategyClass == null)
         {
-            throw new IllegalArgumentException(String.format("Unknown sort strategy '%s'", strategyName));
+            throw new IllegalArgumentException(String.format("Strategy class must not be null"));
         }
 
         SortStrategy strategy = null;
@@ -227,7 +283,7 @@ public class BenchmarkRunner
         }
         catch(ReflectiveOperationException exception)
         {
-            logger.warning(String.format("Exception instantiating strategy name '%s' (type: %s, message: %s)", strategyName, exception.getClass().getSimpleName(), exception.getMessage()));
+            throw new IllegalStateException(String.format("Could not instantiate strategy class: %s.", strategyClass.getSimpleName()), exception);
         }
 
         return strategy;
