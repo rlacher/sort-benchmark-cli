@@ -126,23 +126,27 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="../results/BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results">BenchmarkContext</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="data/BenchmarkData.html" title="class in com.github.rlacher.sortbench.benchmark.data">BenchmarkData</a>&gt;&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generateBenchmarkData(com.github.rlacher.sortbench.benchmark.data.BenchmarkData.DataType,java.util.List,java.util.List,int)" class="member-name-link">generateBenchmarkData</a><wbr>(<a href="data/BenchmarkData.DataType.html" title="enum class in com.github.rlacher.sortbench.benchmark.data">BenchmarkData.DataType</a>&nbsp;dataType,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generateBenchmarkData(java.util.Set,java.util.Set,java.util.List,int)" class="member-name-link">generateBenchmarkData</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;strategyNames,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="data/BenchmarkData.DataType.html" title="enum class in com.github.rlacher.sortbench.benchmark.data">BenchmarkData.DataType</a>&gt;&nbsp;dataTypes,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;sizes,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;strategyNames,
  int&nbsp;iterations)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Generates benchmark data grouped by context to facilitate batch processing.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStrategyInstance(java.lang.String,com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode)" class="member-name-link">getStrategyInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;strategyName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStrategyInstance(java.lang.Class,com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode)" class="member-name-link">getStrategyInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a>&gt;&nbsp;strategyClass,
  <a href="Benchmarker.ProfilingMode.html" title="enum class in com.github.rlacher.sortbench.benchmark">Benchmarker.ProfilingMode</a>&nbsp;mode)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Creates an instance of a SortStrategy based on the provided strategy name and profiling mode.</div>
+<div class="block">Creates an instance of a <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies"><code>SortStrategy</code></a> based on the provided strategy class and profiling mode.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results">BenchmarkResult</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#run(java.util.Map)" class="member-name-link">run</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;benchmarkConfig)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#run(java.util.Map,java.util.Set,java.util.List,int,com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode)" class="member-name-link">run</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a>&gt;&gt;&nbsp;selectedStrategies,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="data/BenchmarkData.DataType.html" title="enum class in com.github.rlacher.sortbench.benchmark.data">BenchmarkData.DataType</a>&gt;&nbsp;dataTypes,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;inputSizes,
+ int&nbsp;iterations,
+ <a href="Benchmarker.ProfilingMode.html" title="enum class in com.github.rlacher.sortbench.benchmark">Benchmarker.ProfilingMode</a>&nbsp;profilingMode)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Runs benchmarks based on the provided configuration.</div>
+<div class="block">Runs benchmarks based on the provided parameters.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results">BenchmarkResult</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#runIterations(java.util.Map,java.util.Map)" class="member-name-link">runIterations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a>&gt;&nbsp;strategies,
@@ -189,18 +193,35 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="run(java.util.Map)">
+<section class="detail" id="run(java.util.Map,java.util.Set,java.util.List,int,com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode)">
 <h3>run</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results">BenchmarkResult</a>&gt;</span>&nbsp;<span class="element-name">run</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;benchmarkConfig)</span></div>
-<div class="block">Runs benchmarks based on the provided configuration.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../results/BenchmarkResult.html" title="class in com.github.rlacher.sortbench.results">BenchmarkResult</a>&gt;</span>&nbsp;<span class="element-name">run</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a>&gt;&gt;&nbsp;selectedStrategies,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="data/BenchmarkData.DataType.html" title="enum class in com.github.rlacher.sortbench.benchmark.data">BenchmarkData.DataType</a>&gt;&nbsp;dataTypes,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;inputSizes,
+ int&nbsp;iterations,
+ <a href="Benchmarker.ProfilingMode.html" title="enum class in com.github.rlacher.sortbench.benchmark">Benchmarker.ProfilingMode</a>&nbsp;profilingMode)</span></div>
+<div class="block">Runs benchmarks based on the provided parameters.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>benchmarkConfig</code> - A map containing benchmark configuration parameters.</dd>
+<dd><code>selectedStrategies</code> - A mapping from strategy names (e.g., "InsertionSort") to their respective <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies"><code>SortStrategy</code></a>
+ class types for dynamic instantiation.</dd>
+<dd><code>dataTypes</code> - A set of data types for which to generate benchmark data.</dd>
+<dd><code>inputSizes</code> - A list of input sizes for the benchmark data.</dd>
+<dd><code>iterations</code> - The number of iterations for each data arrangement.</dd>
+<dd><code>profilingMode</code> - The profiling mode to use for the benchmark.</dd>
 <dt>Returns:</dt>
-<dd>A list of benchmark results.</dd>
+<dd>A list of benchmark results with size equal or greater than 1.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If benchmark config is <code>null</code>, the configuration
- is otherwise invalid or if required list-based parameters are empty.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If any of the input parameters are <code>null</code> or invalid:
+ <ul>
+ <li><code>selectedStrategies</code> is <code>null</code>, empty, contains <code>null</code>
+ keys or values, or duplicate keys (ignoring case) or values.</li>
+ <li><code>dataTypes</code> is <code>null</code> or empty.</li>
+ <li><code>inputSizes</code> is <code>null</code> or empty or contains non-positive
+ integers.</li>
+ <li><code>iterations</code> is not positive.</li>
+ <li><code>profilingMode</code> is <code>null</code>.</li>
+ </ul></dd>
 </dl>
 </section>
 </li>
@@ -223,11 +244,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="generateBenchmarkData(com.github.rlacher.sortbench.benchmark.data.BenchmarkData.DataType,java.util.List,java.util.List,int)">
+<section class="detail" id="generateBenchmarkData(java.util.Set,java.util.Set,java.util.List,int)">
 <h3>generateBenchmarkData</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../results/BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results">BenchmarkContext</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="data/BenchmarkData.html" title="class in com.github.rlacher.sortbench.benchmark.data">BenchmarkData</a>&gt;&gt;</span>&nbsp;<span class="element-name">generateBenchmarkData</span><wbr><span class="parameters">(<a href="data/BenchmarkData.DataType.html" title="enum class in com.github.rlacher.sortbench.benchmark.data">BenchmarkData.DataType</a>&nbsp;dataType,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../results/BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results">BenchmarkContext</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="data/BenchmarkData.html" title="class in com.github.rlacher.sortbench.benchmark.data">BenchmarkData</a>&gt;&gt;</span>&nbsp;<span class="element-name">generateBenchmarkData</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;strategyNames,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="data/BenchmarkData.DataType.html" title="enum class in com.github.rlacher.sortbench.benchmark.data">BenchmarkData.DataType</a>&gt;&nbsp;dataTypes,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;sizes,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;strategyNames,
  int&nbsp;iterations)</span></div>
 <div class="block">Generates benchmark data grouped by context to facilitate batch processing.
 
@@ -235,30 +256,34 @@ loadScripts(document, 'script');</script>
  Deep copies data for each strategy to ensure result comparability.</p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>dataType</code> - The type of data to generate.</dd>
-<dd><code>sizes</code> - A list of integer data sizes.</dd>
-<dd><code>strategyNames</code> - A list of sorting strategy names.</dd>
+<dd><code>strategyNames</code> - A set of sorting strategy names.</dd>
+<dd><code>dataTypes</code> - A set of data types for which to generate data.</dd>
+<dd><code>sizes</code> - A list of integer data sizes for which to generate data.</dd>
 <dd><code>iterations</code> - The number of data arrangements per size and data type.</dd>
 <dt>Returns:</dt>
-<dd>A map of <a href="../results/BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkContext</code></a> to a list of benchmark data.</dd>
+<dd>A map of <a href="../results/BenchmarkContext.html" title="class in com.github.rlacher.sortbench.results"><code>BenchmarkContext</code></a> to a list of benchmark data. The map may be
+ empty if any of the input parameters are empty.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - If any of <code>dataType</code>, <code>sizes</code> or <code>strategyNames</code> are <code>null</code>.
- This is unexpected as the caller <a href="#run(java.util.Map)"><code>run(java.util.Map&lt;java.lang.String, java.lang.Object&gt;)</code></a> ensures these arguments are not <code>null</code>.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - If any of <code>dataTypes</code>, <code>sizes</code> or <code>strategyNames</code> are <code>null</code>.
+ This is unexpected as the caller <a href="#run(java.util.Map,java.util.Set,java.util.List,int,com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode)"><code>run(java.util.Map&lt;java.lang.String, java.lang.Class&lt;? extends com.github.rlacher.sortbench.strategies.SortStrategy&gt;&gt;, java.util.Set&lt;com.github.rlacher.sortbench.benchmark.data.BenchmarkData.DataType&gt;, java.util.List&lt;java.lang.Integer&gt;, int, com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode)</code></a> ensures these arguments are not <code>null</code>.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getStrategyInstance(java.lang.String,com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode)">
+<section class="detail" id="getStrategyInstance(java.lang.Class,com.github.rlacher.sortbench.benchmark.Benchmarker.ProfilingMode)">
 <h3>getStrategyInstance</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a></span>&nbsp;<span class="element-name">getStrategyInstance</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;strategyName,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a></span>&nbsp;<span class="element-name">getStrategyInstance</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies">SortStrategy</a>&gt;&nbsp;strategyClass,
  <a href="Benchmarker.ProfilingMode.html" title="enum class in com.github.rlacher.sortbench.benchmark">Benchmarker.ProfilingMode</a>&nbsp;mode)</span></div>
-<div class="block">Creates an instance of a SortStrategy based on the provided strategy name and profiling mode.</div>
+<div class="block">Creates an instance of a <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies"><code>SortStrategy</code></a> based on the provided strategy class and profiling mode.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>strategyName</code> - The name of the sorting strategy.</dd>
+<dd><code>strategyClass</code> - The class type of the sorting strategy.</dd>
 <dd><code>mode</code> - The profiling mode to use.</dd>
 <dt>Returns:</dt>
-<dd>An instance of the <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies"><code>SortStrategy</code></a>. Returns <code>null</code> in case of instantiation failure.</dd>
+<dd>An <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies"><code>SortStrategy</code></a> instance of type <code>strategyClass</code> configured with the provided profiling mode.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - If <code>strategyClass</code> is <code>null</code>.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - If instantiation fails for the <a href="../strategies/SortStrategy.html" title="interface in com.github.rlacher.sortbench.strategies"><code>SortStrategy</code></a>.</dd>
 </dl>
 </section>
 </li>
